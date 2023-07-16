@@ -9,17 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@next/font": "13.4.10",
+    "alchemy-sdk": "^2.9.2",
     "dotenv": "^16.3.1",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.10",
     "ethers": "^6.6.4",
-    "next": "13.4.10",
+    "next": "^13.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@anders-t/ethers-ledger": "^1.0.4",
     "@ethersproject/hardware-wallets": "^5.7.0",
     "@nomicfoundation/hardhat-ethers": "^3.0.4",
     "autoprefixer": "^10.4.14",

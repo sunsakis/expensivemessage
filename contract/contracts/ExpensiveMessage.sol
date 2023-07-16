@@ -17,12 +17,16 @@ contract ExpensiveMessage {
         _;
     }
 
-    event MessageChanged(string newMessage, uint256 newPrice, address messenger);
+    event MessageChanged(uint256 newPrice, address messenger);
 
     constructor() {
         currentPrice = 0.05 ether;  // Initial price
         message = "Hello World!"; // Initial message
         owner = msg.sender;
+    }
+
+    function readMessage() public view returns (string memory) {
+        return message;
     }
 
     function setMessage(string memory newMessage) public payable {
@@ -32,11 +36,10 @@ contract ExpensiveMessage {
         message = newMessage;
         // Increase the price for the next transaction
         currentPrice += 0.05 ether;
-
         messenger = msg.sender;
 
 
-        emit MessageChanged(newMessage, currentPrice, messenger);
+        emit MessageChanged(currentPrice, messenger);
     }
 
     function withdraw() external onlyOwner {

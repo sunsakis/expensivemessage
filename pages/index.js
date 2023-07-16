@@ -1,10 +1,41 @@
 import Head from 'next/head'
-import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
+import { ethers } from 'ethers';
+import { useEffect } from 'react';
+import { Network, Alchemy } from 'alchemy-sdk';
+//require('dotenv').config();
 
-const inter = Inter({ subsets: ['latin'] })
+const settings = {
+  apiKey: process.env.ALCHEMY_API, // Replace with your Alchemy API Key.
+  network: Network.ETH_SEPOLIA, // Replace with your network.
+};
+
+const alchemy = new Alchemy(settings);
+
+const contractABI = [
+  "event MessageChanged(string newMessage, uint256 newPrice, address messenger)",
+  "function setMessage(string memory newMessage) public",
+  "message public view returns (string memory)",
+];
+
+async function getMessage() {
+  const ethersProvider = await alchemy.config.getProvider();
+  const contract = new ethers.Contract("0x433e734B6E2299eE794ebE8218a53723b996843c", contractABI, ethersProvider);
+  const message = await contract.message();
+  console.log(message);
+  // const filter = contract.filters.MessageChanged();
+  // const events = await contract.queryFilter(filter);
+  // console.log(events);
+}
+
 
 export default function Home() {
+
+  useEffect(() => {
+    //alchemy.core.getBlockNumber().then(console.log);
+    getMessage();
+  }, []);
+
   return (
     <>
       <Head>

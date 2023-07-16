@@ -1,2 +1,0 @@
-# ExpensiveMessage
- Write History
