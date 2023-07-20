@@ -4,7 +4,7 @@
   justify-content: center;
   align-items: center;
   padding: 6rem;
-  min-height: 100vh;
+  height: 100vh;
 }
 
 .description {
@@ -12,7 +12,7 @@
   justify-content: inherit;
   align-items: inherit;
   font-size: 0.85rem;
-  max-width: var(--max-width);
+  max-width: 350px;
   width: 100%;
   z-index: 2;
   font-family: var(--font-mono);
