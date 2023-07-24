@@ -5,6 +5,7 @@ contract ExpensiveMessage {
     uint256 public currentPrice;
     string public message;
     address public messenger;
+    uint256 public messageID;
     
         /// @notice The owner of the contract
     address public immutable owner;
@@ -17,11 +18,11 @@ contract ExpensiveMessage {
         _;
     }
 
-    event MessageChanged(uint256 newPrice, address messenger);
+    event MessageChanged(uint256 newPrice, address messenger, uint256 messageID);
 
     constructor() {
-        currentPrice = 0.05 ether;  // Initial price
-        message = "Hello World!"; // Initial message
+        currentPrice = 0.05 ether;
+        message = "Hello World!"; 
         owner = msg.sender;
     }
 
@@ -32,14 +33,13 @@ contract ExpensiveMessage {
     function setMessage(string memory newMessage) public payable {
 
         require(msg.value == currentPrice, "Not enough Ether provided.");
-        // Update the message
         message = newMessage;
-        // Increase the price for the next transaction
         currentPrice += 0.05 ether;
         messenger = msg.sender;
+        messageID++;
 
 
-        emit MessageChanged(currentPrice, messenger);
+        emit MessageChanged(currentPrice, messenger, messageID);
     }
 
     function withdraw() external onlyOwner {

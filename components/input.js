@@ -1,4 +1,12 @@
 import React, { useState } from 'react';
+import { 
+  ConnectWallet,
+  useConnectionStatus,
+  useSwitchChain,
+  ChainId, 
+  useNetworkMismatch} 
+from '@thirdweb-dev/react';
+import { Sepolia } from '@thirdweb-dev/chains';
 
 const MessageField = () => {
   const [Message, setMessage] = useState('');
@@ -13,10 +21,38 @@ const MessageField = () => {
     console.log(Message);
     setMessage('');
   };
+  const isMismatched = useNetworkMismatch();
+  const connectionStatus = useConnectionStatus();
+  const switchChain = useSwitchChain();
 
-  return (
+  if (connectionStatus === "disconnected") return (
+    <div class="absolute bottom-8 sm:bottom-5 justify-center">
+      <ConnectWallet />
+    </div>
+  );
+
+  if (connectionStatus === "connecting") return (
+    <div class="absolute bottom-8 sm:bottom-5 justify-center">
+      <ConnectWallet />
+    </div>
+  );
+
+  if (ChainId !== Sepolia.chainId && isMismatched) try { 
+    return (
+    <div class="absolute bottom-8 sm:bottom-5 justify-center">
+      <button class="" onClick={() => switchChain(Sepolia.chainId)}>Switch to Sepolia</button>
+    </div>
+  );
+  } catch (error) {
+    console.error(error);
+  }
+
+  if (connectionStatus === "connected") return (
     <div class="absolute bottom-1 justify-center">
         <textarea
+            onChange={handleChange}
+            onSubmit={handleSubmit}
+            onClick={() => switchChain(Sepolia.chainId)}
             className="focus:h-[100px] text-sm transition-all resize-none text-center rounded font-mono p-2 bg-white text-black w-[350px] h-[38px]"
             placeholder='What is your message?'
         >
