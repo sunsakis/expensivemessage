@@ -2,10 +2,9 @@
 pragma solidity ^0.8.0;
 
 contract ExpensiveMessage {
-    uint256 public currentPrice;
+    uint256 public msgPrice;
     string public message;
     address public messenger;
-    uint256 public messageID;
     
         /// @notice The owner of the contract
     address public immutable owner;
@@ -18,10 +17,10 @@ contract ExpensiveMessage {
         _;
     }
 
-    event MessageChanged(uint256 newPrice, address messenger, uint256 messageID);
+    event MessageChanged(uint256 newPrice, address messenger);
 
     constructor() {
-        currentPrice = 0.05 ether;
+        msgPrice = 0.00001 ether;
         message = "Hello World!"; 
         owner = msg.sender;
     }
@@ -30,16 +29,19 @@ contract ExpensiveMessage {
         return message;
     }
 
+    function getPrice() public view returns (uint256) {
+        return msgPrice;
+    }
+
     function setMessage(string memory newMessage) public payable {
 
-        require(msg.value == currentPrice, "Not enough Ether provided.");
+        require(msg.value == msgPrice, "Not enough Ether provided.");
         message = newMessage;
-        currentPrice += 0.05 ether;
+        msgPrice += 0.00001 ether;
         messenger = msg.sender;
-        messageID++;
 
 
-        emit MessageChanged(currentPrice, messenger, messageID);
+        emit MessageChanged(msgPrice, messenger);
     }
 
     function withdraw() external onlyOwner {
