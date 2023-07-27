@@ -50,7 +50,10 @@ const MessageField = () => {
 
   if (connectionStatus === "disconnected") return (
     <div class="absolute bottom-8 sm:bottom-5 justify-center">
-      <ConnectWallet />
+      <ConnectWallet 
+        btnTitle="Connect MetaMask"
+        modalTitle="Choose your wallet provider"
+      />
     </div>
   );
 
@@ -63,7 +66,11 @@ const MessageField = () => {
   if (ChainId !== Sepolia.chainId && isMismatched) try { 
     return (
     <div class="absolute bottom-8 sm:bottom-5 justify-center">
-      <button class="" onClick={() => switchChain(Sepolia.chainId)}>Switch to Sepolia</button>
+      <button 
+        class="rounded-lg bg-white text-black font-medium p-2 hover:bg-green-500 hover:text-white transition-all" 
+        onClick={() => switchChain(Sepolia.chainId)}>
+          Switch to Sepolia
+      </button>
     </div>
   );
   } catch (error) {
@@ -75,7 +82,7 @@ const MessageField = () => {
         <textarea
             onChange={handleTextChange}
             onClick={handlePriceClick}
-            className="focus:h-[100px] placeholder:color-matrix text-sm transition-all resize-none rounded font-mono p-2 bg-white text-black w-[350px] h-[38px]"
+            className="focus:h-[100px] text-sm transition-all resize-none rounded font-mono p-2 bg-white text-black w-[350px] h-[38px]"
             placeholder='What is your message?'
             form="postMessage"
         >
