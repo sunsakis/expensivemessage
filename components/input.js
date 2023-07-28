@@ -112,11 +112,11 @@ const MessageField = () => {
   {loading ? (
       <button
         type="button"
-        class="rounded-lg bg-white text-black font-medium h-6 w-6 transition-all"
+        class="rounded-lg bg-white text-black font-medium h-5 w-5 p-10 transition-all"
         disabled
       >
-        <svg class="animate-spin h-5 w-5 mr-1 ..." viewBox="0 -10 24 24">
-          <circle class="animate-spin opacity-2" cx="12" cy="12" r="10" stroke="white" stroke-width="4"></circle>
+        <svg class="animate-spin h-[40px] w-[50px]">
+        <circle cx="20" cy="20" r="18"/>
         </svg>
       </button>
   ) : (
