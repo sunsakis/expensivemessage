@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Router from 'next/router';
 import { 
   ConnectWallet,
   useConnectionStatus,
@@ -21,6 +22,7 @@ const MessageField = () => {
   
   const [message, setMessage] = useState('');
   const [price, setPrice] = useState(0.00001);
+  const [loading, setLoading] = useState(false);
 
   const handleTextChange = (e) => {
     setMessage(e.target.value);
@@ -38,12 +40,38 @@ const MessageField = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Show loading bar
+    
     const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
     const signer = provider.getSigner();
-    const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS_SEPOLIA, ABI, signer);
-    await contract.setMessage(message, { value: ethers.utils.parseEther(price) });
-  };
+    const contract = new ethers.Contract(
+      process.env.NEXT_PUBLIC_CONTRACT_ADDRESS_SEPOLIA,
+      ABI,
+      signer
+    );
 
+    contract.on("MessageChanged", (newPrice, messenger) => {
+      console.log(`New message price: ${newPrice} from ${messenger}`);
+    });
+
+    try { 
+      await contract.setMessage(message, {
+        value: ethers.utils.parseEther(price)
+      }).then((tx) => {
+        provider.waitForTransaction(tx.hash)
+        .then((receipt) => {
+          setLoading(false);
+          console.log(receipt);
+          Router.reload();
+        }
+        )})
+    }
+    catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
+  };
+  
   const isMismatched = useNetworkMismatch();
   const connectionStatus = useConnectionStatus();
   const switchChain = useSwitchChain();
@@ -77,26 +105,41 @@ const MessageField = () => {
     console.error(error);
   }
 
-  if (connectionStatus === "connected") return (
+  if (connectionStatus === "connected") 
+  
+  return (
     <div class="absolute bottom-1 justify-center">
-        <textarea
-            onChange={handleTextChange}
-            onClick={handlePriceClick}
-            className="focus:h-[100px] text-sm transition-all resize-none rounded font-mono p-2 bg-white text-black w-[350px] h-[38px]"
-            placeholder='What is your message?'
-            form="postMessage"
-        >
-        </textarea>
-        <form onSubmit={handleSubmit} id="postMessage">
-        <button 
-            class="font-bold absolute bottom-4 right-2 text-matrix hover:text-green-500" 
-            type="submit"
-        >
-            {'>'}
-        </button>
-        </form>
-    </div>
+  {loading ? (
+      <button
+        type="button"
+        class="rounded-lg bg-white text-black font-medium h-6 w-6 transition-all"
+        disabled
+      >
+        <svg class="animate-spin h-5 w-5 mr-1 ..." viewBox="0 -10 24 24">
+          <circle class="animate-spin opacity-2" cx="12" cy="12" r="10" stroke="white" stroke-width="4"></circle>
+        </svg>
+      </button>
+  ) : (
+    <textarea
+      onChange={handleTextChange}
+      onClick={handlePriceClick}
+      className="focus:h-[100px] text-sm transition-all resize-none rounded font-mono p-2 bg-white text-black w-[350px] h-[38px]"
+      placeholder="What is your message?"
+      form="postMessage"
+      required
+    ></textarea>
+  )}
+  {!loading && (
+    <form onSubmit={handleSubmit} id="postMessage">
+      <button class="font-bold absolute bottom-4 right-2 text-matrix hover:text-green-500" type="submit">
+        {'>'}
+      </button>
+    </form>
+  )}
+</div>
+
   );
 };
+
 
 export default MessageField;

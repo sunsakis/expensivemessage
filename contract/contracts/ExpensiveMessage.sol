@@ -38,10 +38,8 @@ contract ExpensiveMessage {
         require(msg.value == msgPrice, "Not enough Ether provided.");
         message = newMessage;
         msgPrice += 0.00001 ether;
-        messenger = msg.sender;
 
-
-        emit MessageChanged(msgPrice, messenger);
+        emit MessageChanged(msgPrice, msg.sender);
     }
 
     function withdraw() external onlyOwner {
