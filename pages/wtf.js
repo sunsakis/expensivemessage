@@ -23,7 +23,7 @@ export default function Wtf() {
                         <p>You can become a part of internet history, but every message costs 0.1 ETH more than the previous one.</p><br/>
                         <p>When anyone can write anything, the important messages get lost.</p><br/>
                         <p>Collected Ether will be used to develop a valuable info point. Get in early.</p><br/>
-                        <p>Contact: teo@expensivemessage.com</p>
+                        <p>Contact: sunsakis@proton.me</p>
                     </i>
                 </p>
             </div>
