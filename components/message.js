@@ -21,7 +21,7 @@ const CenteredParagraph = ({ text }) => {
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="max-w-xs sm:max-w-sm md:max-w-md w-[500px] p-4 border rounded-lg">
-        <p className="whitespace-pre-line break-words text-[1rem] font-mono max-h-[420px] overflow-y-scroll"
+        <p className="whitespace-pre-line break-words text-[1rem] font-mono max-h-[420px] overflow-y-auto"
         >
           <i>
           {text}

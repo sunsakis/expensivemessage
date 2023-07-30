@@ -108,14 +108,14 @@ const MessageField = () => {
   if (connectionStatus === "connected") 
   
   return (
-    <div class="absolute bottom-1 justify-center">
+    <div class="absolute bottom-1 justify-center" id="Write">
   {loading ? (
       <button
         type="button"
         class="rounded-lg bg-white text-black font-medium h-5 w-5 p-8 transition-all"
         disabled
       >
-        <svg class="animate-spin h-[40px] w-[50px]">
+        <svg class="animate-spin h-[40px] w-[45px]">
         <circle cx="15" cy="15" r="15"/>
         </svg>
       </button>
@@ -123,7 +123,7 @@ const MessageField = () => {
     <textarea
       onChange={handleTextChange}
       onClick={handlePriceClick}
-      className="focus:h-[100px] text-sm transition-all resize-none rounded font-mono p-2 bg-white text-black w-[350px] h-[38px]"
+      className="focus:h-[100px] overflow-y-auto text-sm transition-all resize-none rounded font-mono p-2 bg-white text-black w-[350px] h-[38px]"
       placeholder="What is your message?"
       form="postMessage"
       required
@@ -131,7 +131,7 @@ const MessageField = () => {
   )}
   {!loading && (
     <form onSubmit={handleSubmit} id="postMessage">
-      <button class="font-bold absolute bottom-4 right-2 text-matrix hover:text-green-500" type="submit">
+      <button class="font-bold absolute bottom-4 right-4 text-matrix hover:text-green-500" type="submit">
         {'>'}
       </button>
     </form>
