@@ -5,6 +5,8 @@ contract ExpensiveMessage {
     uint256 public msgPrice;
     string public message;
     address public messenger;
+
+    mapping(uint256 => string) public messages;
     
         /// @notice The owner of the contract
     address public immutable owner;
@@ -20,12 +22,16 @@ contract ExpensiveMessage {
     event MessageChanged(uint256 newPrice, address messenger);
 
     constructor() {
+        messages[0] = "Hello World!";
         msgPrice = 0.00001 ether;
-        message = "Hello World!"; 
         owner = msg.sender;
     }
 
-    function readMessage() public view returns (string memory) {
+    function getMessages(uint256 _msgPrice) public view returns (string memory) {
+        return messages[_msgPrice];
+    }
+
+   function readMessage() public view returns (string memory) {
         return message;
     }
 
@@ -37,6 +43,7 @@ contract ExpensiveMessage {
 
         require(msg.value == msgPrice, "Not enough Ether provided.");
         message = newMessage;
+        messages[msgPrice] = newMessage;
         msgPrice += 0.00001 ether;
 
         emit MessageChanged(msgPrice, msg.sender);

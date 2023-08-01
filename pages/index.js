@@ -17,6 +17,7 @@ const alchemy = new Alchemy(settings);
 const ABI = [
   "event MessageChanged(uint256 newPrice, address messenger)",
   "function setMessage(string memory newMessage) public",
+  "function getMessages(uint256 _msgPrice) public view returns (string memory)",
   "function readMessage() public view returns (string memory)",
 ];
 
@@ -26,11 +27,13 @@ export default function Home() {
   const [newMessage, setMessage] = useState('');
   
   
+  
   async function getMessage() {
     const ethersProvider = await alchemy.config.getProvider();
-    const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS_SEPOLIA, ABI, ethersProvider);
-    const message = await contract.readMessage();
-    return message;
+    const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
+    const messages = await contract.getMessages(ethers.utils.parseUnits("0.00001"));
+    console.log(messages);
+    return messages;
   }
   
   async function getMessageString() {

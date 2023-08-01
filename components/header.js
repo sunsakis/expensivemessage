@@ -23,7 +23,7 @@ export default function Header() {
 
     async function getPrice() {
         const ethersProvider = await alchemy.config.getProvider();
-        const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS_SEPOLIA, ABI, ethersProvider);
+        const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
         const price = await contract.getPrice();
         setPrice(ethers.utils.formatEther(price));
       }

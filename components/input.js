@@ -14,8 +14,9 @@ import { ethers } from 'ethers';
 const ABI = [
   "event MessageChanged(uint256 newPrice, address messenger)",
   "function setMessage(string memory newMessage) public payable",
-  "function readMessage() public view returns (string memory)",
+  "function getMessage(uint256 _msgPrice) public view returns (string memory)",
   "function getPrice() public view returns (uint256)",
+  "function withdraw() external",
 ];
 
 const MessageField = () => {
@@ -32,7 +33,7 @@ const MessageField = () => {
     e.preventDefault();
     const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
     const signer = provider.getSigner();
-    const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS_SEPOLIA, ABI, signer);
+    const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, signer);
     const _price = await contract.getPrice();
     setPrice(ethers.utils.formatEther(_price));
   };
@@ -45,7 +46,7 @@ const MessageField = () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
     const signer = provider.getSigner();
     const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ADDRESS_SEPOLIA,
+      process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
       ABI,
       signer
     );
@@ -53,7 +54,6 @@ const MessageField = () => {
     contract.on("MessageChanged", (newPrice, messenger) => {
       console.log(`New message price: ${newPrice} from ${messenger}`);
     });
-
     try { 
       await contract.setMessage(message, {
         value: ethers.utils.parseEther(price)
