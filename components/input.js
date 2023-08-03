@@ -52,8 +52,9 @@ const MessageField = () => {
     );
 
     contract.on("MessageChanged", (newPrice, messenger) => {
-      console.log(`New message price: ${newPrice} from ${messenger}`);
+      console.log(newPrice, messenger);
     });
+
     try { 
       await contract.setMessage(message, {
         value: ethers.utils.parseEther(price)
@@ -108,7 +109,7 @@ const MessageField = () => {
   if (connectionStatus === "connected") 
   
   return (
-    <div class="absolute bottom-1 justify-center" id="Write">
+    <div class="fixed bottom-1 justify-center" id="Write">
   {loading ? (
       <button
         type="button"

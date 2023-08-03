@@ -28,12 +28,13 @@ export default function Home() {
   const [newMessage, setMessage] = useState(''); // State to hold the newest message
 
 
-
   useEffect(() => {
 
     async function fetchHistory() {
       const ethersProvider = await alchemy.config.getProvider();
       const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
+      const newMessage = await contract.readMessage();
+      setMessage(newMessage);
       const price = await contract.getPrice();
       const formatPrice = price;
       const increment = 10000000000000;
@@ -45,11 +46,7 @@ export default function Home() {
         fetchedMessages.push(message);
         priceIndex -= increment;
       }
-
       setMessages(fetchedMessages);
-
-      const newMessage = await contract.readMessage();
-      setMessage(newMessage);
     }
     try {
       fetchHistory();
@@ -58,7 +55,7 @@ export default function Home() {
       console.log(err);
     }
   }, []);
-
+  
   return (
     <>
       <Head>

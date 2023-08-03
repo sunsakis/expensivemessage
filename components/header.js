@@ -32,7 +32,7 @@ export default function Header() {
       }, []);
 
     return (
-        <nav className="flex absolute top-0 m-2 w-[350px] sm:w-[600px]">
+        <nav className="flex fixed top-0 w-[350px] sm:w-[600px] bg-black">
             <div className="m-2 relative">
                 <Link href="/">
                 <button>
@@ -46,20 +46,17 @@ export default function Header() {
                 </button>
                 </Link>
             </div>
-            <div className="m-4 relative">
             <Link href="/wtf">
-                    <button className="hover:text-matrix">WTF?</button>
-                </Link>
-            </div>
-                <div className="m-2 p-2 absolute top-0 right-0 border rounded-md">
-                <p className="font-mono text-xs tracking-tight sm:text-lg md:text-sm">
+            <div className="m-2 p-2 mb-4 top-0 absolute right-0 border rounded-md">
+                <p className="font-mono text-sm tracking-tight sm:text-lg md:text-sm">
                     <b>
                     <span className="text-matrix">Ξ</span>
-                    {price}
+                    {price} ETH
                     </b>{" "}
                     FOR 1 MESSAGE
                 </p>
             </div>
+            </Link>
         </nav>
     )
 }
