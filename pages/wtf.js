@@ -20,9 +20,9 @@ export default function Wtf() {
                 <p className="whitespace-pre-line break-words text-[1rem] font-mono max-h-[420px] overflow-y-auto">
                     <i>
                         <h1 class="text-lg">Write internet history.</h1><br/>
-                        <p>You can become a part of internet history, but every message costs 0.1 ETH more than the previous one.</p><br/>
-                        <p>When anyone can write anything, the important messages get lost.</p><br/>
-                        <p>Collected Ether will be used to develop a valuable info point. Get in early.</p><br/>
+                        <p>You can become a part of internet history, but every message costs 0.01 ETH more than the previous one.</p><br/>
+                        <p>Collected Ether will be used to develop a social messaging board.</p><br/>
+                        <p>Messages are stored on the Ethereum blockchain, so they are immutable.</p><br/>
                         <p>Contact: sunsakis@proton.me</p>
                     </i>
                 </p>

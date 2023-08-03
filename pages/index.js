@@ -19,31 +19,37 @@ const ABI = [
   "function setMessage(string memory newMessage) public",
   "function getMessages(uint256 _msgPrice) public view returns (string memory)",
   "function readMessage() public view returns (string memory)",
+  "function getPrice() public view returns (uint256)",
 ];
 
 export default function Home() {
 
- 
-  const [newMessage, setMessage] = useState('');
-  
-  
-  
-  async function getMessage() {
-    const ethersProvider = await alchemy.config.getProvider();
-    const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
-    const messages = await contract.getMessages(ethers.utils.parseUnits("0.00001"));
-    console.log(messages);
-    return messages;
-  }
-  
-  async function getMessageString() {
-    const messageString = await getMessage();
-    return messageString;
-  }
+  const [messages, setMessages] = useState([]); // State to hold the messages
+  const [newMessage, setMessage] = useState(''); // State to hold the newest message
+
   useEffect(() => {
-    getMessageString().then((messageString) => {
-      setMessage(messageString);
-    });
+    async function fetchHistory() {
+      const ethersProvider = await alchemy.config.getProvider();
+      const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
+      const price = await contract.getPrice();
+      const formatPrice = ethers.utils.formatEther(price);
+      const increment = 0.00001;
+      let priceIndex = ((formatPrice - increment*2).toFixed(5));
+      const fetchedMessages = [];
+
+      while (priceIndex >= 0) {
+        const message = await contract.getMessages(ethers.utils.parseUnits((priceIndex.toString())));
+        fetchedMessages.push(message);
+        priceIndex -= increment;
+      }
+
+      setMessages(fetchedMessages);
+
+      const newMessage = await contract.readMessage();
+      setMessage(newMessage);
+    }
+
+    fetchHistory();
   }, []);
 
   return (
@@ -56,8 +62,14 @@ export default function Home() {
       <main className={styles.main}>
         <Header />
         <InputField />
-        <Message text={newMessage}/>
+        <Message text={newMessage} />
       </main>
+      {messages.map((message, index) => (
+          <Message key={index} text={message} />
+        ))}
     </>
   )
 }
+
+
+
