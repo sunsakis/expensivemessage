@@ -27,18 +27,21 @@ export default function Home() {
   const [messages, setMessages] = useState([]); // State to hold the messages
   const [newMessage, setMessage] = useState(''); // State to hold the newest message
 
+
+
   useEffect(() => {
+
     async function fetchHistory() {
       const ethersProvider = await alchemy.config.getProvider();
       const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
       const price = await contract.getPrice();
-      const formatPrice = ethers.utils.formatEther(price);
-      const increment = 0.00001;
-      let priceIndex = ((formatPrice - increment*2).toFixed(5));
+      const formatPrice = price;
+      const increment = 10000000000000;
+      let priceIndex = ((formatPrice - increment*2));
       const fetchedMessages = [];
 
       while (priceIndex >= 0) {
-        const message = await contract.getMessages(ethers.utils.parseUnits((priceIndex.toString())));
+        const message = await contract.getMessages((priceIndex.toString()));
         fetchedMessages.push(message);
         priceIndex -= increment;
       }
@@ -48,8 +51,12 @@ export default function Home() {
       const newMessage = await contract.readMessage();
       setMessage(newMessage);
     }
-
-    fetchHistory();
+    try {
+      fetchHistory();
+    }
+    catch (err) {
+      console.log(err);
+    }
   }, []);
 
   return (
@@ -70,6 +77,5 @@ export default function Home() {
     </>
   )
 }
-
 
 

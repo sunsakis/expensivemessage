@@ -8,6 +8,7 @@ export default function App({ Component, pageProps }) {
   <ThirdwebProvider 
       activeChain={Sepolia}
       supportedChains={[Ethereum, Sepolia]}
+      clientId={process.env.NEXT_PUBLIC_THIRDWEB_ID}
     >
   <Component {...pageProps} />
   <Head>

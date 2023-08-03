@@ -23,7 +23,7 @@ contract ExpensiveMessage {
 
     constructor() {
         messages[0] = "Hello World!";
-        msgPrice = 0.00001 ether;
+        msgPrice = 0.0001 ether;
         owner = msg.sender;
     }
 
@@ -44,7 +44,7 @@ contract ExpensiveMessage {
         require(msg.value == msgPrice, "Not enough Ether provided.");
         message = newMessage;
         messages[msgPrice] = newMessage;
-        msgPrice += 0.00001 ether;
+        msgPrice += 0.0001 ether;
 
         emit MessageChanged(msgPrice, msg.sender);
     }
