@@ -36,7 +36,7 @@ export default function Header() {
       }, []);
 
     return (
-        <nav className="flex fixed top-0 w-[350px] sm:w-[600px] dark:bg-black">
+        <nav className="flex fixed top-0 w-[350px] sm:w-[600px] bg-current dark:bg-black">
             <div className="m-2 relative">
                 <Link href="/">
                 <button>
