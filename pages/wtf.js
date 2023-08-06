@@ -18,8 +18,8 @@ export default function Wtf() {
         <div className="flex justify-center items-center h-screen">
             <div className="max-w-xs sm:max-w-sm md:max-w-md w-[500px] p-4 border rounded-lg whitespace-pre-line break-words text-[1rem] font-mono max-h-[420px] overflow-y-auto">
                     <i>
-                        <h1 class="text-lg">Write internet history.</h1><br/>
-                        <p>The goal is to become internet`s most valuable bulletin board.</p><br/>
+                        <p class="text-lg">Write internet history.</p><br/>
+                        <h1>The goal is to become internet`s most valuable textboard.</h1><br/>
                         <p>Become a part of it - every message costs 0.01 ETH more than the previous one.</p><br/>
                         <p>The posts are stored on the Ethereum blockchain, accessible forever.</p><br/>
                         <p>Contact: sunsakis@proton.me</p>

@@ -16,9 +16,9 @@ const alchemy = new Alchemy(settings);
 
 const ABI = [
   "event MessageChanged(uint256 newPrice, address messenger)",
-  "function setMessage(string memory newMessage) public",
+  "function setMessage(string memory newMessage) external payable",
   "function getMessages(uint256 _msgPrice) public view returns (string memory)",
-  "function readMessage() public view returns (string memory)",
+  "function readMessage() public view returns (string)",
   "function getPrice() public view returns (uint256)",
 ];
 
@@ -27,52 +27,54 @@ export default function Home() {
   const [messages, setMessages] = useState([]); // State to hold the messages
   const [newMessage, setMessage] = useState(''); // State to hold the newest message
 
-
-  useEffect(() => {
-
-    async function fetchHistory() {
+  async function fetchHistory() {
+    try {
       const ethersProvider = await alchemy.config.getProvider();
       const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
       const newMessage = await contract.readMessage();
+      console.log(newMessage);
       setMessage(newMessage);
       const price = await contract.getPrice();
       const formatPrice = price;
       const increment = 10000000000000;
       let priceIndex = ((formatPrice - increment*2));
       const fetchedMessages = [];
-
       while (priceIndex >= 0) {
-        const message = await contract.getMessages((priceIndex.toString()));
+        const message = await contract.getMessages((priceIndex));
         fetchedMessages.push(message);
         priceIndex -= increment;
       }
       setMessages(fetchedMessages);
     }
-    try {
-      fetchHistory();
-    }
-    catch (err) {
-      console.log(err);
-    }
-  }, []);
   
+  catch (err) {
+    console.log(err);
+  }
+}
+
+    useEffect(() => {
+      fetchHistory();
+    }, []);
+
+
+
   return (
     <>
       <Head>
-        <title>Expensive Message - Write Internet History (For What It's Worth)</title>
-        <meta name="description" content="Become a part of Internet history, even if every message costs $100 more than the previous one." />
+        <title>World's Most Expensive Message Board - Write History</title>
+        <meta name="description" content="Become a part of Internet history, but every message costs more than the previous one." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main className={styles.main}>
         <Header />
         <InputField />
-        <Message text={newMessage} />
+        <Message text={newMessage} showXLink={true} />
       </main>
       {messages.map((message, index) => (
-          <Message key={index} text={message} />
+          <Message key={index} text={message} showXLink={false} />
         ))}
     </>
   )
 }
-
+  
 

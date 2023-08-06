@@ -13,7 +13,7 @@ const settings = {
   const alchemy = new Alchemy(settings);
   
   const ABI = [
-    "function getPrice() public view returns (uint256)",
+    "function getPrice() public view returns (uint 256)",
   ];
 
 export default function Header() {
@@ -21,10 +21,14 @@ export default function Header() {
     const [price, setPrice] = useState();
 
     async function getPrice() {
+        try {
         const ethersProvider = await alchemy.config.getProvider();
         const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
         const price = await contract.getPrice();
-        setPrice(ethers.utils.formatEther(price));
+        setPrice(ethers.utils.formatEther(price));}
+        catch (err) {
+            console.log(err);
+        }
       }
 
       useEffect(() => {
@@ -32,7 +36,7 @@ export default function Header() {
       }, []);
 
     return (
-        <nav className="flex fixed top-0 w-[350px] sm:w-[600px] bg-black">
+        <nav className="flex fixed top-0 w-[350px] sm:w-[600px]">
             <div className="m-2 relative">
                 <Link href="/">
                 <button>
@@ -41,13 +45,13 @@ export default function Header() {
                         alt="Expensive Message logo"
                         width={35}
                         height={35}
-                        className="sm:w-10 sm:h-10 cursor-pointer"
+                        className="sm:w-10 sm:h-10 cursor-pointer hover:rotate-90 transform-all duration-500"
                     />
                 </button>
                 </Link>
             </div>
             <Link href="/wtf">
-            <div className="m-2 p-2 mb-4 top-0 absolute right-0 border rounded-md">
+            <div className="m-2 p-2 mb-4 top-0 absolute right-0 border rounded-md bg-black">
                 <p className="font-mono text-sm tracking-tight sm:text-lg md:text-sm">
                     <b>
                     <span className="text-matrix">Ξ</span>

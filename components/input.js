@@ -13,9 +13,9 @@ import { ethers } from 'ethers';
 
 const ABI = [
   "event MessageChanged(uint256 newPrice, address messenger)",
-  "function setMessage(string memory newMessage) public payable",
-  "function getMessage(uint256 _msgPrice) public view returns (string memory)",
-  "function getPrice() public view returns (uint256)",
+  "function setMessage(string memory newMessage) external payable",
+  "function getMessage(uint256 _msgPrice) external view returns (string memory)",
+  "function getPrice() external view returns (uint256)",
   "function withdraw() external",
 ];
 

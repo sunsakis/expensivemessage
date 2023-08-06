@@ -22,8 +22,8 @@ contract ExpensiveMessage {
     event MessageChanged(uint256 newPrice, address messenger);
 
     constructor() {
-        messages[0] = "Hello World!";
-        msgPrice = 0.0001 ether;
+        messages[0] = "Hello Word! This is the first message. Use this board wisely.";
+        msgPrice = 0.01 ether;
         owner = msg.sender;
     }
 
@@ -39,12 +39,12 @@ contract ExpensiveMessage {
         return msgPrice;
     }
 
-    function setMessage(string memory newMessage) public payable {
+    function setMessage(string memory newMessage) external payable {
 
         require(msg.value == msgPrice, "Not enough Ether provided.");
         message = newMessage;
         messages[msgPrice] = newMessage;
-        msgPrice += 0.0001 ether;
+        msgPrice += 0.01 ether;
 
         emit MessageChanged(msgPrice, msg.sender);
     }
