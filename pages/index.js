@@ -8,7 +8,7 @@ import InputField from '../components/input.js';
 import Message from '../components/message.js';
 
 const settings = {
-  apiKey: process.env.ALCHEMY_API, // Replace with your Alchemy API Key.
+  apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API, // Replace with your Alchemy API Key.
   network: Network.ETH_SEPOLIA, // Replace with your network.
 };
 
