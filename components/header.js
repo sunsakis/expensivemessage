@@ -51,7 +51,7 @@ export default function Header() {
                 </Link>
             </div>
             <Link href="/wtf">
-            <div className="m-2 p-2 mb-4 top-0 absolute right-0 border rounded-md bg-black">
+            <div className="m-2 p-2 mb-4 top-0 absolute right-0 border rounded-md">
                 <p className="font-mono text-sm tracking-tight sm:text-lg md:text-sm">
                     <b>
                     <span className="text-matrix">Ξ</span>
