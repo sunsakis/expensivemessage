@@ -20,8 +20,8 @@ export default function Wtf() {
                     <i>
                         <p class="text-lg">Write internet history.</p><br/>
                         <h1>The goal is to become internet`s most valuable textboard.</h1><br/>
+                        <p>All posts are stored on the Ethereum blockchain and will be accessible forever.</p><br/>
                         <p>Become a part of it - every message costs 0.01 ETH more than the previous one.</p><br/>
-                        <p>The posts are stored on the Ethereum blockchain, accessible forever.</p><br/>
                         <p>Contact: sunsakis@proton.me</p>
                     </i>
             </div>
