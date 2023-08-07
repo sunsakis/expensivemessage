@@ -4,7 +4,7 @@ import Image from 'next/image';
 export default function Header( { price } ) {
 
     return (
-        <nav className="flex fixed top-0 w-[350px] sm:w-[600px] dark:bg-black bg-gradient-to-b from-[var(--background-start-rgb)] to-[var(--background-end-rgb)] rounded-b-xl">
+        <nav className="flex fixed top-0 w-[350px] sm:w-[600px] dark:bg-black bg-[var(--background-start-rgb)] rounded-b-xl">
             <div className="m-2 relative">
                 <Link href="/">
                 <button>
