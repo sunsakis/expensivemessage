@@ -4,7 +4,7 @@ import Image from 'next/image';
 export default function Header( { price } ) {
 
     return (
-        <nav className="flex fixed top-0 w-[350px] sm:w-[600px] bg-inherit rounded-xl dark:bg-black">
+        <nav className="flex fixed top-0 w-[350px] sm:w-[600px] bg-[#D6DBDC]/50 dark:bg-black">
             <div className="m-2 relative">
                 <Link href="/">
                 <button>
