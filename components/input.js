@@ -78,7 +78,7 @@ const MessageField = () => {
   const switchChain = useSwitchChain();
 
   if (connectionStatus === "disconnected") return (
-    <div class="absolute bottom-8 sm:bottom-5 justify-center">
+    <div class="fixed bottom-8 sm:bottom-5 justify-center">
       <ConnectWallet 
         btnTitle="Connect MetaMask"
         modalTitle="Choose your wallet provider"

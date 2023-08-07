@@ -1,39 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Network, Alchemy } from 'alchemy-sdk';
-import { useState, useEffect } from 'react';
-import { ethers } from 'ethers';
 
-
-const settings = {
-    apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API, // Replace with your Alchemy API Key.
-    network: Network.ETH_SEPOLIA, // Replace with your network.
-  };
-  
-  const alchemy = new Alchemy(settings);
-  
-  const ABI = [
-    "function getPrice() public view returns (uint 256)",
-  ];
-
-export default function Header() {
-
-    const [price, setPrice] = useState();
-
-    async function getPrice() {
-        try {
-        const ethersProvider = await alchemy.config.getProvider();
-        const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
-        const price = await contract.getPrice();
-        setPrice(ethers.utils.formatEther(price));}
-        catch (err) {
-            console.log(err);
-        }
-      }
-
-      useEffect(() => {
-        getPrice()
-      }, []);
+export default function Header( { price } ) {
 
     return (
         <nav className="flex fixed top-0 w-[350px] sm:w-[600px] bg-[#D6DBDC] dark:bg-black">

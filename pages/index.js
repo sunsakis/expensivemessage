@@ -1,18 +1,10 @@
 import Head from 'next/head'
 import styles from '@/styles/Home.module.css'
 import { ethers } from 'ethers';
-import { useState, useEffect } from 'react';
 import { Network, Alchemy } from 'alchemy-sdk';
 import Header from '../components/header.js';
 import InputField from '../components/input.js';
 import Message from '../components/message.js';
-
-const settings = {
-  apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API, // Replace with your Alchemy API Key.
-  network: Network.ETH_SEPOLIA, // Replace with your network.
-};
-
-const alchemy = new Alchemy(settings);
 
 const ABI = [
   "event MessageChanged(uint256 newPrice, address messenger)",
@@ -22,51 +14,17 @@ const ABI = [
   "function getPrice() public view returns (uint256)",
 ];
 
-export default function Home() {
-
-  const [messages, setMessages] = useState([]); // State to hold the messages
-  const [newMessage, setMessage] = useState(''); // State to hold the newest message
-
-  async function fetchHistory() {
-    try {
-      const ethersProvider = await alchemy.config.getProvider();
-      const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
-      const newMessage = await contract.readMessage();
-      console.log(newMessage);
-      setMessage(newMessage);
-      const price = await contract.getPrice();
-      const formatPrice = price;
-      const increment = 10000000000000;
-      let priceIndex = ((formatPrice - increment*2));
-      const fetchedMessages = [];
-      while (priceIndex >= 0) {
-        const message = await contract.getMessages((priceIndex));
-        fetchedMessages.push(message);
-        priceIndex -= increment;
-      }
-      setMessages(fetchedMessages);
-    }
-  
-  catch (err) {
-    console.log(err);
-  }
-}
-
-    useEffect(() => {
-      fetchHistory();
-    }, []);
-
-
+export default function Home( { messages, newMessage, price } ) {
 
   return (
     <>
       <Head>
-        <title>World's Most Expensive Message Board - Write History</title>
+        <title>World's Most Expensive Message Board</title>
         <meta name="description" content="Become a part of Internet history, but every message costs more than the previous one." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main className={styles.main}>
-        <Header />
+        <Header price={price}/>
         <InputField />
         <Message text={newMessage} showXLink={true} />
       </main>
@@ -75,6 +33,38 @@ export default function Home() {
         ))}
     </>
   )
+}
+
+export async function getStaticProps() {
+
+  const settings = {
+    apiKey: process.env.ALCHEMY_API, // Replace with your Alchemy API Key.
+    network: Network.ETH_SEPOLIA, // Replace with your network.
+  };
+
+  const alchemy = new Alchemy(settings);
+  const ethersProvider = await alchemy.config.getProvider();
+  const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
+  const newMessage = await contract.readMessage();
+  const price = await contract.getPrice();
+  const formatPrice = ethers.utils.formatEther(price); 
+  const increment = 10000000000000;
+  let priceIndex = ((price - increment*2));
+  const fetchedMessages = [];
+  
+  while (priceIndex >= 0) {
+    const message = await contract.getMessages((priceIndex));
+    fetchedMessages.push(message);
+    priceIndex -= increment;
+  }
+
+  return {
+    props: {
+      messages: fetchedMessages,
+      newMessage: newMessage,
+      price: formatPrice,
+    },
+  };
 }
   
 

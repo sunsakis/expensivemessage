@@ -1,12 +1,14 @@
 import Link from "next/link";
 import React from "react";
 
-const CenteredParagraph = ({ text, showXLink }) => {
+const Message = ({ text, showXLink }) => {
   if (!text || typeof text !== "string") {
     return null; // Return early if the text prop is invalid
   }
 
-  let xText = "https://twitter.com/intent/tweet?text=The world's most expensive message is: '" + text + "' $ xms.ge";
+
+
+  let xText = "https://twitter.com/intent/tweet?text=The world's most expensive message is: '" + text + "' xms.ge";
 
   return (
     <div className="flex justify-center items-center h-screen">
@@ -34,4 +36,4 @@ const CenteredParagraph = ({ text, showXLink }) => {
   );
 };
 
-export default CenteredParagraph;
+export default Message;
