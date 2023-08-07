@@ -4,7 +4,7 @@ import Image from 'next/image';
 export default function Header( { price } ) {
 
     return (
-        <nav className="flex fixed top-0 w-[350px] sm:w-[600px] bg-[#D6DBDC]/85 dark:bg-black rounded-b-lg">
+        <nav className="flex fixed top-0 w-[350px] sm:w-[600px] dark:bg-black rounded-b-lg">
             <div className="m-2 relative">
                 <Link href="/">
                 <button>
@@ -19,7 +19,7 @@ export default function Header( { price } ) {
                 </Link>
             </div>
             <Link href="/wtf">
-            <div className="m-2 p-2 mb-4 top-0 absolute right-0 border rounded-md">
+            <div className="m-2 p-2 mb-4 top-0 absolute right-0 border rounded-md bg-[#D6DBDC] dark:bg-black">
                 <p className="font-mono text-sm tracking-tight sm:text-lg md:text-sm">
                     <b>
                     <span className="text-matrix">Ξ</span>
