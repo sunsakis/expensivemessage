@@ -61,6 +61,7 @@ const MessageField = () => {
       }).then((tx) => {
         provider.waitForTransaction(tx.hash)
         .then(() => {
+          console.log("Transaction complete!");
           setTimeout(Router.reload(), 1000);
         }
         )})
