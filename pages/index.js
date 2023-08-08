@@ -6,6 +6,7 @@ import Header from '../components/header.js';
 import InputField from '../components/input.js';
 import Message from '../components/message.js';
 
+
 const ABI = [
   "event MessageChanged(uint256 newPrice, address messenger)",
   "function setMessage(string memory newMessage) external payable",
@@ -14,7 +15,7 @@ const ABI = [
   "function getPrice() public view returns (uint256)",
 ];
 
-export default function Home( { messages, newMessage, price } ) {
+export default function Home( { messages, newMessage, price } ) {  
 
   return (
     <>
