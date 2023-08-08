@@ -46,7 +46,7 @@ export async function getServerSideProps() {
 
   const settings = {
     apiKey: process.env.ALCHEMY_API, // Replace with your Alchemy API Key.
-    network: Network.ETH_SEPOLIA, // Replace with your network.
+    network: Network.ETH_MAINNET, // Replace with your network.
   };
 
   const alchemy = new Alchemy(settings);
@@ -54,10 +54,11 @@ export async function getServerSideProps() {
   const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
   const newMessage = await contract.readMessage();
   const price = await contract.getPrice();
-  const formatPrice = ethers.utils.formatEther(price); 
-  const increment = 10000000000000;
+  const formatPrice = ethers.utils.formatEther(price);
+  const increment = ethers.utils.parseEther("0.01");
   let priceIndex = ((price - increment*2));
   const fetchedMessages = [];
+  console.log(formatPrice);
   
   while (priceIndex >= 0) {
     const message = await contract.getMessages((priceIndex));

@@ -8,7 +8,7 @@ import {
   useNetworkMismatch,
 } 
 from '@thirdweb-dev/react';
-import { Sepolia } from '@thirdweb-dev/chains';
+import { Ethereum, Sepolia } from '@thirdweb-dev/chains';
 import { ethers } from 'ethers';
 
 const ABI = [
@@ -26,23 +26,30 @@ const MessageField = () => {
   const [loading, setLoading] = useState(false);
 
   const handleTextChange = (e) => {
+    try{
     setMessage(e.target.value);
+    } catch (error) {
+      alert(error);
+    }
   };
   
   const handlePriceClick = async (e) => {
+    try {
     e.preventDefault();
-    const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, signer);
-    const _price = await contract.getPrice();
-    setPrice(ethers.utils.formatEther(_price));
+      const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, signer);
+      const _price = await contract.getPrice();
+      setPrice(ethers.utils.formatEther(_price));
+    } catch (error) {
+      alert(error);
+    }
   };
 
-
   const handleSubmit = async (e) => {
+    try {
     e.preventDefault();
     setLoading(true); // Show loading bar
-    
     const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
     const signer = provider.getSigner();
     const contract = new ethers.Contract(
@@ -51,11 +58,6 @@ const MessageField = () => {
       signer
     );
 
-    contract.on("MessageChanged", (newPrice, messenger) => {
-      console.log(newPrice, messenger);
-    });
-
-    try { 
       await contract.setMessage(message, {
         value: ethers.utils.parseEther(price)
       }).then((tx) => {
@@ -66,8 +68,9 @@ const MessageField = () => {
         }
         )})
     }
+
     catch (error) {
-      console.error(error);
+      alert(error);
       setLoading(false);
     }
   };
@@ -86,30 +89,30 @@ const MessageField = () => {
   );
 
   if (connectionStatus === "connecting") return (
-    <div class="absolute bottom-8 sm:bottom-5 justify-center">
+    <div class="fixed bottom-8 sm:bottom-5 justify-center">
       <ConnectWallet />
     </div>
   );
 
-  if (ChainId !== Sepolia.chainId && isMismatched) try { 
+  if (ChainId !== Ethereum.chainId && isMismatched) try { 
     return (
-    <div class="absolute bottom-8 sm:bottom-5 justify-center">
+    <div class="fixed bottom-8 sm:bottom-5 justify-center">
       <button 
         class="rounded-lg bg-white text-black font-medium p-2 hover:bg-green-500 hover:text-white transition-all" 
-        onClick={() => switchChain(Sepolia.chainId)}>
-          Switch to Sepolia
+        onClick={() => switchChain(Ethereum.chainId)}>
+          Switch to Ethereum
       </button>
     </div>
   );
   } catch (error) {
-    console.error(error);
+    alert(error);
   }
 
   if (connectionStatus === "connected") 
   
   return (
-    <div class="fixed bottom-1 justify-center" id="Write">
-  {loading ? (
+    <div class="fixed bottom-2 flex flex-col items-center" id="Write">
+  {loading && (
       <button
         type="button"
         class="rounded-lg bg-white text-black font-medium h-5 w-5 p-8 transition-all"
@@ -119,7 +122,8 @@ const MessageField = () => {
         <circle cx="15" cy="15" r="15"/>
         </svg>
       </button>
-  ) : (
+  )} 
+  <br/>
     <textarea
       onChange={handleTextChange}
       onClick={handlePriceClick}
@@ -128,10 +132,10 @@ const MessageField = () => {
       form="postMessage"
       required
     ></textarea>
-  )}
+  
   {!loading && (
     <form onSubmit={handleSubmit} id="postMessage">
-      <button class="font-bold absolute bottom-4 right-4 text-matrix hover:text-green-500" type="submit">
+      <button class="font-bold absolute bottom-2 right-4 text-matrix hover:text-green-500" type="submit">
         {'>'}
       </button>
     </form>
