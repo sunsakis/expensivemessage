@@ -60,9 +60,8 @@ const MessageField = () => {
         value: ethers.utils.parseEther(price)
       }).then((tx) => {
         provider.waitForTransaction(tx.hash)
-        .then((receipt) => {
+        .then(() => {
           setLoading(false);
-          console.log(receipt);
           Router.reload();
         }
         )})
