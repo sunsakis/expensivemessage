@@ -72,7 +72,7 @@ export async function getStaticProps() {
       newMessage: newMessage,
       price: formatPrice,
     },
-    revalidate: 1,
+    revalidate: true,
   };
 }
   
