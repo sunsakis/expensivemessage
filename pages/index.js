@@ -7,6 +7,7 @@ import InputField from '../components/input.js';
 import Message from '../components/message.js';
 
 
+
 const ABI = [
   "event MessageChanged(uint256 newPrice, address messenger)",
   "function setMessage(string memory newMessage) external payable",
@@ -15,7 +16,7 @@ const ABI = [
   "function getPrice() public view returns (uint256)",
 ];
 
-export default function Home( { messages, newMessage, price } ) {  
+export default function Home({ messages, newMessage, price }) {  
 
   return (
     <>
@@ -25,12 +26,9 @@ export default function Home( { messages, newMessage, price } ) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta property="og:title" content="World's Most Expensive Message Board" />
         <meta property="og:description" content="Become a part of Internet history, but every message costs more than the previous one." />
-        <meta property="og:image" content="/expensivemessagelogo.png" /> {/* URL of the image you want to display */}
-        <meta property="og:url" content="expensivemessage.com" /> {/* URL of the page being shared */}
+        <meta property="og:url" content="expensivemessage.com" /> 
         <meta property="og:site_name" content="Expensive Message" />
-        <meta name="twitter:card" content="summary_large_image" /> {/* Twitter card type */}
-        <meta name="twitter:creator" content="@codeisthelaw" /> {/* Your Twitter handle */}
-        <meta name="twitter:image" content="expensivemessagelogo.png" /> {/* Same image as og:image */}
+        <meta name="twitter:creator" content="@codeisthelaw" /> 
       </Head>
       <main className={styles.main}>
         <Header price={price}/>
@@ -44,7 +42,7 @@ export default function Home( { messages, newMessage, price } ) {
   )
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
 
   const settings = {
     apiKey: process.env.ALCHEMY_API, // Replace with your Alchemy API Key.
@@ -73,7 +71,7 @@ export async function getStaticProps() {
       newMessage: newMessage,
       price: formatPrice,
     },
-    revalidate: true,
+    //revalidate: 1,
   };
 }
   
