@@ -7,6 +7,10 @@
   height: 100vh;
 }
 
+.connect-button:hover {
+  background-color: #03A062;
+  }
+
 .description {
   display: inherit;
   justify-content: inherit;

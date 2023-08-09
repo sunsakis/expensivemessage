@@ -8,7 +8,7 @@ const Message = ({ text, showXLink }) => {
 
 
 
-  let xText = "https://twitter.com/intent/tweet?text=The world's most expensive message is: '" + text + "' xms.ge";
+  let xText = "https://twitter.com/intent/tweet?text="+ text + " Ξ You just read the world's most expensive message Ξ xms.ge ";
 
   return (
     <div className="flex justify-center items-center h-screen">

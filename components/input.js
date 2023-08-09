@@ -84,6 +84,7 @@ const MessageField = () => {
       <ConnectWallet 
         btnTitle="Connect MetaMask"
         modalTitle="Choose your wallet provider"
+        className="connect-button"
       />
     </div>
   );

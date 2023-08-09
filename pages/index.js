@@ -18,6 +18,8 @@ const ABI = [
 
 export default function Home({ messages, newMessage, price }) {  
 
+  console.log (messages.indexOf(5));
+
   return (
     <>
       <Head>
@@ -57,11 +59,13 @@ export async function getServerSideProps() {
   const formatPrice = ethers.utils.formatEther(price);
   const increment = ethers.utils.parseEther("0.01");
   let priceIndex = ((price - increment*2));
+
   const fetchedMessages = [];
-  console.log(formatPrice);
+
   
   while (priceIndex >= 0) {
     const message = await contract.getMessages((priceIndex));
+    console.log(priceIndex);
     fetchedMessages.push(message);
     priceIndex -= increment;
   }
