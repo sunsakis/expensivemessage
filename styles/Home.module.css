@@ -7,8 +7,8 @@
   height: 100vh;
 }
 
-.connect-button:hover {
-  background-color: #03A062;
+.connect:hover {
+  background-color: #22c55e !important;
   }
 
 .description {

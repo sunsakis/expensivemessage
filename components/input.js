@@ -10,6 +10,7 @@ import {
 from '@thirdweb-dev/react';
 import { Ethereum, Sepolia } from '@thirdweb-dev/chains';
 import { ethers } from 'ethers';
+import styles from '@/styles/Home.module.css';
 
 const ABI = [
   "event MessageChanged(uint256 newPrice, address messenger)",
@@ -84,7 +85,7 @@ const MessageField = () => {
       <ConnectWallet 
         btnTitle="Connect MetaMask"
         modalTitle="Choose your wallet provider"
-        className="connect-button"
+        className={styles.connect}
       />
     </div>
   );

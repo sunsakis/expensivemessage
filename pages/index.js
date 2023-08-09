@@ -18,8 +18,6 @@ const ABI = [
 
 export default function Home({ messages, newMessage, price }) {  
 
-  console.log (messages.indexOf(5));
-
   return (
     <>
       <Head>
