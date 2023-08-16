@@ -55,7 +55,7 @@ export async function getServerSideProps() {
   const newMessage = await contract.readMessage();
   const price = await contract.getPrice();
   const formatPrice = ethers.utils.formatEther(price);
-  const increment = ethers.utils.parseEther("0.01");
+  const increment = ethers.utils.parseEther("0.00001");
   let priceIndex = ((price - increment*2));
 
   const fetchedMessages = [];
@@ -63,7 +63,6 @@ export async function getServerSideProps() {
   
   while (priceIndex >= 0) {
     const message = await contract.getMessages((priceIndex));
-    console.log(priceIndex);
     fetchedMessages.push(message);
     priceIndex -= increment;
   }
