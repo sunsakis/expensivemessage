@@ -27,7 +27,7 @@ export default function Wtf({ price }) {
                         <p class="text-lg">Write history.</p><br/>
                         <h1>The goal is to become internet`s most valuable textboard.</h1><br/>
                         <p>All posts are stored on the Ethereum blockchain and are accessible forever.</p><br/>
-                        <p>Become a part of it - every message costs 0.01 ETH more than the previous one.</p><br/>
+                        <p>Become a part of it - every message costs 0.00001 ETH more than the previous one.</p><br/>
                     </i>
             </div>
         </div>
@@ -40,7 +40,7 @@ export async function getServerSideProps() {
 
   const settings = {
     apiKey: process.env.ALCHEMY_API, // Replace with your Alchemy API Key.
-    network: Network.ETH_MAINNET, // Replace with your network.
+    network: Network.ETH_SEPOLIA, // Replace with your network.
   };
 
   const alchemy = new Alchemy(settings);

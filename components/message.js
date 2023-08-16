@@ -6,8 +6,6 @@ const Message = ({ text, showXLink }) => {
     return null; // Return early if the text prop is invalid
   }
 
-
-
   let xText = "https://twitter.com/intent/tweet?text="+ text + " Ξ You just read the world's most expensive message Ξ xms.ge ";
 
   return (
