@@ -22,7 +22,7 @@ contract ExpensiveMessage {
     event MessageChanged(uint256 newPrice, address messenger);
 
     constructor() {
-        messages[0] = "Hello Word! This is the first message. Use this board wisely.";
+        messages[0] = "Hello Word!";
         msgPrice = 0.01 ether;
         owner = msg.sender;
     }

@@ -36,7 +36,7 @@ export default function Home({ messages, newMessage, price }) {
         <Message text={newMessage} showXLink={true} />
       </main>
       {messages.map((message, index) => (
-          <Message key={index} text={message} showXLink={false} />
+          <Message key={index} text={message} showXLink={true} />
         ))}
     </>
   )
