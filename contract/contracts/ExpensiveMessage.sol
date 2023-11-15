@@ -23,8 +23,9 @@ contract ExpensiveMessage {
 
     constructor() {
         messages[0] = "Hello Word!";
-        msgPrice = 0.01 ether;
+        msgPrice = 0.00001 ether;
         owner = msg.sender;
+        messenger = msg.sender;
     }
 
     function getMessages(uint256 _msgPrice) public view returns (string memory) {
@@ -41,16 +42,24 @@ contract ExpensiveMessage {
 
     function setMessage(string memory newMessage) external payable {
 
-        require(msg.value == msgPrice, "Not enough Ether provided.");
+        require(msg.value == msgPrice, "Your message is not expensive enough.");
+
+        reward();
+
         message = newMessage;
         messages[msgPrice] = newMessage;
-        msgPrice += 0.01 ether;
+        msgPrice = msgPrice * 2;
+        messenger = msg.sender;
 
         emit MessageChanged(msgPrice, msg.sender);
     }
 
     function withdraw() external onlyOwner {
         payable(owner).transfer(address(this).balance);
+    }
+
+    function reward() public {
+        payable(messenger).transfer(msgPrice / 4 * 3);
     }
 
     error OnlyOwner();
