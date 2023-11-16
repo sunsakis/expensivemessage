@@ -6,7 +6,7 @@ const Message = ({ text, showXLink, price }) => {
     return null; // Return early if the text prop is invalid
   }
 
-  let xText = "https://twitter.com/intent/tweet?text=" + text + " - You just read the world's most expensive message. Ξ" + price + " at xms.ge";
+  let xText = "https://twitter.com/intent/tweet?text=" + text + " ΞYou just read the world's most expensive message. Ξ" + price / 2 + " at xms.ge";
 
   return (
     <div className="flex justify-center items-center h-screen">
