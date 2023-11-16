@@ -22,8 +22,8 @@ contract ExpensiveMessage {
     event MessageChanged(uint256 newPrice, address messenger);
 
     constructor() {
-        messages[0] = "Hello Word!";
-        msgPrice = 0.00001 ether;
+        messages[0] = "Hello, Word!";
+        msgPrice = 0.01 ether;
         owner = msg.sender;
         messenger = msg.sender;
     }
@@ -44,22 +44,23 @@ contract ExpensiveMessage {
 
         require(msg.value == msgPrice, "Your message is not expensive enough.");
 
-        reward();
+        uint256 rewardToPay = msgPrice;
+        address rewardReceiver = messenger;
 
         message = newMessage;
         messages[msgPrice] = newMessage;
         msgPrice = msgPrice * 2;
         messenger = msg.sender;
 
+        (bool sent, ) = rewardReceiver.call{ value: rewardToPay * 3 / 4 }("");
+        require(sent, "Failed to send Ether");
+
         emit MessageChanged(msgPrice, msg.sender);
     }
 
-    function withdraw() external onlyOwner {
-        payable(owner).transfer(address(this).balance);
-    }
-
-    function reward() public {
-        payable(messenger).transfer(msgPrice / 4 * 3);
+    function withdraw() external onlyOwner payable {
+        (bool sent, ) = owner.call{ value: address(this).balance}("");
+        require(sent, "Failed to send Ether");
     }
 
     error OnlyOwner();

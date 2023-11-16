@@ -33,11 +33,12 @@ export default function Home({ messages, newMessage, price }) {
       <main className={styles.main}>
         <Header price={price}/>
         <InputField />
-        <Message text={newMessage} showXLink={true} />
-      </main>
+        <Message text={newMessage} showXLink={true} price={price} />
+        </main>
       {messages.map((message, index) => (
           <Message key={index} text={message} showXLink={false} />
         ))}
+        <Message text={"HI"} showXLink={false} />
     </>
   )
 }
@@ -54,18 +55,18 @@ export async function getServerSideProps() {
   const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
   const newMessage = await contract.readMessage();
   const price = await contract.getPrice();
-  const formatPrice = ethers.utils.formatEther(price);
-  const increment = ethers.utils.parseEther("0.00001");
-  let priceIndex = ((price - increment*2));
+  let priceIndex = price / 4;
 
   const fetchedMessages = [];
 
   
-  while (priceIndex >= 0) {
+  while (priceIndex >= ethers.utils.parseEther("0.001")) {
     const message = await contract.getMessages((priceIndex));
     fetchedMessages.push(message);
-    priceIndex -= increment;
+    priceIndex /= 2;
   }
+
+  const formatPrice = ethers.utils.formatEther(price);   
 
   return {
     props: {
