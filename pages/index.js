@@ -39,7 +39,7 @@ export default function Home({ messages, newMessage, price }) {
           <Message key={index} text={message} showXLink={false} />
         ))}
         <Message 
-          text={"Top messager earns 150% of message worth when a brave new message is posted's! <3"} 
+          text={"Top messager earns 150% of message worth when a brave new message is posted! <3"} 
           showXLink={false} />
     </>
   )
