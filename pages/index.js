@@ -38,7 +38,9 @@ export default function Home({ messages, newMessage, price }) {
       {messages.map((message, index) => (
           <Message key={index} text={message} showXLink={false} />
         ))}
-        <Message text={"HI"} showXLink={false} />
+        <Message 
+          text={"Top messager earns 150% of message worth when a brave new message is posted! <3"} 
+          showXLink={false} />
     </>
   )
 }
@@ -47,7 +49,7 @@ export async function getServerSideProps() {
 
   const settings = {
     apiKey: process.env.ALCHEMY_API, // Replace with your Alchemy API Key.
-    network: Network.ETH_SEPOLIA, // Replace with your network.
+    network: Network.ETH_MAINNET, // Replace with your network.
   };
 
   const alchemy = new Alchemy(settings);
@@ -60,7 +62,7 @@ export async function getServerSideProps() {
   const fetchedMessages = [];
 
   
-  while (priceIndex >= ethers.utils.parseEther("0.001")) {
+  while (priceIndex >= ethers.utils.parseEther("0.01")) {
     const message = await contract.getMessages((priceIndex));
     fetchedMessages.push(message);
     priceIndex /= 2;

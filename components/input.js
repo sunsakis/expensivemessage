@@ -97,15 +97,16 @@ const MessageField = () => {
   );
 
   if (ChainId !== Ethereum.chainId && isMismatched) try { 
+
     return (
-    <div class="fixed bottom-8 sm:bottom-5 justify-center">
-      <button 
-        class="rounded-lg bg-white text-black font-medium p-2 hover:bg-green-500 hover:text-white transition-all" 
-        onClick={() => switchChain(Ethereum.chainId)}>
-          Switch to Ethereum
-      </button>
-    </div>
-  );
+      <div class="fixed bottom-8 sm:bottom-5 justify-center">
+        <button 
+          class="rounded-lg bg-white text-black font-medium p-2 hover:bg-green-500 hover:text-white transition-all" 
+          onClick={() => switchChain(Ethereum.chainId)}>
+            Switch to Ethereum
+        </button>
+      </div>
+    );
   } catch (error) {
     alert(error);
   }
