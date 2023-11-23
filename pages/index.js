@@ -49,7 +49,7 @@ export async function getServerSideProps() {
 
   const settings = {
     apiKey: process.env.ALCHEMY_API, // Replace with your Alchemy API Key.
-    network: Network.ETH_MAINNET, // Replace with your network.
+    network: Network.ETH_SEPOLIA, // Replace with your network.
   };
 
   const alchemy = new Alchemy(settings);
