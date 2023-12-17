@@ -25,7 +25,7 @@ export default function Header( { price } ) {
                     <span className="text-matrix">Ξ</span>
                     {price} ETH
                     </b>{" "}
-                    FOR 1 MESSAGE
+                    FOR 1 MESSAGE <span className="text-matrix">?</span>
                 </p>
             </div>
             </Link>
