@@ -19,7 +19,7 @@ export default function Header( { price } ) {
                 </Link>
             </div>
             <Link href="/wtf">
-            <div className="m-2 p-2 mb-4 top-0 absolute right-0 border rounded-md">
+            <div className="m-2 p-2 mb-4 top-0 absolute right-0 border rounded-md hover:bg-slate-600">
                 <p className="font-mono text-sm tracking-tight sm:text-lg md:text-sm">
                     <b>
                     <span className="text-matrix">Ξ</span>
