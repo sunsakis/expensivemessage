@@ -57,7 +57,9 @@ export async function getServerSideProps() {
   const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
   const newMessage = await contract.readMessage();
   const price = await contract.getPrice();
-  let priceIndex = price / 4;
+  let priceIndex = String(price / 4);
+  console.log(price)
+
 
   const fetchedMessages = [];
 

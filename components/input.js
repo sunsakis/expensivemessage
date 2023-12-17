@@ -103,7 +103,7 @@ const MessageField = () => {
         <button 
           class="rounded-lg bg-white text-black font-medium p-2 hover:bg-green-500 hover:text-white transition-all" 
           onClick={() => switchChain(Ethereum.chainId)}>
-            Switch to Ethereum
+            Switch to Sepolia
         </button>
       </div>
     );
