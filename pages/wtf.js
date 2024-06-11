@@ -37,10 +37,10 @@ export default function Wtf({ price }) {
             <div className="max-w-xs sm:max-w-sm md:max-w-md w-[500px] p-4 border rounded-lg whitespace-pre-line break-words text-[1rem] font-mono overflow-y-auto">
                     <i>
                         <h1 class="text-lg">Write history.</h1><br/>
+                        <p><b>Everyone can write here</b> - but every message costs 2x more than the previous one.</p><br/>
+                        <p>Top messenger is paid 150% of their message’s original price when a new message is posted.</p><br/>
                         <p>All posts are stored on the Ethereum blockchain and are accessible forever.</p><br/>
-                        <p><b>Everyone can write here</b> - but every message costs 2x ETH more than the previous one.</p><br/>
-                        <p>Top message is paid 150% of its worth every time a new message is posted.</p><br/>
-                        <p>The goal is to become internet`s most valuable textboard.</p><br/>
+                        <p>What is <i>your</i> message?</p><br/>
                     </i>
             </div>
         </div>
