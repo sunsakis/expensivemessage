@@ -3,7 +3,7 @@ import styles from '@/styles/Home.module.css'
 import { ethers } from 'ethers';
 import { Network, Alchemy } from 'alchemy-sdk';
 import Header from '../components/header.js';
-import InputField from '../components/input.js';
+import Footer from '../components/footer.js';
 import Message from '../components/message.js';
 
 
@@ -21,7 +21,7 @@ export default function Home({ messages, newMessage, price }) {
   return (
     <>
       <Head>
-        <title>World's Most Expensive Message Board</title>
+        <title>MXM - Most Xpensive Message</title>
         <meta name="description" content="Become a part of Internet history, but every message costs more than the previous one." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta property="og:title" content="World's Most Expensive Message Board" />
@@ -30,17 +30,17 @@ export default function Home({ messages, newMessage, price }) {
         <meta property="og:site_name" content="Expensive Message" />
         <meta name="twitter:creator" content="@codeisthelaw" /> 
       </Head>
+      <Header />
       <main className={styles.main}>
-        <Header price={price}/>
-        <InputField />
-        <Message text={newMessage} showXLink={true} price={price} />
-        </main>
-      {messages.map((message, index) => (
+        <Message text={newMessage} showXLink={false} price={price} />
+      </main>
+      <Footer price={price} />
+      {/* {messages.map((message, index) => (
           <Message key={index} text={message} showXLink={false} />
         ))}
         <Message 
           text={"Top messager earns 150% of message worth when a brave new message is posted! <3"} 
-          showXLink={false} />
+          showXLink={false} /> */}
     </>
   )
 }

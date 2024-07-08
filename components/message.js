@@ -9,7 +9,7 @@ const Message = ({ text, showXLink, price }) => {
   let xText = "https://twitter.com/intent/tweet?text=" + text + " Ξ You just read the world's most expensive message. Ξ" + price / 2 + " @ xms.ge";
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center min-h-screen">
       {showXLink && ( // Only show the X Link if showXLink is true
         <span className="text-matrix mr-3 text-xl hover:text-green-500">
           <Link
@@ -25,10 +25,10 @@ const Message = ({ text, showXLink, price }) => {
           </Link>{" "}
         </span>
       )}
-      <div className="max-w-xs sm:max-w-sm md:max-w-md w-[500px] p-4 border rounded-lg">
-        <p className="whitespace-pre-line break-words text-[1rem] font-mono max-h-[420px] overflow-y-auto">
+      <div className="max-w-3xl p-4 text-center">
+        <h1 className="text-5xl font-bold">
           <i>{text}</i>
-        </p>
+        </h1>
       </div>
     </div>
   );
