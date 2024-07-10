@@ -14,7 +14,7 @@ export default function Header() {
                         height={35}
                         className="sm:w-10 sm:h-10 cursor-pointer hover:rotate-90 transform-all duration-500"
                     />
-                    <b className="mt-2">Most Xpensive Message</b>
+                    <b className="mt-2">Most eXpensive Message</b>
                 </button>
                 </Link>
             </div>

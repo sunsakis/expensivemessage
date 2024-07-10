@@ -5,6 +5,7 @@ import { Network, Alchemy } from 'alchemy-sdk';
 import Header from '../components/header.js';
 import Footer from '../components/footer.js';
 import Message from '../components/message.js';
+import Details from '../components/details.js';
 import Input from '../components/input.js';
 
 
@@ -35,6 +36,7 @@ export default function Home({ newMessage, price }) {
       <Header />
         <Message text={newMessage} />
         {/* <Input /> */}
+        <Details />
         <Footer price={price} />
       </main>
       {/* {messages.map((message, index) => (

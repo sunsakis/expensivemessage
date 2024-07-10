@@ -21,7 +21,7 @@ const Message = ({ text }) => {
   const handleClick = () => {
     const newName = prompt('Enter the name attributed to the new message', name);
     if (newName) {
-      fetch('http://localhost:3001', {
+      fetch('http://localhost:3001/name', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
