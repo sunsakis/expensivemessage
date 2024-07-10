@@ -96,13 +96,13 @@ const MessageField = () => {
     </div>
   );
 
-  if (ChainId !== Ethereum.chainId && isMismatched) try { 
+  if (ChainId !== Sepolia.chainId && isMismatched) try { 
 
     return (
       <div class="fixed bottom-8 sm:bottom-5 justify-center">
         <button 
           class="rounded-lg bg-white text-black font-medium p-2 hover:bg-green-500 hover:text-white transition-all" 
-          onClick={() => switchChain(Ethereum.chainId)}>
+          onClick={() => switchChain(Sepolia.chainId)}>
             Switch to Sepolia
         </button>
       </div>

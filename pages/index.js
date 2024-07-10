@@ -5,6 +5,7 @@ import { Network, Alchemy } from 'alchemy-sdk';
 import Header from '../components/header.js';
 import Footer from '../components/footer.js';
 import Message from '../components/message.js';
+import Input from '../components/input.js';
 
 
 
@@ -16,7 +17,7 @@ const ABI = [
   "function getPrice() public view returns (uint256)",
 ];
 
-export default function Home({ messages, newMessage, price }) {  
+export default function Home({ newMessage, price }) {  
 
   return (
     <>
@@ -30,11 +31,12 @@ export default function Home({ messages, newMessage, price }) {
         <meta property="og:site_name" content="Expensive Message" />
         <meta name="twitter:creator" content="@codeisthelaw" /> 
       </Head>
-      <Header />
       <main className={styles.main}>
-        <Message text={newMessage} showXLink={false} price={price} />
+      <Header />
+        <Message text={newMessage} />
+        {/* <Input /> */}
+        <Footer price={price} />
       </main>
-      <Footer price={price} />
       {/* {messages.map((message, index) => (
           <Message key={index} text={message} showXLink={false} />
         ))}
@@ -74,7 +76,6 @@ export async function getServerSideProps() {
 
   return {
     props: {
-      messages: fetchedMessages,
       newMessage: newMessage,
       price: formatPrice,
     },

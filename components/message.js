@@ -1,34 +1,53 @@
-import Link from "next/link";
 import React from "react";
+import { useState, useEffect } from "react";
 
-const Message = ({ text, showXLink, price }) => {
+const Message = ({ text }) => {
   if (!text || typeof text !== "string") {
     return null; // Return early if the text prop is invalid
   }
+  
+  const [name, setName] = useState('');
 
-  let xText = "https://twitter.com/intent/tweet?text=" + text + " Ξ You just read the world's most expensive message. Ξ" + price / 2 + " @ xms.ge";
+  useEffect(() => {
+    fetch('http://localhost:3001')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.name) {
+          setName(data.name)
+        }
+      });
+  }, []);
+
+  const handleClick = () => {
+    const newName = prompt('Enter the name attributed to the new message', name);
+    if (newName) {
+      fetch('http://localhost:3001', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: newName }),
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setName(newName);
+        }
+        console.log(data);
+      });
+    }
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen">
-      {showXLink && ( // Only show the X Link if showXLink is true
-        <span className="text-matrix mr-3 text-xl hover:text-green-500">
-          <Link
-            className="twitter-share-button"
-            href={xText}
-            data-via="codeisthelaw"
-            data-hashtags="expensive, message"
-            dnt="true"
-            target="_blank"
-            rel="noopener noreferrer nofollow"
-          >
-            X
-          </Link>{" "}
-        </span>
-      )}
       <div className="max-w-3xl p-4 text-center">
-        <h1 className="text-5xl font-bold">
+        <h1 className="text-5xl font-bold drop-shadow-xl">
           <i>{text}</i>
         </h1>
+        <br/><br/>
+        <p className="text-xl font-semibold drop-shadow-xl" onClick={handleClick}>
+          - {name}
+        </p>
       </div>
     </div>
   );
