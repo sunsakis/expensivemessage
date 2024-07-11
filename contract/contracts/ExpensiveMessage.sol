@@ -6,6 +6,7 @@ contract ExpensiveMessage {
     uint256 public msgCounter;
     string public message;
     address public messenger;
+    uint256 public fee;
 
     mapping(uint256 => string) public messages;
     
@@ -28,6 +29,7 @@ contract ExpensiveMessage {
         owner = msg.sender;
         messenger = msg.sender;
         msgCounter = 0;
+        fee = 0.01 ether;
     }
 
     function getMessages(uint256 _msgCounter) public view returns (string memory) {
@@ -42,11 +44,8 @@ contract ExpensiveMessage {
         return msgPrice;
     }
 
-    /// @notice Set a new message with a custom price increase
-    /// @param newMessage The message to set
-    /// @param priceIncrease The amount to increase the message price by, with a minimum of 0.01 ETH
     function setMessage(string memory newMessage, uint256 priceIncrease) external payable {
-        require(msg.value == msgPrice + 0.01 ether, "Your message is not expensive enough.");
+        require(msg.value == msgPrice + fee, "Your message is not expensive enough.");
         require(priceIncrease >= 0.01 ether, "Minimum price increase is 0.01 ETH.");
 
         uint256 rewardToPay = msgPrice;
@@ -62,6 +61,10 @@ contract ExpensiveMessage {
         require(sent, "Failed to send Ether");
 
         emit MessageChanged(msgPrice, msg.sender, msgCounter);
+    }
+
+    function setFee(uint256 _fee) external onlyOwner {
+        fee = _fee;
     }
 
     function withdraw() external onlyOwner {
