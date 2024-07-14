@@ -8,13 +8,12 @@ export default function Header() {
                 <Link href="/">
                 <button className="flex">
                     <Image
-                        src="/expensivemessagelogo.png"
+                        src="/color_icon.svg"
                         alt="Expensive Message logo"
-                        width={35}
-                        height={35}
-                        className="sm:w-10 sm:h-10 cursor-pointer hover:rotate-90 transform-all duration-500"
+                        width={75}
+                        height={75}
                     />
-                    <b className="mt-2">Most eXpensive Message</b>
+                    <b className="mt-4 text-xl">Most eXpensive Message</b>
                 </button>
                 </Link>
             </div>

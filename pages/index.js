@@ -36,7 +36,7 @@ export default function Home({ newMessage, price }) {
   return (
     <>
       <Head>
-        <title>MXM - Most Xpensive Message</title>
+        <title>MXM - Most eXpensive Message</title>
         <meta name="description" content="Become a part of Internet history, but every message costs more than the previous one." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta property="og:title" content="World's Most Expensive Message Board" />
