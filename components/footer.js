@@ -20,7 +20,7 @@ export default function Footer( { price } ) {
                 </p>
                 <p className="text-right mr-2">
                     <b className="text-3xl">
-                    {price} ETH
+                    Ξ{price}
                     </b>
                 </p>
                 <button>

@@ -4,7 +4,7 @@ import Image from 'next/image';
 export default function Header() {
 
     return (
-            <div className="m-10 fixed top-6 left-9">
+            <div className="m-10 absolute top-6 left-9">
                 <Link href="/">
                 <button className="flex">
                     <Image
