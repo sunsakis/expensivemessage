@@ -9,7 +9,7 @@ export default function Details() {
     formData.append('image', event.target.image.files[0]);
 
     try {
-      const response = await axios.post('http://localhost:3001/upload', formData, {
+      const response = await axios.post(process.env.NEXT_PUBLIC_UPLOAD_TO_SERVER, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

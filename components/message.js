@@ -33,7 +33,6 @@ const Message = ({ text }) => {
         if (data.success) {
           setName(newName);
         }
-        console.log(data);
       });
     }
   };
