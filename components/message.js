@@ -9,7 +9,7 @@ const Message = ({ text }) => {
   const [name, setName] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:3001')
+    fetch(process.env.NEXT_PUBLIC_SERVER)
       .then((res) => res.json())
       .then((data) => {
         if (data.name) {
@@ -21,7 +21,7 @@ const Message = ({ text }) => {
   const handleClick = () => {
     const newName = prompt('Enter the name attributed to the new message', name);
     if (newName) {
-      fetch('http://localhost:3001/name', {
+      fetch(process.env.NEXT_PUBLIC_SERVER + '/name', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
