@@ -79,8 +79,6 @@ export async function getServerSideProps() {
   const newMessage = await contract.readMessage();
   const price = await contract.getPrice();
   let priceIndex = String(price / 4);
-  console.log(price)
-
 
   const fetchedMessages = [];
 

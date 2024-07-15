@@ -44,7 +44,7 @@ const Message = ({ text }) => {
           <b>{text}</b>
         </h1>
         <br/><br/>
-        <p className="text-xl font-semibold drop-shadow-xl" onClick={handleClick}>
+        <p className="text-xl drop-shadow-xl" onClick={handleClick}>
           - {name}
         </p>
       </div>
