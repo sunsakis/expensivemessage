@@ -23,7 +23,7 @@ export default function Home({ newMessage, price }) {
 
   const profilePic = process.env.NEXT_PUBLIC_SERVER + '/uploadedImage.jpg';
   const style = {
-    backgroundImage: `radial-gradient(circle at center, transparent 30vmax, black 40vmax), url(${profilePic})`,
+    backgroundImage: `radial-gradient(circle at center, transparent 15vmax, black 33vmax), url(${profilePic})`,
     backgroundPosition: 'center, center', // Center the gradient and the image
     backgroundSize: 'cover, cover', // Cover the entire element with both the gradient and the image
     backgroundRepeat: 'no-repeat, no-repeat', // Do not repeat the gradient or the image
@@ -51,7 +51,7 @@ export default function Home({ newMessage, price }) {
           <span className={titillium.className}>
             <Header />
             <Message text={newMessage} />
-            <Details />
+            {/* <Details /> */}
             <Footer price={price} />
           </span>
         </div>

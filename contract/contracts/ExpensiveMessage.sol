@@ -36,8 +36,8 @@ contract ExpensiveMessage {
         return messages[_msgCounter];
     }
 
-   function readMessage() public view returns (string memory) {
-        return message;
+   function readMessage() public view returns (string memory, address) {
+        return (message, messenger);
     }
 
     function getPrice() public view returns (uint256) {

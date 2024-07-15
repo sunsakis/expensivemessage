@@ -39,12 +39,12 @@ const Message = ({ text }) => {
 
   return (
     <div className="flex justify-center items-center min-h-screen">
-      <div className="max-w-3xl p-4 text-center">
-        <h1 className="text-5xl font-bold drop-shadow-xl">
+      <div className="max-w-3xl p-4 text-center mx-auto w-full px-4">
+        <h1 className="text-2xl font-bold drop-shadow-xl">
           <b>{text}</b>
         </h1>
         <br/><br/>
-        <p className="text-xl drop-shadow-xl" onClick={handleClick}>
+        <p className="text-sm drop-shadow-xl text-gray-50" onClick={handleClick}>
           {name}
         </p>
       </div>

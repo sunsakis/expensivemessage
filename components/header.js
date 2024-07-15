@@ -4,16 +4,16 @@ import Image from 'next/image';
 export default function Header() {
 
     return (
-            <div className="m-10 absolute top-6 left-9">
+            <div className="m-2 absolute top-5 left-5">
                 <Link href="/">
                 <button className="flex">
                     <Image
                         src="/color_icon.svg"
                         alt="Expensive Message logo"
-                        width={75}
-                        height={75}
+                        width={50}
+                        height={50}
                     />
-                    <b className="mt-4 text-xl">Most eXpensive Message</b>
+                    <b className="m-1 text-2xl">MXM</b>
                 </button>
                 </Link>
             </div>
