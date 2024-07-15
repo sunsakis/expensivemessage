@@ -41,7 +41,7 @@ const Message = ({ text }) => {
     <div className="flex justify-center items-center min-h-screen">
       <div className="max-w-3xl p-4 text-center">
         <h1 className="text-5xl font-bold drop-shadow-xl">
-          <i>{text}</i>
+          <b>{text}</b>
         </h1>
         <br/><br/>
         <p className="text-xl font-semibold drop-shadow-xl" onClick={handleClick}>

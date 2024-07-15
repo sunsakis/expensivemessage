@@ -7,6 +7,7 @@ import Footer from '../components/footer.js';
 import Message from '../components/message.js';
 import Details from '../components/details.js';
 import Input from '../components/input.js';
+import titillium from '@/styles/fonts/font.js';
 
 
 
@@ -47,10 +48,12 @@ export default function Home({ newMessage, price }) {
       </Head>
       <main className={styles.main}>
         <div style={style}>
-          <Header />
+          <span className={titillium.className}>
+            <Header />
             <Message text={newMessage} />
             <Details />
             <Footer price={price} />
+          </span>
         </div>
       </main>
       {/* {messages.map((message, index) => (
