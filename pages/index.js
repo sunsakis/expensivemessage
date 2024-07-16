@@ -2,6 +2,7 @@ import Head from 'next/head'
 import styles from '@/styles/Home.module.css'
 import { ethers } from 'ethers';
 import { Network, Alchemy } from 'alchemy-sdk';
+import { useState, useEffect } from 'react';
 import Header from '../components/header.js';
 import Footer from '../components/footer.js';
 import Message from '../components/message.js';
@@ -20,19 +21,50 @@ const ABI = [
 ];
 
 export default function Home({ newMessage, price }) {
+  const [style, setStyle] = useState({});
 
-  const profilePic = process.env.NEXT_PUBLIC_SERVER + '/uploadedImage.jpg';
-  const style = {
-    backgroundImage: `radial-gradient(circle at center, transparent 15vmax, black 33vmax), url(${profilePic})`,
-    backgroundPosition: 'center, center', // Center the gradient and the image
-    backgroundSize: 'cover, cover', // Cover the entire element with both the gradient and the image
-    backgroundRepeat: 'no-repeat, no-repeat', // Do not repeat the gradient or the image
-    height: '100vh', // Make sure the div takes up the full viewport height
-    width: '100vw', // Make sure the div takes up the full viewport width
-    position: 'absolute', // Fix the position to cover the entire screen
-    top: 0, // Align the top edge with the top of the viewport
-    left: 0, // Align the left edge with the left of the viewport
-  };
+  useEffect(() => {
+    const updateStyle = () => {
+      const screenWidth = window.innerWidth;
+      const profilePic = process.env.NEXT_PUBLIC_SERVER + '/uploadedImage.jpg';
+      const firstGradient = screenWidth < 390 ? '15vmax' : (screenWidth < 640 ? '12vmax' : (screenWidth < 1050 ? '18vmax' : (screenWidth < 1250 ? '20vmax' : '250px')));
+      const secondGradient = screenWidth < 390 ? '30vmax' : (screenWidth < 640 ? '25vmax' : (screenWidth < 1050 ? '37vmax' : (screenWidth < 1250 ? '40vmax' : '500px')));
+      
+
+      setStyle({
+        backgroundImage: `radial-gradient(circle at center, transparent ${firstGradient}, black ${secondGradient}), url(${profilePic})`,
+        backgroundPosition: 'center, center',
+        backgroundSize: 'auto, contain',
+        backgroundRepeat: 'no-repeat, no-repeat',
+        height: '100vh',
+        width: '100vw',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+      });
+    };
+
+    updateStyle();
+
+    window.addEventListener('resize', updateStyle);
+
+    // Cleanup
+    return () => window.removeEventListener('resize', updateStyle);
+  }, []); // Empty dependency array ensures this effect runs only once on mount
+
+
+  // const profilePic = process.env.NEXT_PUBLIC_SERVER + '/uploadedImage.jpg';
+  // const style = {
+  //   backgroundImage: `radial-gradient(circle at center, transparent 15vmax, black 33vmax), url(${profilePic})`,
+  //   backgroundPosition: 'center, center', // Center the gradient and the image
+  //   backgroundSize: 'cover, cover', // Cover the entire element with both the gradient and the image
+  //   backgroundRepeat: 'no-repeat, no-repeat', // Do not repeat the gradient or the image
+  //   height: '100vh', // Make sure the div takes up the full viewport height
+  //   width: '100vw', // Make sure the div takes up the full viewport width
+  //   position: 'absolute', // Fix the position to cover the entire screen
+  //   top: 0, // Align the top edge with the top of the viewport
+  //   left: 0, // Align the left edge with the left of the viewport
+  // };
 
   return (
     <>
@@ -47,7 +79,7 @@ export default function Home({ newMessage, price }) {
         <meta name="twitter:creator" content="@codeisthelaw" /> 
       </Head>
       <main className={styles.main}>
-        <div style={style}>
+        <div className="" style={style}>
           <span className={titillium.className}>
             <Header />
             <Message text={newMessage} />
