@@ -83,7 +83,7 @@ export default function Home({ newMessage, price }) {
         <div style={style}>
           <span className={titillium.className}>
             <Header />
-            <Message text={newMessage} />
+            <Message text={"Hello word."} />
             {/* <Details /> */}
             <Footer price={price} />
           </span>
@@ -111,16 +111,16 @@ export async function getServerSideProps() {
   const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
   const newMessage = await contract.readMessage();
   const price = await contract.getPrice();
-  let priceIndex = String(price / 4);
+  // let priceIndex = String(price / 4);
 
-  const fetchedMessages = [];
+  // const fetchedMessages = [];
 
   
-  while (priceIndex >= ethers.utils.parseEther("0.01")) {
-    const message = await contract.getMessages((priceIndex));
-    fetchedMessages.push(message);
-    priceIndex /= 2;
-  }
+  // while (priceIndex >= ethers.utils.parseEther("0.01")) {
+  //   const message = await contract.getMessages((priceIndex));
+  //   fetchedMessages.push(message);
+  //   priceIndex /= 2;
+  // }
 
   const formatPrice = ethers.utils.formatEther(price);   
 
