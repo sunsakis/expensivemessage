@@ -78,8 +78,9 @@ export default function Home({ newMessage, price }) {
         <meta property="og:site_name" content="Expensive Message" />
         <meta name="twitter:creator" content="@codeisthelaw" /> 
       </Head>
-      <main className={styles.main}>
-        <div className="" style={style}>
+      {/* <main className={styles.main}> */}
+      <main>
+        <div style={style}>
           <span className={titillium.className}>
             <Header />
             <Message text={newMessage} />

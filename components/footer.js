@@ -23,7 +23,7 @@ export default function Footer( { price } ) {
           }
 
           .fadeIn {
-            animation: fadeIn 0.5s ease-out forwards;
+            animation: fadeIn 1s ease-out forwards;
           }
 
           @keyframes slideOut {
@@ -32,7 +32,7 @@ export default function Footer( { price } ) {
             }
 
             .slideOut {
-            animation: slideOut 0.5s ease-out forwards;
+            animation: slideOut 1s ease-out forwards;
             }
         `}
       </style>
@@ -66,36 +66,31 @@ export default function Footer( { price } ) {
         </div>
       {showModal ? (
         <>
-         <div className={`justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none ${closingAnimation ? 'slideOut' : 'fadeIn'}`}>
-            <div className="relative w-auto my-6 mx-auto max-w-3xl">
-              {/*content*/}
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                {/*header*/}
+         <div className="fixed inset-0 bg-black opacity-60 z-40 flex justify-center items-center" onClick={() => handleClose()}></div> 
+         <div className={`justify-center items-center flex fixed inset-0 max-w-xs max-h-fit my-auto mx-auto z-50 outline-none focus:outline-none ${closingAnimation ? 'slideOut' : 'fadeIn'}`} onClick={(e) => e.stopPropagation()}>
+            <div className="relative w-auto mx-auto max-w-3xl">
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col bg-white outline-none focus:outline-none">
                 <div className="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
                   <h3 className="text-3xl font-semibold">
                     Claim the MXM
                   </h3>
-                  <button
-                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                    onClick={() => handleClose()}
-                  >
-                    <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
-                      ×
-                    </span>
-                  </button>
                 </div>
                 {/*body*/}
                 <div className="relative p-6 flex-auto">
                   <form className="space-y-4">
+                    <label htmlFor="bid" className="text-black">
+                        Your bid:
+                    </label>
                     <input
-                      type="text"
-                      placeholder="Your bid"
-                      className="px-3 py-2 border border-gray-300 rounded-md w-full"
+                        id="bid"
+                        type="text"
+                        placeholder="Your bid"
+                        className="px-3 py-3 border border-gray-300 rounded-md w-full"
                     />
-                    <input
-                      type="text"
+                    <textarea
+                      rows="4"
                       placeholder="The message"
-                      className="px-3 py-2 border border-gray-300 rounded-md w-full"
+                      className="px-3 py-3 border border-gray-300 rounded-md w-full"
                     />
                     <div className="flex items-center">
                       <input
@@ -113,7 +108,7 @@ export default function Footer( { price } ) {
                   <button
                     className="bg-purple-500 text-white active:bg-purple-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
-                    onClick={() => setShowModal(false)} // Implement the Next button action here
+                    onClick={() => handleClose()} // Implement the Next button action here
                   >
                     Next
                   </button>
@@ -121,7 +116,7 @@ export default function Footer( { price } ) {
               </div>
             </div>
           </div>
-          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+          
         </>
       ) : null}
     </>
