@@ -62,20 +62,6 @@ export default function Home({ newMessage, price }) {
     return () => window.removeEventListener('resize', updateStyle);
   }, []); // Empty dependency array ensures this effect runs only once on mount
 
-
-  // const profilePic = process.env.NEXT_PUBLIC_SERVER + '/uploadedImage.jpg';
-  // const style = {
-  //   backgroundImage: `radial-gradient(circle at center, transparent 15vmax, black 33vmax), url(${profilePic})`,
-  //   backgroundPosition: 'center, center', // Center the gradient and the image
-  //   backgroundSize: 'cover, cover', // Cover the entire element with both the gradient and the image
-  //   backgroundRepeat: 'no-repeat, no-repeat', // Do not repeat the gradient or the image
-  //   height: '100vh', // Make sure the div takes up the full viewport height
-  //   width: '100vw', // Make sure the div takes up the full viewport width
-  //   position: 'absolute', // Fix the position to cover the entire screen
-  //   top: 0, // Align the top edge with the top of the viewport
-  //   left: 0, // Align the left edge with the left of the viewport
-  // };
-
   return (
     <>
       <Head>
@@ -91,9 +77,9 @@ export default function Home({ newMessage, price }) {
       {/* <main className={styles.main}> */}
       <main>
         <div style={style}>
-          <span className={titillium.className}>
+          <span>
             <Header />
-            <Message text={"Hello word."} />
+            <Message text={newMessage} />
             {/* <Details /> */}
             <Footer price={price} />
           </span>

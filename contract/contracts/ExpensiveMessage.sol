@@ -24,7 +24,7 @@ contract ExpensiveMessage {
     event MessageChanged(uint256 newPrice, address messenger, uint256 msgCounter);
 
     constructor() {
-        messages[0] = "Hello, Word!";
+        message = "Hello, Word!";
         msgPrice = 0.0001 ether;
         owner = msg.sender;
         messenger = msg.sender;
@@ -44,20 +44,19 @@ contract ExpensiveMessage {
         return msgPrice;
     }
 
-    function setMessage(string memory newMessage, uint256 priceIncrease) external payable {
-        require(msg.value == msgPrice + fee, "Your message is not expensive enough.");
-        require(priceIncrease >= 0.0001 ether, "Minimum price increase is 0.01 ETH.");
+    function setMessage(string memory _message) external payable {
+        require(msg.value >= msgPrice + fee + 0.0001 ether, "Your message must be at least 0.01 ETH more expensive than the previous one.");
 
         uint256 rewardToPay = msgPrice;
         address rewardReceiver = messenger;
 
-        message = newMessage;
-        messages[msgCounter] = newMessage;
-        msgPrice += priceIncrease;
+        message = _message;
+        messages[msgCounter] = _message;
+        msgPrice = msg.value;
         msgCounter += 1;
         messenger = msg.sender;
 
-        (bool sent, ) = rewardReceiver.call{ value: rewardToPay - priceIncrease / 2 }("");
+        (bool sent, ) = rewardReceiver.call{ value: rewardToPay / 2 }("");
         require(sent, "Failed to send Ether");
 
         emit MessageChanged(msgPrice, msg.sender, msgCounter);
@@ -75,7 +74,7 @@ contract ExpensiveMessage {
         address payable recipientA = payable(0xa89a142D86f2eB69827D74c0EC27317cB1715e78);
         address payable recipientB = payable(0x26E1138Ae46438282c4BE895F3E05A2cE6Dc7C80);
         address payable recipientC = payable(0x4052FeaC7728B7E4100DA6D6ceA245892Bf80525);
-        address payable recipientD = payable(0xF025B4AC25D5DC1FfD77B099a31ddc269D55c039);
+        address payable recipientD = payable(0x9A4f5BA180302f81327102A17302C776142786Dd);
 
         (bool sentA, ) = recipientA.call{value: amountA}("");
         require(sentA, "Failed to send Ether to recipient A");

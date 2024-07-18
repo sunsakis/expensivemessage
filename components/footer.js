@@ -1,8 +1,31 @@
 import React, { useState } from 'react';
+import Router from 'next/router';
+import { 
+  ConnectWallet,
+  useConnectionStatus,
+  useSwitchChain,
+  ChainId, 
+  useNetworkMismatch,
+} 
+from '@thirdweb-dev/react';
+import { Ethereum, Sepolia } from '@thirdweb-dev/chains';
+import { ethers } from 'ethers';
+import styles from '@/styles/Home.module.css';
+
+const ABI = [
+    "event MessageChanged(uint256 newPrice, address messenger, , uint256 msgCounter)",
+    "function setMessage(string memory newMessage, uint256 priceIncrease) external payable",
+    "function getMessages(uint256 _msgCounter) public view returns (string memory)",
+    "function getPrice() public view returns (uint256)",
+    "function withdraw() external",
+  ];
 
 export default function Footer( { price } ) {
   const [showModal, setShowModal] = useState(false);
   const [closingAnimation, setClosingAnimation] = useState(false);
+  const [message, setMessage] = useState('');
+  const [bid, setBid] = useState(0.0002);
+  const [loading, setLoading] = useState(false);
 
   const handleClose = () => {
     setClosingAnimation(true);
@@ -11,6 +34,92 @@ export default function Footer( { price } ) {
       setClosingAnimation(false); // Reset the animation state for the next open
     }, 500); // Match this duration to your animation duration
   };
+
+  const handleTextChange = (e) => {
+    try{
+        setMessage(e.target.value);
+        } catch (error) {
+        alert(error);
+        }
+  };
+
+  const handleBidChange = (e) => {
+    try{
+        setBid((e.target.value).toString());
+        } catch (error) {
+            alert(error);
+        }
+  };
+
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      setLoading(true); // Show loading indicator
+  
+      // Validate bid is a string and not empty
+      if (typeof bid !== 'string' || bid.trim() === '') {
+        throw new Error('Bid must be a non-empty string');
+      }
+  
+      const parsedBid = ethers.utils.parseEther(bid); // Convert bid to BigNumber
+      const priceIncrease = ethers.utils.parseEther((bid - price).toString());
+      console.log(bid); // Log the BigNumber for debugging
+  
+      const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
+        ABI,
+        signer
+      );
+  
+      await contract.setMessage( message, { value: parsedBid } ).then((tx) => {
+        return provider.waitForTransaction(tx.hash);
+      }).then(() => {
+        setLoading(false);
+        Router.push('/');
+      });
+    } catch (error) {
+      console.error(error); // Log the error for debugging
+      alert(error.message);
+      setLoading(false);
+    }
+  };
+
+  const isMismatched = useNetworkMismatch();
+  const connectionStatus = useConnectionStatus();
+  const switchChain = useSwitchChain();
+
+  if (connectionStatus === "disconnected") return (
+    <div class="fixed bottom-8 sm:bottom-5 justify-center">
+      <ConnectWallet 
+        btnTitle="Connect MetaMask"
+        modalTitle="Choose your wallet provider"
+        className={styles.connect}
+      />
+    </div>
+  );
+
+  if (connectionStatus === "connecting") return (
+    <div class="fixed bottom-8 sm:bottom-5 justify-center">
+      <ConnectWallet />
+    </div>
+  );
+
+  if (ChainId !== Sepolia.chainId && isMismatched) try { 
+
+    return (
+      <div class="fixed bottom-8 sm:bottom-5 justify-center">
+        <button 
+          class="rounded-lg bg-white text-black font-medium p-2 hover:bg-green-500 hover:text-white transition-all" 
+          onClick={() => switchChain(Sepolia.chainId)}>
+            Switch to Sepolia
+        </button>
+      </div>
+    );
+  } catch (error) {
+    alert(error);
+  }
 
     return (
 
@@ -83,13 +192,16 @@ export default function Footer( { price } ) {
                     </span>
                 </button>
                 </div>
-                {/*body*/}
                 <div className="relative p-6 flex-auto">
-                  <form className="space-y-1">
+                  <form 
+                    className="space-y-1"
+                    onSubmit={handleSubmit}
+                >
                     <label htmlFor="bid" className="text-black">
                         Your bid:
                     </label>
                     <input
+                        onChange={handleBidChange}
                         id="bid"
                         type="number"
                         placeholder="0.05 ETH"
@@ -100,6 +212,7 @@ export default function Footer( { price } ) {
                         The message:
                     </label>
                     <textarea
+                        onChange={handleTextChange}
                         rows="4"
                         placeholder="The message"
                         className="px-3 py-3 mt-1 border border-gray-300 rounded-md w-full text-gray-600"
@@ -114,18 +227,27 @@ export default function Footer( { price } ) {
                         I have read and accept the terms and conditions
                       </label>
                     </div>
-                  </form>
-                </div>
-                {/*footer*/}
-                <div className="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
+                    <div className="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
                   <button
                     className="bg-purple-400 text-white active:bg-purple-500 hover:bg-purple-500 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                    type="button"
-                    onClick={() => handleClose()} // Implement the Next button action here
+                    type="submit"
                   >
                     Next
                   </button>
                 </div>
+                  </form>
+                </div>
+                {loading && (
+                    <button
+                        type="button"
+                        class="rounded-lg bg-white text-black font-medium h-5 w-5 p-8 transition-all"
+                        disabled
+                    >
+                        <svg class="animate-spin h-[40px] w-[45px]">
+                        <circle cx="15" cy="15" r="15"/>
+                        </svg>
+                    </button>
+                )} 
               </div>
             </div>
           </div>
