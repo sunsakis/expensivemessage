@@ -26,9 +26,19 @@ export default function Home({ newMessage, price }) {
   useEffect(() => {
     const updateStyle = () => {
       const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+      const minDimension = Math.min(screenWidth, screenHeight);
       const profilePic = process.env.NEXT_PUBLIC_SERVER + '/uploadedImage.jpg';
-      const firstGradient = screenWidth < 390 ? '15vmax' : (screenWidth < 640 ? '12vmax' : (screenWidth < 1050 ? '18vmax' : (screenWidth < 1250 ? '20vmax' : '250px')));
-      const secondGradient = screenWidth < 390 ? '30vmax' : (screenWidth < 640 ? '25vmax' : (screenWidth < 1050 ? '37vmax' : (screenWidth < 1250 ? '40vmax' : '500px')));
+
+      // Define maximum sizes for the gradients
+      const maxFirstGradientSize = 300; // Example: 300px
+      const maxSecondGradientSize = 600; // Example: 600px
+
+      // Dynamically adjust the base size of the gradients based on the smaller screen dimension
+      // Ensure it does not exceed the maximum sizes
+      const baseSize = Math.min(minDimension * 0.25, maxFirstGradientSize);
+      const firstGradient = `${baseSize}px`;
+      const secondGradient = `${Math.min(baseSize * 2, maxSecondGradientSize)}px`;
       
 
       setStyle({
