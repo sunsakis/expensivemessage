@@ -212,7 +212,7 @@ export default function Footer( { price } ) {
                         type="number"
                         step="0.0001"
                         min={minBid}
-                        placeholder="At least 0.0001 ETH higher"
+                        placeholder={minBid + " ETH or higher"}
                         className="px-3 py-3 border border-gray-300 rounded-md w-full text-gray-600"
                         required
                     />
