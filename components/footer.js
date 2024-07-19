@@ -14,7 +14,7 @@ import styles from '@/styles/Home.module.css';
 
 const ABI = [
     "event MessageChanged(uint256 newPrice, address messenger, , uint256 msgCounter)",
-    "function setMessage(string memory newMessage, uint256 priceIncrease) external payable",
+    "function setMessage(string memory _message) external payable",
     "function getMessages(uint256 _msgCounter) public view returns (string memory)",
     "function getPrice() public view returns (uint256)",
     "function withdraw() external",
@@ -24,7 +24,7 @@ export default function Footer( { price } ) {
   const [showModal, setShowModal] = useState(false);
   const [closingAnimation, setClosingAnimation] = useState(false);
   const [message, setMessage] = useState('');
-  const [bid, setBid] = useState(0.0002);
+  const [bid, setBid] = useState();
   const [loading, setLoading] = useState(false);
 
   const handleClose = () => {
@@ -44,12 +44,19 @@ export default function Footer( { price } ) {
   };
 
   const handleBidChange = (e) => {
-    try{
-        setBid((e.target.value).toString());
-        } catch (error) {
-            alert(error);
-        }
+    try {
+      // Parse the input value to a float
+      const inputBid = parseFloat(e.target.value);
+      // Add 0.0001 to the input bid
+      const adjustedBid = (inputBid + 0.0001).toFixed(4); // Ensure the bid is always 0.0001 higher
+      // Update the bid state with the adjusted bid
+      setBid(adjustedBid.toString()); // Convert back to string if your state expects a string
+    } catch (error) {
+      alert(error);
+    }
   };
+
+  const minBid = (parseFloat(price) + 0.0001).toFixed(4);
 
   const handleSubmit = async (e) => {
     try {
@@ -61,9 +68,7 @@ export default function Footer( { price } ) {
         throw new Error('Bid must be a non-empty string');
       }
   
-      const parsedBid = ethers.utils.parseEther(bid); // Convert bid to BigNumber
-      const priceIncrease = ethers.utils.parseEther((bid - price).toString());
-      console.log(bid); // Log the BigNumber for debugging
+      const parsedBid = ethers.utils.parseEther((bid).toString()); // Convert bid + fee to BigNumber
   
       const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
       const signer = provider.getSigner();
@@ -77,6 +82,7 @@ export default function Footer( { price } ) {
         return provider.waitForTransaction(tx.hash);
       }).then(() => {
         setLoading(false);
+        handleClose();
         Router.push('/');
       });
     } catch (error) {
@@ -148,7 +154,7 @@ export default function Footer( { price } ) {
       <div className="absolute bottom-1 left-0 right-0">
             <div className="sm:m-5">
                 <p className="text-sm text-right tracking-tight mr-9 text-gray-300">
-                        Current MXM
+                        This MXM costed
                     </p>
                     <p className="text-right mr-8">
                         <b className="text-2xl">
@@ -204,8 +210,11 @@ export default function Footer( { price } ) {
                         onChange={handleBidChange}
                         id="bid"
                         type="number"
-                        placeholder="0.05 ETH"
+                        step="0.0001"
+                        min={minBid}
+                        placeholder="At least 0.0001 ETH higher"
                         className="px-3 py-3 border border-gray-300 rounded-md w-full text-gray-600"
+                        required
                     />
                     <div className="pt-4">
                     <label className="text-black">
@@ -216,12 +225,14 @@ export default function Footer( { price } ) {
                         rows="4"
                         placeholder="The message"
                         className="px-3 py-3 mt-1 border border-gray-300 rounded-md w-full text-gray-600"
+                        required
                     />
                     </div>
                     <div className="flex items-center">
                       <input
                         id="termsAndConditions"
                         type="checkbox"
+                        required
                         className="form-checkbox h-5 w-5 text-gray-600"
                       /><label htmlFor="termsAndConditions" className="ml-2 text-sm text-gray-700">
                         I have read and accept the terms and conditions

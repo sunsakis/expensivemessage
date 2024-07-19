@@ -36,8 +36,8 @@ contract ExpensiveMessage {
         return messages[_msgCounter];
     }
 
-   function readMessage() public view returns (string memory) {
-        return message;
+   function readMessage() public view returns (string memory, uint256) {
+        return (message, msgCounter);
     }
 
     function getPrice() public view returns (uint256) {
@@ -47,16 +47,16 @@ contract ExpensiveMessage {
     function setMessage(string memory _message) external payable {
         require(msg.value >= msgPrice + fee + 0.0001 ether, "Your message must be at least 0.01 ETH more expensive than the previous one.");
 
-        uint256 rewardToPay = msgPrice;
-        address rewardReceiver = messenger;
+        uint256 previousPrice = msgPrice;
+        address previousMessenger = messenger;
 
         message = _message;
         messages[msgCounter] = _message;
-        msgPrice = msg.value;
+        msgPrice = msg.value - fee;
         msgCounter += 1;
         messenger = msg.sender;
 
-        (bool sent, ) = rewardReceiver.call{ value: rewardToPay / 2 }("");
+        (bool sent, ) = previousMessenger.call{ value: previousPrice + (msgPrice - previousPrice) / 2 }("");
         require(sent, "Failed to send Ether");
 
         emit MessageChanged(msgPrice, msg.sender, msgCounter);

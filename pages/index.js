@@ -13,11 +13,12 @@ import titillium from '@/styles/fonts/font.js';
 
 
 const ABI = [
-  "event MessageChanged(uint256 newPrice, address messenger)",
-  "function setMessage(string memory newMessage) external payable",
-  "function getMessages(uint256 _msgPrice) public view returns (string memory)",
-  "function readMessage() public view returns (string)",
+  "event MessageChanged(uint256 newPrice, address messenger, , uint256 msgCounter)",
+  "function setMessage(string memory newMessage, uint256 priceIncrease) external payable",
+  "function readMessage() public view returns (string memory, uint256)",
+  "function getMessages(uint256 _msgCounter) public view returns (string memory)",
   "function getPrice() public view returns (uint256)",
+  "function withdraw() external",
 ];
 
 export default function Home({ newMessage, price }) {
@@ -105,7 +106,10 @@ export async function getServerSideProps() {
   const alchemy = new Alchemy(settings);
   const ethersProvider = await alchemy.config.getProvider();
   const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
-  const newMessage = await contract.readMessage();
+  const newMessageCall = await contract.readMessage();
+  const newMessage = newMessageCall[0];
+  const counter = newMessageCall[1];
+  console.log(counter.toNumber());
   const price = await contract.getPrice();
   // let priceIndex = String(price / 4);
 
