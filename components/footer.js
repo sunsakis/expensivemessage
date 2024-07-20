@@ -59,8 +59,8 @@ export default function Footer( { price } ) {
   const minBid = (parseFloat(price) + 0.0001).toFixed(4);
 
   const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent the default form submission
     try {
-      e.preventDefault();
       setLoading(true); // Show loading indicator
   
       // Validate bid is a string and not empty
@@ -77,7 +77,7 @@ export default function Footer( { price } ) {
         ABI,
         signer
       );
-  
+    
       await contract.setMessage( message, { value: parsedBid } ).then((tx) => {
         return provider.waitForTransaction(tx.hash);
       }).then(() => {
@@ -96,36 +96,36 @@ export default function Footer( { price } ) {
   const connectionStatus = useConnectionStatus();
   const switchChain = useSwitchChain();
 
-  if (connectionStatus === "disconnected") return (
-    <div class="fixed bottom-8 sm:bottom-5 justify-center">
-      <ConnectWallet 
-        btnTitle="Connect MetaMask"
-        modalTitle="Choose your wallet provider"
-        className={styles.connect}
-      />
-    </div>
-  );
+  // if (connectionStatus === "disconnected") return (
+  //   <div class="fixed bottom-8 sm:bottom-5 justify-center">
+  //     <ConnectWallet 
+  //       btnTitle="Connect MetaMask"
+  //       modalTitle="Choose your wallet provider"
+  //       className={styles.connect}
+  //     />
+  //   </div>
+  // );
 
-  if (connectionStatus === "connecting") return (
-    <div class="fixed bottom-8 sm:bottom-5 justify-center">
-      <ConnectWallet />
-    </div>
-  );
+  // if (connectionStatus === "connecting") return (
+  //   <div class="fixed bottom-8 sm:bottom-5 justify-center">
+  //     <ConnectWallet />
+  //   </div>
+  // );
 
-  if (ChainId !== Sepolia.chainId && isMismatched) try { 
+  // if (ChainId !== Sepolia.chainId && isMismatched) try { 
 
-    return (
-      <div class="fixed bottom-8 sm:bottom-5 justify-center">
-        <button 
-          class="rounded-lg bg-white text-black font-medium p-2 hover:bg-green-500 hover:text-white transition-all" 
-          onClick={() => switchChain(Sepolia.chainId)}>
-            Switch to Sepolia
-        </button>
-      </div>
-    );
-  } catch (error) {
-    alert(error);
-  }
+  //   return (
+  //     <div class="fixed bottom-8 sm:bottom-5 justify-center">
+  //       <button 
+  //         class="rounded-lg bg-white text-black font-medium p-2 hover:bg-green-500 hover:text-white transition-all" 
+  //         onClick={() => switchChain(Sepolia.chainId)}>
+  //           Switch to Sepolia
+  //       </button>
+  //     </div>
+  //   );
+  // } catch (error) {
+  //   alert(error);
+  // }
 
     return (
 
@@ -238,13 +238,41 @@ export default function Footer( { price } ) {
                         I have read and accept the terms and conditions
                       </label>
                     </div>
-                    <div className="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
-                  <button
-                    className="bg-purple-400 text-white active:bg-purple-500 hover:bg-purple-500 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                    type="submit"
-                  >
-                    Next
-                  </button>
+                    <div className="flex items-center justify-center p-6 border-t border-solid border-gray-300 rounded-b">
+                  {connectionStatus === "disconnected" && (
+                  // <button
+                  //   className="bg-purple-400 text-white active:bg-purple-500 hover:bg-purple-500 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                  //   type="submit"
+                  // >
+                  //   Next
+                  // </button>
+                    <ConnectWallet 
+                      btnTitle="Connect your wallet"
+                      modalTitle="Choose your wallet provider"
+                      className={styles.connect}
+                    />
+                  )}
+                  {connectionStatus === "connecting" && (
+                    <ConnectWallet />
+                  )}
+                  {ChainId !== Sepolia.chainId && isMismatched && (
+                    <button 
+                      className="bg-white text-black font-medium p-2 hover:bg-green-500 hover:text-white transition-all" 
+                      onClick={() => switchChain(Sepolia.chainId)}>
+                        Switch to Sepolia
+                    </button>
+                  )}
+                  {console.log("Debug: connectionStatus", connectionStatus)}
+  {console.log("Debug: ChainId", ChainId)}
+  {console.log("Debug: isMismatched", isMismatched)}
+                  {connectionStatus === "connected" && isMismatched === false && (
+                    <button
+                      className="bg-white text-black font-medium p-2 hover:bg-green-500 hover:text-white transition-all" 
+                      type="submit"
+                    >
+                      Post
+                    </button>
+                  )} 
                 </div>
                   </form>
                 </div>
