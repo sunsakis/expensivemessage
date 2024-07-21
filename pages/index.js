@@ -6,6 +6,9 @@ import { useState, useEffect } from 'react';
 import Header from '../components/header.js';
 import Footer from '../components/footer.js';
 import Message from '../components/message.js';
+import { sepolia } from "thirdweb/chains";
+import { createThirdwebClient } from "thirdweb";
+import { createWallet } from "thirdweb/wallets";
 import Details from '../components/details.js';
 import Input from '../components/input.js';
 import titillium from '@/styles/fonts/font.js';
@@ -21,10 +24,41 @@ const ABI = [
   "function withdraw() external",
 ];
 
+const myChain = sepolia;
+
+const client = createThirdwebClient({
+  clientId: process.env.NEXT_PUBLIC_THIRDWEB_ID,
+});
+
+const wallets = [
+  createWallet("io.metamask"),
+  createWallet("com.coinbase.wallet"),
+  createWallet("com.trustwallet.app"),
+];
+
 export default function Home({ newMessage, price }) {
   const [style, setStyle] = useState({});
+  const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
+    const checkConnection = async () => {
+      if (window.ethereum) {
+        const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+        const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+        const networkId = await provider.getNetwork();
+        console.log(accounts);
+        if (accounts.length > 0) {
+          setIsConnected(networkId.chainId === myChain.id);
+        }
+        else {
+          setIsConnected(false);
+        }
+      }
+    };
+    window.ethereum?.on('chainChanged', checkConnection);
+    window.ethereum?.on('accountsChanged', checkConnection);
+    checkConnection();
+    
     const updateStyle = () => {
       const screenWidth = window.innerWidth;
       const screenHeight = window.innerHeight;
@@ -60,7 +94,11 @@ export default function Home({ newMessage, price }) {
     window.addEventListener('resize', updateStyle);
 
     // Cleanup
-    return () => window.removeEventListener('resize', updateStyle);
+    return () => {
+      window.removeEventListener('resize', updateStyle);
+      window.ethereum?.removeListener('chainChanged', checkConnection);
+      window.ethereum?.removeListener('accountsChanged', checkConnection);
+    }
   }, []); // Empty dependency array ensures this effect runs only once on mount
 
   return (
@@ -79,10 +117,10 @@ export default function Home({ newMessage, price }) {
       <main>
         <div style={style}>
           <span>
-            <Header />
+            <Header isConnected={isConnected} client={client} wallets={wallets} />
             <Message text={newMessage} />
             {/* <Details /> */}
-            <Footer price={price} />
+            <Footer price={price} isConnected={isConnected} client={client} wallets={wallets} mycChain={myChain} />
           </span>
         </div>
       </main>
@@ -109,7 +147,7 @@ export async function getServerSideProps() {
   const newMessageCall = await contract.readMessage();
   const newMessage = newMessageCall[0];
   const counter = newMessageCall[1];
-  console.log(counter.toNumber());
+  console.log(`msg counter: ${counter.toNumber()}`);
   const price = await contract.getPrice();
   // let priceIndex = String(price / 4);
 

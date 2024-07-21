@@ -1,16 +1,10 @@
 import React, { useState } from 'react';
 import Router from 'next/router';
-import { 
-  ConnectWallet,
-  useConnectionStatus,
-  useSwitchChain,
-  ChainId, 
-  useNetworkMismatch,
-} 
-from '@thirdweb-dev/react';
-import { Ethereum, Sepolia } from '@thirdweb-dev/chains';
 import { ethers } from 'ethers';
-import styles from '@/styles/Home.module.css';
+import {
+  ThirdwebProvider,
+  ConnectButton,
+} from "thirdweb/react";
 
 const ABI = [
     "event MessageChanged(uint256 newPrice, address messenger, , uint256 msgCounter)",
@@ -20,7 +14,7 @@ const ABI = [
     "function withdraw() external",
   ];
 
-export default function Footer( { price } ) {
+export default function Footer( { price, isConnected, client, wallets, myChain } ) {
   const [showModal, setShowModal] = useState(false);
   const [closingAnimation, setClosingAnimation] = useState(false);
   const [message, setMessage] = useState('');
@@ -92,43 +86,7 @@ export default function Footer( { price } ) {
     }
   };
 
-  const isMismatched = useNetworkMismatch();
-  const connectionStatus = useConnectionStatus();
-  const switchChain = useSwitchChain();
-
-  // if (connectionStatus === "disconnected") return (
-  //   <div class="fixed bottom-8 sm:bottom-5 justify-center">
-  //     <ConnectWallet 
-  //       btnTitle="Connect MetaMask"
-  //       modalTitle="Choose your wallet provider"
-  //       className={styles.connect}
-  //     />
-  //   </div>
-  // );
-
-  // if (connectionStatus === "connecting") return (
-  //   <div class="fixed bottom-8 sm:bottom-5 justify-center">
-  //     <ConnectWallet />
-  //   </div>
-  // );
-
-  // if (ChainId !== Sepolia.chainId && isMismatched) try { 
-
-  //   return (
-  //     <div class="fixed bottom-8 sm:bottom-5 justify-center">
-  //       <button 
-  //         class="rounded-lg bg-white text-black font-medium p-2 hover:bg-green-500 hover:text-white transition-all" 
-  //         onClick={() => switchChain(Sepolia.chainId)}>
-  //           Switch to Sepolia
-  //       </button>
-  //     </div>
-  //   );
-  // } catch (error) {
-  //   alert(error);
-  // }
-
     return (
-
     <>
     <style>
         {`
@@ -228,46 +186,27 @@ export default function Footer( { price } ) {
                         required
                     />
                     </div>
-                    <div className="flex items-center">
-                      <input
-                        id="termsAndConditions"
-                        type="checkbox"
-                        required
-                        className="form-checkbox h-5 w-5 text-gray-600"
-                      /><label htmlFor="termsAndConditions" className="ml-2 text-sm text-gray-700">
-                        I have read and accept the terms and conditions
-                      </label>
-                    </div>
-                    <div className="flex items-center justify-center p-6 border-t border-solid border-gray-300 rounded-b">
-                  {connectionStatus === "disconnected" && (
-                  // <button
-                  //   className="bg-purple-400 text-white active:bg-purple-500 hover:bg-purple-500 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                  //   type="submit"
-                  // >
-                  //   Next
-                  // </button>
-                    <ConnectWallet 
-                      btnTitle="Connect your wallet"
-                      modalTitle="Choose your wallet provider"
-                      className={styles.connect}
-                    />
-                  )}
-                  {connectionStatus === "connecting" && (
-                    <ConnectWallet />
-                  )}
-                  {ChainId !== Sepolia.chainId && isMismatched && (
-                    <button 
-                      className="bg-white text-black font-medium p-2 hover:bg-green-500 hover:text-white transition-all" 
-                      onClick={() => switchChain(Sepolia.chainId)}>
-                        Switch to Sepolia
-                    </button>
-                  )}
-                  {console.log("Debug: connectionStatus", connectionStatus)}
-  {console.log("Debug: ChainId", ChainId)}
-  {console.log("Debug: isMismatched", isMismatched)}
-                  {connectionStatus === "connected" && isMismatched === false && (
+                    <div className="flex items-center justify-center p-6 border-solid border-gray-300 rounded-b">
+                  {!isConnected ? (
+                    <ThirdwebProvider>
+                      <ConnectButton
+                        client={client}
+                        wallets={wallets}
+                        theme={"dark"}
+                        connectModal={{
+                          size: "compact",
+                          termsOfServiceUrl: "https://YadaYa",
+                          showThirdwebBranding: false,
+                        }}
+                        chain={myChain}
+                      />
+                    </ThirdwebProvider>
+                  ):  
+                  ( 
                     <button
-                      className="bg-white text-black font-medium p-2 hover:bg-green-500 hover:text-white transition-all" 
+                      className="
+                        bg-purple-400 rounded-2xl font-medium p-2 px-5 hover:bg-purple-500 hover:text-white transition-all
+                      " 
                       type="submit"
                     >
                       Post
@@ -276,17 +215,6 @@ export default function Footer( { price } ) {
                 </div>
                   </form>
                 </div>
-                {loading && (
-                    <button
-                        type="button"
-                        class="rounded-lg bg-white text-black font-medium h-5 w-5 p-8 transition-all"
-                        disabled
-                    >
-                        <svg class="animate-spin h-[40px] w-[45px]">
-                        <circle cx="15" cy="15" r="15"/>
-                        </svg>
-                    </button>
-                )} 
               </div>
             </div>
           </div>
