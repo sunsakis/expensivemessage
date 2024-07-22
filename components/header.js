@@ -6,7 +6,7 @@ import {
     ConnectButton,
   } from "thirdweb/react";
 
-export default function Header({ isConnected, client, wallets, myChain }) {
+export default function Header({ isConnected, client, wallets, myChain, counter }) {
     const [showWallet, setShowWallet] = useState(true);
 
     return (

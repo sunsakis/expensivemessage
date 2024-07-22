@@ -132,7 +132,6 @@ export default function Footer( { price, isConnected, client, wallets, myChain }
             <div className="absolute bottom-1 flex justify-center mx-auto w-full sm:w-auto m-2 sm:m-5">
                 <div className="flex text-xs sm:text-sm text-gray-200 ml-1">
                     <p className="mx-2">What is the MXM?</p>
-                    <p className="mx-2">Archive</p>
                     <p className="mx-2">Terms and conditions</p>
                 </div>
             </div>

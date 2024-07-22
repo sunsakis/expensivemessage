@@ -135,22 +135,34 @@ export default function MessagePage({ message, counter, newestCounter }) {
       </Head>
       <main>
         <div style={style}>
-          <span>
             <Header isConnected={isConnected} client={client} wallets={wallets} />
             <Message text={message} />
             <Footer price={"x"} isConnected={isConnected} client={client} wallets={wallets} mycChain={myChain} />
-            <div>
-            <h1>Message {counter}</h1>
-            <p>{message}</p>
-            {counter > 1 && (
-                <button onClick={() => router.push(`/${counter - 1}`)}>Previous Message</button>
-            )}
-            {showNextButton && (
-                <button onClick={() => router.push(`/${Math.min(counter + 1, newestCounter)}`)}>Next Message</button>
-            )}
+            <div className="mx-auto text-center flex-col flex">
+                {showNextButton && (
+                    <button 
+                        onClick={() => router.push(`/${Math.min(counter + 1, newestCounter)}`)}
+                    >
+                        ^
+                    </button>
+                )}
+                {counter === newestCounter - 1 && (
+                    <button 
+                        onClick={() => router.push(`/`)}
+                    >
+                        ^
+                    </button>
+                )}
+                {counter > 1 && (
+                    <button 
+                        onClick={() => router.push(`/${counter - 1}`)}
+                        className="rotate-180"
 
-        </div>
-          </span>
+                    >
+                        ^
+                    </button>
+                )}
+            </div>
         </div>
       </main>
     </>

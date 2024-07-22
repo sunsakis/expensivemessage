@@ -100,25 +100,19 @@ export default function Home({ newMessage, price, counter }) {
     <>
       <Head>
         <title>MXM - Most eXpensive Message</title>
-        <meta name="description" content="Become a part of Internet history, but every message costs more than the previous one." />
+        <meta name="description" content="Your message written on-chain forever, each message more valuable than the last." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta property="og:title" content="World's Most Expensive Message Board" />
-        <meta property="og:description" content="Become a part of Internet history, but every message costs more than the previous one." />
+        <meta property="og:title" content="MXM - Most eXpensive Message" />
+        <meta property="og:description" content="Your message written on-chain forever, each message more valuable than the last." />
         <meta property="og:url" content="mxm.social" /> 
         <meta property="og:site_name" content="MXM" />
         <meta name="twitter:creator" content="@MostXMessage" /> 
       </Head>
       <main>
         <div style={style}>
-          <span>
-            <Header isConnected={isConnected} client={client} wallets={wallets} />
+            <Header isConnected={isConnected} client={client} wallets={wallets} counter={counter} />
             <Message text={newMessage} />
             <Footer price={price} isConnected={isConnected} client={client} wallets={wallets} mycChain={myChain} />
-          </span>
-          <div>
-          <Details />
-          <a href={`/${counter - 1}`}><button>View previous message</button></a>
-        </div>
         </div>
       </main>
     </>
