@@ -112,7 +112,7 @@ export default function Footer( { price, isConnected, client, wallets, myChain }
       <div className="absolute bottom-1 left-0 right-0">
             <div className="sm:m-5">
                 <p className="text-sm text-right tracking-tight mr-9 text-gray-300">
-                        This MXM costed
+                        This MXM cost
                     </p>
                     <p className="text-right mr-8">
                         <b className="text-2xl">
@@ -205,7 +205,7 @@ export default function Footer( { price, isConnected, client, wallets, myChain }
                   ( 
                     <button
                       className="
-                        bg-purple-400 rounded-2xl font-medium p-2 px-5 hover:bg-purple-500 hover:text-white transition-all
+                        bg-purple-500 rounded-2xl font-medium p-2 px-5 hover:bg-purple-600 hover:text-white transition-all
                       " 
                       type="submit"
                     >

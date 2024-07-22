@@ -9,8 +9,6 @@ import {
 export default function Header({ isConnected, client, wallets, myChain }) {
     const [showWallet, setShowWallet] = useState(true);
 
-    console.log(`is CONNECTED? ${isConnected}`);
-
     return (
             <div className="flex">
                 <div className="m-2 absolute top-5 left-5">

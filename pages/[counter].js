@@ -1,23 +1,23 @@
-import Head from 'next/head'
+import { useRouter } from 'next/router';
 import { ethers } from 'ethers';
 import { Network, Alchemy } from 'alchemy-sdk';
-import { useState, useEffect } from 'react';
 import Header from '../components/header.js';
+import Head from 'next/head'
 import Footer from '../components/footer.js';
 import Message from '../components/message.js';
+import { useState, useEffect } from 'react';
 import { sepolia } from "thirdweb/chains";
 import { createThirdwebClient } from "thirdweb";
 import { createWallet } from "thirdweb/wallets";
-import Details from '../components/details.js';
 
 const ABI = [
-  "event MessageChanged(uint256 newPrice, address messenger, , uint256 msgCounter)",
-  "function setMessage(string memory newMessage, uint256 priceIncrease) external payable",
-  "function readMessage() public view returns (string memory, uint256)",
-  "function getMessages(uint256 _msgCounter) public view returns (string memory)",
-  "function getPrice() public view returns (uint256)",
-  "function withdraw() external",
-];
+    "event MessageChanged(uint256 newPrice, address messenger, , uint256 msgCounter)",
+    "function setMessage(string memory newMessage, uint256 priceIncrease) external payable",
+    "function readMessage() public view returns (string memory, uint256)",
+    "function getMessages(uint256 _msgCounter) public view returns (string memory)",
+    "function getPrice() public view returns (uint256)",
+    "function withdraw() external",
+  ];
 
 const myChain = sepolia;
 
@@ -31,9 +31,32 @@ const wallets = [
   createWallet("com.trustwallet.app"),
 ];
 
-export default function Home({ newMessage, price, counter }) {
-  const [style, setStyle] = useState({});
-  const [isConnected, setIsConnected] = useState(false);
+export async function getServerSideProps(context) {
+    const { counter } = context.params;
+    const adjustedCounter = Math.max(0, counter - 1); // Ensure it doesn't go below 0
+    const settings = {
+    apiKey: process.env.ALCHEMY_API, // Replace with your Alchemy API Key.
+    network: Network.ETH_SEPOLIA, // Replace with your network.
+    };
+
+    const alchemy = new Alchemy(settings);
+    const ethersProvider = await alchemy.config.getProvider();
+    const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
+
+    // Assuming your contract has a method to fetch message by counter
+    const messageCall = await contract.getMessages(adjustedCounter);
+    const newCounter = await contract.readMessage().then(result => result[1]);
+    const message = messageCall ? messageCall : null;
+    const newestCounter = newCounter.toNumber();
+
+    return {
+    props: { message, counter: parseInt(counter), newestCounter }, // Pass message and counter as props
+    };
+}
+
+export default function MessagePage({ message, counter, newestCounter }) {
+    const [style, setStyle] = useState({});
+    const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -95,8 +118,10 @@ export default function Home({ newMessage, price, counter }) {
       window.ethereum?.removeListener('accountsChanged', checkConnection);
     }
   }, []); // Empty dependency array ensures this effect runs only once on mount
+    const router = useRouter();
+    const showNextButton = counter < newestCounter - 1;
 
-  return (
+    return (
     <>
       <Head>
         <title>MXM - Most eXpensive Message</title>
@@ -112,44 +137,22 @@ export default function Home({ newMessage, price, counter }) {
         <div style={style}>
           <span>
             <Header isConnected={isConnected} client={client} wallets={wallets} />
-            <Message text={newMessage} />
-            <Footer price={price} isConnected={isConnected} client={client} wallets={wallets} mycChain={myChain} />
-          </span>
-          <div>
-          <Details />
-          <a href={`/${counter - 1}`}><button>View previous message</button></a>
+            <Message text={message} />
+            <Footer price={"x"} isConnected={isConnected} client={client} wallets={wallets} mycChain={myChain} />
+            <div>
+            <h1>Message {counter}</h1>
+            <p>{message}</p>
+            {counter > 1 && (
+                <button onClick={() => router.push(`/${counter - 1}`)}>Previous Message</button>
+            )}
+            {showNextButton && (
+                <button onClick={() => router.push(`/${Math.min(counter + 1, newestCounter)}`)}>Next Message</button>
+            )}
+
         </div>
+          </span>
         </div>
       </main>
     </>
-  )
+    );
 }
-
-export async function getServerSideProps() {
-
-  const settings = {
-    apiKey: process.env.ALCHEMY_API,
-    network: Network.ETH_SEPOLIA,
-  };
-
-  const alchemy = new Alchemy(settings);
-  const ethersProvider = await alchemy.config.getProvider();
-  const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
-  const newMessageCall = await contract.readMessage();
-  const newMessage = newMessageCall[0];
-  const counter = newMessageCall[1];
-  const price = await contract.getPrice();
-
-  const formatPrice = ethers.utils.formatEther(price);   
-
-  return {
-    props: {
-      newMessage: newMessage,
-      price: formatPrice,
-      counter: counter.toNumber(),
-    },
-    //revalidate: 1,
-  };
-}
-  
-
