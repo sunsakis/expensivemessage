@@ -45,8 +45,8 @@ export default function Header({ isConnected, client, wallets, myChain, showNext
                     )}
                 </div>
                 {counter !== 0 && (
-                    <div className="absolute inset-0 flex justify-center items-center">
-                        <div className="flex justify-center text-center items-center mx-auto text-xl mt-16 my-auto">
+                    <div className="fixed inset-x-0 top-0 flex justify-center text-xl">
+                        <div className="flex justify-center text-center items-center mx-auto text-xl mt-3 my-auto">
                             <button className="-rotate-90" onClick={showNext}>
                                 →
                             </button>

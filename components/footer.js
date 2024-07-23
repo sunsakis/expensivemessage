@@ -110,13 +110,6 @@ export default function Footer( { price, isConnected, client, wallets, myChain, 
         `}
       </style>
       <div className="absolute bottom-10 left-0 right-0">
-      {counter !== newestCounter && (
-        <div className="flex justify-center text-xl">
-          <button className="rotate-90" onClick={showPrevious}>
-            →
-          </button>
-        </div>
-      )}
             <div className="sm:m-5">
                 <p className="text-sm text-right tracking-tight mr-9 text-gray-300">
                         This MXM cost
@@ -143,6 +136,14 @@ export default function Footer( { price, isConnected, client, wallets, myChain, 
                 </div>
             </div>
         </div>
+        {counter !== newestCounter && (
+        <div className="fixed inset-x-0 bottom-0 mb-3 flex justify-center text-xl">
+          <button className="rotate-90" onClick={showPrevious}>
+            →
+          </button>
+        </div>
+      )}
+
       {showModal ? (
         <>
          <div className="fixed inset-0 bg-black opacity-60 z-40 flex justify-center items-center" onClick={() => handleClose()}></div> 
