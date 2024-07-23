@@ -105,7 +105,7 @@ export default function Home({ price, newestCounter, messages }) {
   const handlers = useSwipeable({
     onSwipedUp: () => showPreviousMessage(),
     onSwipedDown: () => showNextMessage(),
-    delta: 200,
+    delta: 150,
   });
 
   const showPreviousMessage = () => {

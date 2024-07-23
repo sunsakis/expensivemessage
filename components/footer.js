@@ -121,7 +121,7 @@ export default function Footer( { price, isConnected, client, wallets, myChain, 
                     </p>
                     <div className="flex justify-end mx-auto">
                     <button 
-                        className="w-full sm:w-auto mb-12 sm:mb-0"
+                        className="w-full sm:w-auto mb-12 sm:mb-0 z-50"
                         onClick={() => setShowModal(true)}>
                         <p className="sm:px-4 p-3 mt-2 mx-6 font-bold bg-white text-black hover:bg-slate-100 rounded-xl">
                             Claim the MXM
@@ -137,7 +137,7 @@ export default function Footer( { price, isConnected, client, wallets, myChain, 
             </div>
         </div>
         {counter !== newestCounter && (
-        <div className="fixed inset-x-0 bottom-0 mb-3 flex justify-center text-xl">
+        <div className="absolute inset-x-0 bottom-0 mb-3 flex justify-center text-xl">
           <button className="rotate-90" onClick={showPrevious}>
             →
           </button>
