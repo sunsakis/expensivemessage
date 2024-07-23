@@ -183,7 +183,18 @@ export default function Footer( { price, isConnected, client, wallets, myChain }
                         placeholder="The message"
                         className="px-3 py-3 mt-1 border border-gray-300 rounded-md w-full text-gray-600"
                         required
+                        maxLength="140"
                     />
+                    </div>
+                    <div className="flex items-center">
+                      <input
+                        id="termsAndConditions"
+                        type="checkbox"
+                        required
+                        className="form-checkbox h-5 w-5 text-gray-600"
+                      /><label htmlFor="termsAndConditions" className="ml-2 text-sm text-gray-700">
+                        I have read and accept the terms and conditions
+                      </label>
                     </div>
                     <div className="flex items-center justify-center p-6 border-solid border-gray-300 rounded-b">
                   {!isConnected ? (

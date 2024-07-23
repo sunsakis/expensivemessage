@@ -8,7 +8,8 @@ import Message from '../components/message.js';
 import { sepolia } from "thirdweb/chains";
 import { createThirdwebClient } from "thirdweb";
 import { createWallet } from "thirdweb/wallets";
-import Details from '../components/details.js';
+import { useSwipeable } from 'react-swipeable';
+import { useRouter } from 'next/router';
 
 const ABI = [
   "event MessageChanged(uint256 newPrice, address messenger, , uint256 msgCounter)",
@@ -31,9 +32,11 @@ const wallets = [
   createWallet("com.trustwallet.app"),
 ];
 
-export default function Home({ newMessage, price, counter }) {
+export default function Home({ price, newestCounter, messages }) {
   const [style, setStyle] = useState({});
   const [isConnected, setIsConnected] = useState(false);
+  const [message, setMessage] = useState(messages[0]);
+  const [counter, setCounter] = useState(1);
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -41,7 +44,6 @@ export default function Home({ newMessage, price, counter }) {
         const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
         const accounts = await window.ethereum.request({ method: 'eth_accounts' });
         const networkId = await provider.getNetwork();
-        console.log(accounts);
         if (accounts.length > 0) {
           setIsConnected(networkId.chainId === myChain.id);
         }
@@ -70,7 +72,6 @@ export default function Home({ newMessage, price, counter }) {
       const firstGradient = `${baseSize}px`;
       const secondGradient = `${Math.min(baseSize * 2, maxSecondGradientSize)}px`;
       
-
       setStyle({
         backgroundImage: `radial-gradient(circle at center, transparent ${firstGradient}, black ${secondGradient}), url(${profilePic})`,
         backgroundPosition: 'center, center',
@@ -83,18 +84,57 @@ export default function Home({ newMessage, price, counter }) {
         left: 0,
       });
     };
-
     updateStyle();
-
     window.addEventListener('resize', updateStyle);
+
+    const handleScroll = () => {
+      if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
+      console.log('End of page');
+    };
+    window.addEventListener('scroll', handleScroll);
 
     // Cleanup
     return () => {
       window.removeEventListener('resize', updateStyle);
       window.ethereum?.removeListener('chainChanged', checkConnection);
       window.ethereum?.removeListener('accountsChanged', checkConnection);
+      window.removeEventListener('scroll', handleScroll)
     }
   }, []); // Empty dependency array ensures this effect runs only once on mount
+
+  const getMessages = async () => {
+    try {
+      setMessage(prevMessages => [...prevMessages, message]);
+      setCounter(prevCounter => prevCounter - 1);
+    }
+    catch (error) {
+      console.error(error);
+    }
+  }
+
+  const handlers = useSwipeable({
+    onSwipedUp: () => showPreviousMessage(),
+    onSwipedDown: () => showNextMessage(),
+  });
+
+  const showPreviousMessage = () => {
+    setCounter(prevCounter => {
+      const newCounter = Math.min(prevCounter + 1, newestCounter);
+      setMessage(messages[newCounter]); // Use newCounter to ensure it's the updated value
+      console.log(newCounter); // Log newCounter
+      return newCounter; // Return the updated counter value
+    });
+  };
+  
+  const showNextMessage = () => {
+    setCounter(prevCounter => {
+      if (prevCounter === 0) return prevCounter;
+      const newCounter = Math.max(prevCounter - 1, 0);
+      setMessage(messages[newCounter]); // Correctly use newCounter here as well
+      console.log(newCounter); // Log newCounter
+      return newCounter; // Return the updated counter value
+    });
+  };
 
   return (
     <>
@@ -109,9 +149,9 @@ export default function Home({ newMessage, price, counter }) {
         <meta name="twitter:creator" content="@MostXMessage" /> 
       </Head>
       <main>
-        <div style={style}>
+        <div style={style} {...handlers}>
             <Header isConnected={isConnected} client={client} wallets={wallets} counter={counter} />
-            <Message text={newMessage} />
+            <Message text={message  } />
             <Footer price={price} isConnected={isConnected} client={client} wallets={wallets} mycChain={myChain} />
         </div>
       </main>
@@ -130,20 +170,26 @@ export async function getServerSideProps() {
   const ethersProvider = await alchemy.config.getProvider();
   const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
   const newMessageCall = await contract.readMessage();
-  const newMessage = newMessageCall[0];
-  const counter = newMessageCall[1];
+  const newestCounter = newMessageCall[1].toNumber();
   const price = await contract.getPrice();
+  const formatPrice = ethers.utils.formatEther(price);
+  const message = await contract.getMessages(newestCounter - 1);
 
-  const formatPrice = ethers.utils.formatEther(price);   
+  let messages = [];
+
+  for (let i = newestCounter - 1; i >= 0; i--) {
+    const message = await contract.getMessages(i);
+    messages.push(message);
+  }
 
   return {
     props: {
-      newMessage: newMessage,
       price: formatPrice,
-      counter: counter.toNumber(),
+      newestCounter: newestCounter,
+      message: message,
+      messages: messages,
     },
     //revalidate: 1,
   };
 }
   
-
