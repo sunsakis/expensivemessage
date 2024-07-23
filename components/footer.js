@@ -109,7 +109,7 @@ export default function Footer( { price, isConnected, client, wallets, myChain, 
             }
         `}
       </style>
-      <div className="absolute bottom-1 left-0 right-0">
+      <div className="absolute bottom-10 left-0 right-0">
       {counter !== newestCounter && (
         <div className="flex justify-center text-xl">
           <button className="rotate-90" onClick={showPrevious}>
