@@ -105,7 +105,7 @@ export default function Home({ price, newestCounter, messages }) {
   const handlers = useSwipeable({
     onSwipedUp: () => showPreviousMessage(),
     onSwipedDown: () => showNextMessage(),
-    delta: 50,
+    delta: 100,
   });
 
   const showPreviousMessage = () => {
@@ -153,7 +153,7 @@ export default function Home({ price, newestCounter, messages }) {
         <div style={style} {...handlers}>
             <Header isConnected={isConnected} client={client} wallets={wallets} counter={counter} showNext={showNextMessage} reset={reset}/>
             <Message text={message} /> 
-            <Footer price={price} isConnected={isConnected} client={client} wallets={wallets} mycChain={myChain} showPrevious={showPreviousMessage}/>
+            <Footer price={price} isConnected={isConnected} client={client} wallets={wallets} mycChain={myChain} newestCounter={newestCounter} counter={counter} showPrevious={showPreviousMessage}/>
         </div>
       </main>
     </>

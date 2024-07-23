@@ -13,7 +13,7 @@ export default function Header({ isConnected, client, wallets, myChain, showNext
     return (
         <>
             <div className="flex">
-                <div className="m-2 absolute top-5 left-5">
+                <div className="m-2 absolute top-5 left-5 z-10">
 
                     <button className="flex" onClick={reset}>
                         <Image
