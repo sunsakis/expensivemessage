@@ -14,7 +14,7 @@ const ABI = [
     "function withdraw() external",
   ];
 
-export default function Footer( { price, isConnected, client, wallets, myChain } ) {
+export default function Footer( { price, isConnected, client, wallets, myChain, showPrevious } ) {
   const [showModal, setShowModal] = useState(false);
   const [closingAnimation, setClosingAnimation] = useState(false);
   const [message, setMessage] = useState('');
@@ -110,6 +110,17 @@ export default function Footer( { price, isConnected, client, wallets, myChain }
         `}
       </style>
       <div className="absolute bottom-1 left-0 right-0">
+      <div className="flex justify-center text-xl">
+      <button className="-rotate-90" onClick={showPrevious}>
+          →
+        </button>
+      </div>
+      <div className="flex justify-center text-xl">
+
+        <button className="rotate-90" onClick={showPrevious}>
+          →
+        </button>
+      </div>
             <div className="sm:m-5">
                 <p className="text-sm text-right tracking-tight mr-9 text-gray-300">
                         This MXM cost

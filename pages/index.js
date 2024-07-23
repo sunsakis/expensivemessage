@@ -36,7 +36,7 @@ export default function Home({ price, newestCounter, messages }) {
   const [style, setStyle] = useState({});
   const [isConnected, setIsConnected] = useState(false);
   const [message, setMessage] = useState(messages[0]);
-  const [counter, setCounter] = useState(1);
+  const [counter, setCounter] = useState(0);
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -73,7 +73,7 @@ export default function Home({ price, newestCounter, messages }) {
       const secondGradient = `${Math.min(baseSize * 2, maxSecondGradientSize)}px`;
       
       setStyle({
-        backgroundImage: `radial-gradient(circle at center, transparent ${firstGradient}, black ${secondGradient}), url(${profilePic})`,
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), radial-gradient(circle at center, transparent ${firstGradient}, black ${secondGradient}), url(${profilePic})`,
         backgroundPosition: 'center, center',
         backgroundSize: 'auto, contain',
         backgroundRepeat: 'no-repeat, no-repeat',
@@ -102,19 +102,10 @@ export default function Home({ price, newestCounter, messages }) {
     }
   }, []); // Empty dependency array ensures this effect runs only once on mount
 
-  const getMessages = async () => {
-    try {
-      setMessage(prevMessages => [...prevMessages, message]);
-      setCounter(prevCounter => prevCounter - 1);
-    }
-    catch (error) {
-      console.error(error);
-    }
-  }
-
   const handlers = useSwipeable({
     onSwipedUp: () => showPreviousMessage(),
     onSwipedDown: () => showNextMessage(),
+    delta: 50,
   });
 
   const showPreviousMessage = () => {
@@ -136,6 +127,16 @@ export default function Home({ price, newestCounter, messages }) {
     });
   };
 
+  const reset = () => {
+    if (counter !== 0) { // Check if counter is not already 0
+      console.log('Resetting counter');
+      setCounter(0);
+      setMessage(messages[0]);
+    } else {
+      console.log('Counter is already at its default state');
+    }
+  };
+
   return (
     <>
       <Head>
@@ -150,9 +151,9 @@ export default function Home({ price, newestCounter, messages }) {
       </Head>
       <main>
         <div style={style} {...handlers}>
-            <Header isConnected={isConnected} client={client} wallets={wallets} counter={counter} />
-            <Message text={message  } />
-            <Footer price={price} isConnected={isConnected} client={client} wallets={wallets} mycChain={myChain} />
+            <Header isConnected={isConnected} client={client} wallets={wallets} counter={counter} showNext={showNextMessage} reset={reset}/>
+            <Message text={message} /> 
+            <Footer price={price} isConnected={isConnected} client={client} wallets={wallets} mycChain={myChain} showPrevious={showPreviousMessage}/>
         </div>
       </main>
     </>

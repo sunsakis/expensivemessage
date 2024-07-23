@@ -6,14 +6,16 @@ import {
     ConnectButton,
   } from "thirdweb/react";
 
-export default function Header({ isConnected, client, wallets, myChain, counter }) {
+export default function Header({ isConnected, client, wallets, myChain, showNext, counter, reset }) {
     const [showWallet, setShowWallet] = useState(true);
+    console.log(counter)
 
     return (
+        <>
             <div className="flex">
                 <div className="m-2 absolute top-5 left-5">
-                    <Link href="/">
-                    <button className="flex">
+
+                    <button className="flex" onClick={reset}>
                         <Image
                             src="/color_icon.svg"
                             alt="Expensive Message logo"
@@ -22,7 +24,7 @@ export default function Header({ isConnected, client, wallets, myChain, counter 
                         />
                         <b className="m-1 text-2xl">MXM</b>
                     </button>
-                    </Link>
+                    
                 </div>
                 <div className="m-2 absolute top-3 right-1">
                     {isConnected && showWallet === true && (
@@ -42,6 +44,16 @@ export default function Header({ isConnected, client, wallets, myChain, counter 
                         </ThirdwebProvider>
                     )}
                 </div>
+                {counter !== 0 && (
+                    <div className="absolute inset-0 flex justify-center items-center">
+                        <div className="flex justify-center text-center items-center mx-auto text-xl mt-16 my-auto">
+                            <button className="-rotate-90" onClick={showNext}>
+                                →
+                            </button>
+                        </div>
+                    </div>
+                )}
             </div>
+        </>
     )
 }
