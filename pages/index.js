@@ -105,7 +105,7 @@ export default function Home({ price, newestCounter, messages }) {
   const handlers = useSwipeable({
     onSwipedUp: () => showPreviousMessage(),
     onSwipedDown: () => showNextMessage(),
-    delta: 150,
+    delta: { up: 100, down: 150 },
   });
 
   const showPreviousMessage = () => {
@@ -141,10 +141,10 @@ export default function Home({ price, newestCounter, messages }) {
     <>
       <Head>
         <title>MXM - Most eXpensive Message</title>
-        <meta name="description" content="Your message written on-chain forever, each message more valuable than the last." />
+        <meta name="description" content="Free speech rewarded." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta property="og:title" content="MXM - Most eXpensive Message" />
-        <meta property="og:description" content="Your message written on-chain forever, each message more valuable than the last." />
+        <meta property="og:description" content="Free speech rewarded." />
         <meta property="og:url" content="mxm.social" /> 
         <meta property="og:site_name" content="MXM" />
         <meta name="twitter:creator" content="@MostXMessage" /> 

@@ -5,6 +5,7 @@ import {
   ThirdwebProvider,
   ConnectButton,
 } from "thirdweb/react";
+import { useStorageUpload } from '@thirdweb-dev/react';
 
 const ABI = [
     "event MessageChanged(uint256 newPrice, address messenger, , uint256 msgCounter)",
@@ -19,7 +20,11 @@ export default function Footer( { price, isConnected, client, wallets, myChain, 
   const [closingAnimation, setClosingAnimation] = useState(false);
   const [message, setMessage] = useState('');
   const [bid, setBid] = useState();
+  const [name, setName] = useState('');
+  const [image, setImage] = useState();
   const [loading, setLoading] = useState(false);
+
+  const { upload } = useStorageUpload();
 
   const handleClose = () => {
     setClosingAnimation(true);
@@ -49,6 +54,22 @@ export default function Footer( { price, isConnected, client, wallets, myChain, 
       alert(error);
     }
   };
+
+  const handleNameChange = (e) => {
+    try {
+      setName(e.target.value);
+    } catch (error) {
+      alert(error);
+    }
+  }
+
+  const handleImageChange = (e) => {
+    try {
+      setImage(e.target.files[0]);
+    } catch (error) {
+      alert(error);
+    }
+  }
 
   const minBid = (parseFloat(price) + 0.0001).toFixed(4);
 
@@ -178,7 +199,7 @@ export default function Footer( { price, isConnected, client, wallets, myChain, 
                         step="0.0001"
                         min={minBid}
                         placeholder={minBid + " ETH or higher"}
-                        className="px-3 py-3 border border-gray-300 rounded-md w-full text-gray-600"
+                        className="px-3 py-2 border border-gray-300 rounded-md w-full text-gray-600"
                         required
                     />
                     <div className="pt-4">
@@ -194,7 +215,30 @@ export default function Footer( { price, isConnected, client, wallets, myChain, 
                         maxLength="140"
                     />
                     </div>
-                    <div className="flex items-center">
+                    <label htmlFor="name" className="text-black text-sm">
+                      Name (optional):
+                    </label>
+                    <input
+                        onChange={handleNameChange}
+                        id="name"
+                        type="text"
+                        placeholder="Anon"
+                        className="px-3 py-2 border border-gray-300 rounded-md w-full text-gray-600"
+                    />
+                    <div className="">
+                      <label htmlFor="pic" className="text-black text-sm">
+                        Picture (optional):
+                      </label>
+                      <input
+                        onChange={handleImageChange}
+                        id="pic"
+                        type="file"
+                        accept="image/*"
+                        className="py-2 pl-1 border border-gray-300 rounded-md w-full text-gray-600"
+                      />
+                      {/* <button>Submit picture</button> */}
+                    </div>
+                    <div className="flex items-center pt-2">
                       <input
                         id="termsAndConditions"
                         type="checkbox"
@@ -204,7 +248,7 @@ export default function Footer( { price, isConnected, client, wallets, myChain, 
                         I have read and accept the terms and conditions
                       </label>
                     </div>
-                    <div className="flex items-center justify-center p-6 border-solid border-gray-300 rounded-b">
+                    <div className="flex items-center justify-center p-3 pb-2 border-solid border-gray-300 rounded-b">
                   {!isConnected ? (
                     <ThirdwebProvider>
                       <ConnectButton
