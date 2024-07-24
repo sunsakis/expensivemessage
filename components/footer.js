@@ -24,7 +24,7 @@ export default function Footer( { price, isConnected, client, wallets, myChain, 
   const [image, setImage] = useState();
   const [loading, setLoading] = useState(false);
 
-  const { upload } = useStorageUpload();
+  const { mutateAsync: upload } = useStorageUpload();
 
   const handleClose = () => {
     setClosingAnimation(true);
@@ -58,18 +58,30 @@ export default function Footer( { price, isConnected, client, wallets, myChain, 
   const handleNameChange = (e) => {
     try {
       setName(e.target.value);
+      console.log(name);
     } catch (error) {
       alert(error);
     }
   }
 
   const handleImageChange = (e) => {
-    try {
-      setImage(e.target.files[0]);
-    } catch (error) {
-      alert(error);
-    }
+    if (e.target.files[0]) {
+      try {
+        setImage(e.target.files[0]);
+        console.log(image);
+      }
+      catch (error) {
+        alert(error);
+      };
+    };
   }
+
+  const uploadToIPFS = async () => {
+    const uri = await upload({
+      data: [image]
+    });
+    console.log(uri);
+  };
 
   const minBid = (parseFloat(price) + 0.0001).toFixed(4);
 
@@ -220,6 +232,7 @@ export default function Footer( { price, isConnected, client, wallets, myChain, 
                     </label>
                     <input
                         onChange={handleNameChange}
+                        onClick={handleNameChange}
                         id="name"
                         type="text"
                         placeholder="Anon"
@@ -241,6 +254,7 @@ export default function Footer( { price, isConnected, client, wallets, myChain, 
                     <div className="flex items-center pt-2">
                       <input
                         id="termsAndConditions"
+                        onClick={uploadToIPFS}
                         type="checkbox"
                         required
                         className="form-checkbox h-5 w-5 text-gray-600"
