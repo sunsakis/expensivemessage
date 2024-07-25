@@ -8,15 +8,15 @@ const Message = ({ text }) => {
   
   const [name, setName] = useState('');
 
-  useEffect(() => {
-    fetch(process.env.NEXT_PUBLIC_SERVER)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.name) {
-          setName(data.name)
-        }
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch(process.env.NEXT_PUBLIC_SERVER)
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       if (data.name) {
+  //         setName(data.name)
+  //       }
+  //     });
+  // }, []);
 
   const handleClick = () => {
     const newName = prompt('Enter the name attributed to the new message', name);

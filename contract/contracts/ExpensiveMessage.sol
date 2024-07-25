@@ -2,13 +2,22 @@
 pragma solidity ^0.8.0;
 
 contract ExpensiveMessage {
-    uint256 public msgPrice;
-    uint256 public msgCounter;
+    uint public msgPrice;
     string public message;
     address public messenger;
-    uint256 public fee;
+    uint public fee;
 
-    mapping(uint256 => string) public messages;
+    struct Message {
+        string message;
+        address messenger;
+        uint price;
+        uint timestamp;
+        string imgHash;
+        string name;
+    }
+
+    mapping(uint => Message) public messages;
+    uint public msgCounter;
     
         /// @notice The owner of the contract
     address public immutable owner;
@@ -21,7 +30,7 @@ contract ExpensiveMessage {
         _;
     }
 
-    event MessageChanged(uint256 newPrice, address messenger, uint256 msgCounter);
+    event MessageChanged(uint newPrice, address messenger, uint msgCounter);
 
     constructor() {
         message = "Hello, Word!";
@@ -29,31 +38,33 @@ contract ExpensiveMessage {
         owner = msg.sender;
         messenger = msg.sender;
         msgCounter = 0;
-        fee = 0.0001 ether;
+        fee = (msgPrice * 5) / 100 > 0.0002 ether ? (msgPrice * 5) / 100 : 0.0002 ether;
+        messages[msgCounter] = Message(message, msg.sender, msgPrice, block.timestamp, "", "");
     }
 
-    function getMessages(uint256 _msgCounter) public view returns (string memory) {
-        return messages[_msgCounter];
+    function getMessages(uint _msgCounter) public view returns (string memory) {
+        return messages[_msgCounter].message;
     }
 
-   function readMessage() public view returns (string memory, uint256) {
+   function readMessage() public view returns (string memory, uint) {
         return (message, msgCounter);
     }
 
-    function getPrice() public view returns (uint256) {
+    function getPrice() public view returns (uint) {
         return msgPrice;
     }
 
-    function setMessage(string memory _message) external payable {
-        require(msg.value >= msgPrice + fee + 0.0001 ether, "Your message must be at least 0.01 ETH more expensive than the previous one.");
+    function setMessage(string memory _message, string memory _imgHash, string memory _name) external payable {
+        require(msg.value >= msgPrice + fee, "Don't be cheap now, your message deserves to be more expensive");
+        require(bytes(_message).length > 0, "Message cannot be empty");
 
-        uint256 previousPrice = msgPrice;
+        uint previousPrice = msgPrice;
         address previousMessenger = messenger;
 
         message = _message;
-        messages[msgCounter] = _message;
+        messages[msgCounter] = Message(_message, msg.sender, msgPrice, block.timestamp, _imgHash, _name);
         msgPrice = msg.value - fee;
-        msgCounter += 1;
+        msgCounter ++;
         messenger = msg.sender;
 
         (bool sent, ) = previousMessenger.call{ value: previousPrice + (msgPrice - previousPrice) / 2 }("");
@@ -62,14 +73,10 @@ contract ExpensiveMessage {
         emit MessageChanged(msgPrice, msg.sender, msgCounter);
     }
 
-    function setFee(uint256 _fee) external onlyOwner {
-        fee = _fee;
-    }
-
     function withdraw() external onlyOwner {
-        uint256 totalBalance = address(this).balance;
-        uint256 amountA = (totalBalance * 40) / 100;
-        uint256 amountB = (totalBalance * 10) / 100;
+        uint totalBalance = address(this).balance;
+        uint amountA = (totalBalance * 40) / 100;
+        uint amountB = (totalBalance * 10) / 100;
 
         address payable recipientA = payable(0xa89a142D86f2eB69827D74c0EC27317cB1715e78);
         address payable recipientB = payable(0x26E1138Ae46438282c4BE895F3E05A2cE6Dc7C80);
