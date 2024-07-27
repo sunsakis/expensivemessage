@@ -9,7 +9,6 @@ import { sepolia } from "thirdweb/chains";
 import { createThirdwebClient } from "thirdweb";
 import { createWallet } from "thirdweb/wallets";
 import { useSwipeable } from 'react-swipeable';
-import { useRouter } from 'next/router';
 
 const ABI = [
   "event MessageChanged(uint256 newPrice, address messenger, , uint256 msgCounter)",
@@ -17,6 +16,7 @@ const ABI = [
   "function readMessage() public view returns (string memory, uint256)",
   "function getMessages(uint256 _msgCounter) public view returns (string memory)",
   "function getPrices(uint256 _msgCounter) public view returns (uint256)",
+  "function getImgHashes(uint _msgCounter) public view returns (string memory)",
   "function getPrice() public view returns (uint256)",
   "function withdraw() external",
 ];
@@ -33,12 +33,13 @@ const wallets = [
   createWallet("com.trustwallet.app"),
 ];
 
-export default function Home({ newestPrice, newestCounter, messages, newestMessage, prices }) {
+export default function Home({ imgHashes, newestPrice, newestCounter, messages, newestMessage, prices }) {
   const [style, setStyle] = useState({});
   const [isConnected, setIsConnected] = useState(false);
   const [message, setMessage] = useState(newestMessage);
   const [counter, setCounter] = useState(0);
   const [msgPrices, setPrices] = useState(newestPrice);
+  const [imgHash, setImgHash] = useState('');
 
   useEffect(() => {
     console.log(prices);
@@ -63,7 +64,8 @@ export default function Home({ newestPrice, newestCounter, messages, newestMessa
       const screenWidth = window.innerWidth;
       const screenHeight = window.innerHeight;
       const minDimension = Math.min(screenWidth, screenHeight);
-      const profilePic = process.env.NEXT_PUBLIC_SERVER + '/uploadedImage.jpg';
+      const profilePic = imgHash.replace('ipfs://', 'https://ipfs.io/ipfs/');
+      
 
       // Define maximum sizes for the gradients
       const maxFirstGradientSize = 300; // Example: 300px
@@ -106,9 +108,10 @@ export default function Home({ newestPrice, newestCounter, messages, newestMessa
 
   const showPreviousMessage = () => {
     setCounter(prevCounter => {
-      const newCounter = Math.min(prevCounter + 1, newestCounter);
+      const newCounter = Math.min(prevCounter + 1, newestCounter - 1);
       setMessage(messages[newCounter]);
       setPrices(prices[newCounter]);
+      setImgHash(imgHashes[newCounter]);
       console.log(newCounter); // Log newCounter
       return newCounter; // Return the updated counter value
     });
@@ -120,6 +123,7 @@ export default function Home({ newestPrice, newestCounter, messages, newestMessa
       const newCounter = Math.max(prevCounter - 1, 0);
       setMessage(messages[newCounter]);
       setPrices(prices[newCounter]);
+      setImgHash(imgHashes[newCounter]);
       console.log(newCounter); // Log newCounter
       return newCounter; // Return the updated counter value
     });
@@ -177,14 +181,16 @@ export async function getServerSideProps() {
 
   let messages = [];
   let prices = [];
-
+  let imgHashes = [];
   
   for (let i = newestCounter - 1; i >= 0; i--) {
     const message = await contract.getMessages(i);
     const price = await contract.getPrices(i);
-    console.log(`message ${i} is ${message}`);
+    const imgHash = await contract.getImgHashes(i);
+    console.log(`message ${i} is ${imgHash}`);
     messages.push(message);
     prices.push(ethers.utils.formatEther(price));
+    imgHashes.push(imgHash);
   }
 
   return {
@@ -193,7 +199,8 @@ export async function getServerSideProps() {
       newestCounter: newestCounter,
       messages: messages,
       newestMessage: newestMessage,
-      prices: prices
+      prices: prices,
+      imgHashes: imgHashes,
     },
     //revalidate: 1,
   };

@@ -23,7 +23,6 @@ export default function Footer( { msgPrices, price, isConnected, client, wallets
   const [message, setMessage] = useState('');
   const [bid, setBid] = useState();
   const [name, setName] = useState('');
-  const [image, setImage] = useState();
   const [imgHash, setImgHash] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -64,26 +63,27 @@ export default function Footer( { msgPrices, price, isConnected, client, wallets
   }
 
   const handleImageChange = (e) => {
-    if (e.target.files[0]) {
+    
       try {
-        setImage(e.target.files[0]);
-        console.log(image);
+        const file = e.target.files[0];
+        uploadToIPFS(file);
       }
       catch (error) {
         alert(error);
       };
-    };
+    
   }
 
-  const uploadToIPFS = async () => {
-    if (imgHash !== "") {
+  const uploadToIPFS = async (file) => {
+    if (!file) return;
+    
+    try {
       const uri = await upload({
-        data: [image]
+        data: [file],
       });
       setImgHash(uri[0].toString());
-    }
-    else {
-      return;
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -113,7 +113,7 @@ export default function Footer( { msgPrices, price, isConnected, client, wallets
       const parsedBid = ethers.utils.parseEther((bid).toString());
 
       await uploadToIPFS();
-    
+
       await contract.setMessage( message, imgHash, name, { value: parsedBid } ).then((tx) => {
         return provider.waitForTransaction(tx.hash);
       }).then(() => {
@@ -257,7 +257,6 @@ export default function Footer( { msgPrices, price, isConnected, client, wallets
                         accept="image/*"
                         className="py-2 pl-1 border border-gray-300 rounded-md w-full text-gray-600"
                       />
-                      {/* <button>Submit picture</button> */}
                     </div>
                     <div className="flex items-center pt-2">
                       <input

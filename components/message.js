@@ -18,24 +18,24 @@ const Message = ({ text }) => {
   //     });
   // }, []);
 
-  const handleClick = () => {
-    const newName = prompt('Enter the name attributed to the new message', name);
-    if (newName) {
-      fetch(process.env.NEXT_PUBLIC_SERVER + '/name', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name: newName }),
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          setName(newName);
-        }
-      });
-    }
-  };
+  // const handleClick = () => {
+  //   const newName = prompt('Enter the name attributed to the new message', name);
+  //   if (newName) {
+  //     fetch(process.env.NEXT_PUBLIC_SERVER + '/name', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ name: newName }),
+  //     })
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       if (data.success) {
+  //         setName(newName);
+  //       }
+  //     });
+  //   }
+  // };
 
   return (
     <div className="flex justify-center items-center min-h-screen">
@@ -44,7 +44,7 @@ const Message = ({ text }) => {
           <b>{text}</b>
         </h1>
         <br/><br/>
-        <p className="text-sm drop-shadow-xl text-gray-50" onClick={handleClick}>
+        <p className="text-sm drop-shadow-xl text-gray-50">
           {name}
         </p>
       </div>
