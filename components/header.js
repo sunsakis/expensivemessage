@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { useState } from 'react';
 import Image from 'next/image';
 import {
@@ -8,8 +7,7 @@ import {
 
 export default function Header({ isConnected, client, wallets, myChain, showNext, counter, reset }) {
     const [showWallet, setShowWallet] = useState(true);
-    console.log(counter)
-
+    
     return (
         <>
             <div className="flex">

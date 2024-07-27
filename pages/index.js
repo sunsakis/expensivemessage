@@ -16,6 +16,7 @@ const ABI = [
   "function setMessage(string memory newMessage, uint256 priceIncrease) external payable",
   "function readMessage() public view returns (string memory, uint256)",
   "function getMessages(uint256 _msgCounter) public view returns (string memory)",
+  "function getPrices(uint256 _msgCounter) public view returns (uint256)",
   "function getPrice() public view returns (uint256)",
   "function withdraw() external",
 ];
@@ -32,13 +33,15 @@ const wallets = [
   createWallet("com.trustwallet.app"),
 ];
 
-export default function Home({ price, newestCounter, messages }) {
+export default function Home({ newestPrice, newestCounter, messages, newestMessage, prices }) {
   const [style, setStyle] = useState({});
   const [isConnected, setIsConnected] = useState(false);
-  const [message, setMessage] = useState(messages[0]);
+  const [message, setMessage] = useState(newestMessage);
   const [counter, setCounter] = useState(0);
+  const [msgPrices, setPrices] = useState(newestPrice);
 
   useEffect(() => {
+    console.log(prices);
     const checkConnection = async () => {
       if (window.ethereum) {
         const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
@@ -87,18 +90,11 @@ export default function Home({ price, newestCounter, messages }) {
     updateStyle();
     window.addEventListener('resize', updateStyle);
 
-    const handleScroll = () => {
-      if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
-      console.log('End of page');
-    };
-    window.addEventListener('scroll', handleScroll);
-
     // Cleanup
     return () => {
       window.removeEventListener('resize', updateStyle);
       window.ethereum?.removeListener('chainChanged', checkConnection);
       window.ethereum?.removeListener('accountsChanged', checkConnection);
-      window.removeEventListener('scroll', handleScroll)
     }
   }, []); // Empty dependency array ensures this effect runs only once on mount
 
@@ -111,7 +107,8 @@ export default function Home({ price, newestCounter, messages }) {
   const showPreviousMessage = () => {
     setCounter(prevCounter => {
       const newCounter = Math.min(prevCounter + 1, newestCounter);
-      setMessage(messages[newCounter]); // Use newCounter to ensure it's the updated value
+      setMessage(messages[newCounter]);
+      setPrices(prices[newCounter]);
       console.log(newCounter); // Log newCounter
       return newCounter; // Return the updated counter value
     });
@@ -121,7 +118,8 @@ export default function Home({ price, newestCounter, messages }) {
     setCounter(prevCounter => {
       if (prevCounter === 0) return prevCounter;
       const newCounter = Math.max(prevCounter - 1, 0);
-      setMessage(messages[newCounter]); // Correctly use newCounter here as well
+      setMessage(messages[newCounter]);
+      setPrices(prices[newCounter]);
       console.log(newCounter); // Log newCounter
       return newCounter; // Return the updated counter value
     });
@@ -153,7 +151,7 @@ export default function Home({ price, newestCounter, messages }) {
         <div style={style} {...handlers}>
             <Header isConnected={isConnected} client={client} wallets={wallets} counter={counter} showNext={showNextMessage} reset={reset}/>
             <Message text={message} /> 
-            <Footer price={price} isConnected={isConnected} client={client} wallets={wallets} mycChain={myChain} newestCounter={newestCounter} counter={counter} showPrevious={showPreviousMessage}/>
+            <Footer price={newestPrice} msgPrices={msgPrices} isConnected={isConnected} client={client} wallets={wallets} mycChain={myChain} newestCounter={newestCounter} counter={counter} showPrevious={showPreviousMessage} genesisMessage={message}/>
         </div>
       </main>
     </>
@@ -171,24 +169,31 @@ export async function getServerSideProps() {
   const ethersProvider = await alchemy.config.getProvider();
   const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
   const newMessageCall = await contract.readMessage();
+  const newestMessage = newMessageCall[0].toString();
   const newestCounter = newMessageCall[1].toNumber();
-  const price = await contract.getPrice();
-  const formatPrice = ethers.utils.formatEther(price);
-  const message = await contract.getMessages(newestCounter - 1);
+  const newestPrice = await contract.getPrice();
+  const formatPrice = ethers.utils.formatEther(newestPrice);
+  console.log(`newest counter is ${newestCounter}`);
 
   let messages = [];
+  let prices = [];
 
+  
   for (let i = newestCounter - 1; i >= 0; i--) {
     const message = await contract.getMessages(i);
+    const price = await contract.getPrices(i);
+    console.log(`message ${i} is ${message}`);
     messages.push(message);
+    prices.push(ethers.utils.formatEther(price));
   }
 
   return {
     props: {
-      price: formatPrice,
+      newestPrice: formatPrice,
       newestCounter: newestCounter,
-      message: message,
       messages: messages,
+      newestMessage: newestMessage,
+      prices: prices
     },
     //revalidate: 1,
   };

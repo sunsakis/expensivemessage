@@ -39,7 +39,7 @@ const Message = ({ text }) => {
 
   return (
     <div className="flex justify-center items-center min-h-screen">
-      <div className="max-w-md lg:max-w-xl p-4 text-center mx-auto w-full px-4">
+      <div className="max-w-md lg:max-w-xl p-4 text-center mx-auto w-full px-4 overflow-hidden break-words">
         <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold drop-shadow-xl">
           <b>{text}</b>
         </h1>

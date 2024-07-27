@@ -8,20 +8,23 @@ import {
 import { useStorageUpload } from '@thirdweb-dev/react';
 
 const ABI = [
-    "event MessageChanged(uint256 newPrice, address messenger, , uint256 msgCounter)",
-    "function setMessage(string memory _message) external payable",
-    "function getMessages(uint256 _msgCounter) public view returns (string memory)",
-    "function getPrice() public view returns (uint256)",
-    "function withdraw() external",
-  ];
+  "event MessageChanged(uint256 newPrice, address messenger, , uint256 msgCounter)",
+  "function setMessage(string memory _message, string memory _imgHash, string memory _name) external payable",
+  "function readMessage() public view returns (string memory, uint256)",
+  "function getMessages(uint256 _msgCounter) public view returns (string memory)",
+  "function getPrices(uint256 _msgCounter) public view returns (uint256)",
+  "function getPrice() public view returns (uint256)",
+  "function withdraw() external",
+];
 
-export default function Footer( { price, isConnected, client, wallets, myChain, showPrevious, newestCounter, counter } ) {
+export default function Footer( { msgPrices, price, isConnected, client, wallets, myChain, showPrevious, newestCounter, counter, genesisMessage } ) {
   const [showModal, setShowModal] = useState(false);
   const [closingAnimation, setClosingAnimation] = useState(false);
   const [message, setMessage] = useState('');
   const [bid, setBid] = useState();
   const [name, setName] = useState('');
   const [image, setImage] = useState();
+  const [imgHash, setImgHash] = useState('');
   const [loading, setLoading] = useState(false);
 
   const { mutateAsync: upload } = useStorageUpload();
@@ -36,7 +39,7 @@ export default function Footer( { price, isConnected, client, wallets, myChain, 
 
   const handleTextChange = (e) => {
     try{
-        setMessage(e.target.value);
+        setMessage(e.target.value.toString());
         } catch (error) {
         alert(error);
         }
@@ -46,10 +49,7 @@ export default function Footer( { price, isConnected, client, wallets, myChain, 
     try {
       // Parse the input value to a float
       const inputBid = parseFloat(e.target.value);
-      // Add 0.0001 to the input bid
-      const adjustedBid = (inputBid + 0.0001).toFixed(4); // Ensure the bid is always 0.0001 higher
-      // Update the bid state with the adjusted bid
-      setBid(adjustedBid.toString()); // Convert back to string if your state expects a string
+      setBid(inputBid.toString()); // Convert back to string
     } catch (error) {
       alert(error);
     }
@@ -57,8 +57,7 @@ export default function Footer( { price, isConnected, client, wallets, myChain, 
 
   const handleNameChange = (e) => {
     try {
-      setName(e.target.value);
-      console.log(name);
+      setName(e.target.value.toString());
     } catch (error) {
       alert(error);
     }
@@ -77,13 +76,21 @@ export default function Footer( { price, isConnected, client, wallets, myChain, 
   }
 
   const uploadToIPFS = async () => {
-    const uri = await upload({
-      data: [image]
-    });
-    console.log(uri);
+    if (imgHash !== "") {
+      const uri = await upload({
+        data: [image]
+      });
+      setImgHash(uri[0].toString());
+    }
+    else {
+      return;
+    }
   };
 
-  const minBid = (parseFloat(price) + 0.0001).toFixed(4);
+  const msgPriceFloat = parseFloat(price); // Convert msgPrice to a number
+  const fivePercentOfMsgPrice = msgPriceFloat * 0.05; // Calculate 5% of msgPrice
+  const minBidValue = Math.max(fivePercentOfMsgPrice, 0.0002); // Compare and get the higher value
+  const minBid = (parseFloat(msgPriceFloat + minBidValue)).toFixed(4);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission
@@ -94,9 +101,7 @@ export default function Footer( { price, isConnected, client, wallets, myChain, 
       if (typeof bid !== 'string' || bid.trim() === '') {
         throw new Error('Bid must be a non-empty string');
       }
-  
-      const parsedBid = ethers.utils.parseEther((bid).toString()); // Convert bid + fee to BigNumber
-  
+
       const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
       const signer = provider.getSigner();
       const contract = new ethers.Contract(
@@ -104,13 +109,17 @@ export default function Footer( { price, isConnected, client, wallets, myChain, 
         ABI,
         signer
       );
+  
+      const parsedBid = ethers.utils.parseEther((bid).toString());
+
+      await uploadToIPFS();
     
-      await contract.setMessage( message, { value: parsedBid } ).then((tx) => {
+      await contract.setMessage( message, imgHash, name, { value: parsedBid } ).then((tx) => {
         return provider.waitForTransaction(tx.hash);
       }).then(() => {
         setLoading(false);
         handleClose();
-        Router.push('/');
+        window.location.reload();
       });
     } catch (error) {
       console.error(error); // Log the error for debugging
@@ -149,7 +158,7 @@ export default function Footer( { price, isConnected, client, wallets, myChain, 
                     </p>
                     <p className="text-right mr-8">
                         <b className="text-2xl">
-                        {price} ETH
+                        {msgPrices} ETH
                         </b>
                     </p>
                     <div className="flex justify-end mx-auto">
@@ -169,7 +178,7 @@ export default function Footer( { price, isConnected, client, wallets, myChain, 
                 </div>
             </div>
         </div>
-        {counter !== newestCounter && (
+        {counter !== newestCounter && genesisMessage !== "Free speech rewarded." && (
         <div className="absolute inset-x-0 bottom-0 mb-3 flex justify-center text-xl">
           <button className="rotate-90" onClick={showPrevious}>
             →
@@ -224,7 +233,7 @@ export default function Footer( { price, isConnected, client, wallets, myChain, 
                         placeholder="The message"
                         className="px-3 py-3 mt-1 border border-gray-300 rounded-md w-full text-gray-600"
                         required
-                        maxLength="140"
+                        maxLength="160"
                     />
                     </div>
                     <label htmlFor="name" className="text-black text-sm">
@@ -232,10 +241,9 @@ export default function Footer( { price, isConnected, client, wallets, myChain, 
                     </label>
                     <input
                         onChange={handleNameChange}
-                        onClick={handleNameChange}
                         id="name"
                         type="text"
-                        placeholder="Anon"
+                        placeholder=""
                         className="px-3 py-2 border border-gray-300 rounded-md w-full text-gray-600"
                     />
                     <div className="">
@@ -254,7 +262,6 @@ export default function Footer( { price, isConnected, client, wallets, myChain, 
                     <div className="flex items-center pt-2">
                       <input
                         id="termsAndConditions"
-                        onClick={uploadToIPFS}
                         type="checkbox"
                         required
                         className="form-checkbox h-5 w-5 text-gray-600"
@@ -277,17 +284,25 @@ export default function Footer( { price, isConnected, client, wallets, myChain, 
                         chain={myChain}
                       />
                     </ThirdwebProvider>
-                  ):  
-                  ( 
+                  ) : ( 
+                    loading ? (
+                      <button
+                      className="bg-purple-200 rounded-2xl font-medium p-2 px-5 transition-all"
+                      type="button" // Change to "button" to prevent form submission when loading
+                      disabled // Disable the button to prevent multiple submissions
+                    >
+                      Posting...
+                    </button>
+                  ) : (
                     <button
                       className="
-                        bg-purple-500 rounded-2xl font-medium p-2 px-5 hover:bg-purple-600 hover:text-white transition-all
+                        bg-purple-400 rounded-2xl font-medium p-2 px-5 hover:bg-purple-500 hover:text-white transition-all
                       " 
                       type="submit"
                     >
-                      Post
+                      Submit
                     </button>
-                  )} 
+                  ))} 
                 </div>
                   </form>
                 </div>
