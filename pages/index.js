@@ -39,10 +39,42 @@ export default function Home({ imgHashes, newestPrice, newestCounter, messages, 
   const [message, setMessage] = useState(newestMessage);
   const [counter, setCounter] = useState(0);
   const [msgPrices, setPrices] = useState(newestPrice);
-  const [imgHash, setImgHash] = useState('');
+  const [imgHash, setImgHash] = useState(imgHashes[newestCounter - 1]);
+
+  function getImgURLFromHash(_imgHash) {
+    return _imgHash.replace('ipfs://', 'https://ipfs.io/ipfs/');
+  }
+
+  const updateStyle = (backgroundImageUrl) => {
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+    const minDimension = Math.min(screenWidth, screenHeight);
+
+    // Define maximum sizes for the gradients
+    const maxFirstGradientSize = 300; // Example: 300px
+    const maxSecondGradientSize = 600; // Example: 600px
+
+    // Dynamically adjust the base size of the gradients based on the smaller screen dimension
+    // Ensure it does not exceed the maximum sizes
+    const baseSize = Math.min(minDimension * 0.25, maxFirstGradientSize);
+    const firstGradient = `${baseSize}px`;
+    const secondGradient = `${Math.min(baseSize * 2, maxSecondGradientSize)}px`;
+    
+    setStyle({
+      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), radial-gradient(circle at center, transparent ${firstGradient}, black ${secondGradient}), url(${backgroundImageUrl})`,
+      backgroundPosition: 'center, center',
+      backgroundSize: 'auto, contain',
+      backgroundRepeat: 'no-repeat, no-repeat',
+      height: '100vh',
+      width: '100vw',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+    });
+  };
 
   useEffect(() => {
-    console.log(prices);
+    
     const checkConnection = async () => {
       if (window.ethereum) {
         const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
@@ -56,45 +88,25 @@ export default function Home({ imgHashes, newestPrice, newestCounter, messages, 
         }
       }
     };
+    const updateBackground = async () => {
+      // Ensure any required data is loaded before updating the background
+      // For example, if imgHashes or newestCounter are fetched asynchronously, wait for them to load
+      const newImgURL = getImgURLFromHash(imgHashes[newestCounter - 1]);
+      console.log(newImgURL); // Log newImgURL
+      updateStyle(newImgURL); // Call updateStyle with the new image URL
+    };
+    updateBackground(); // Call on component mount
+  
+    updateBackground(); // Call on component mount
     window.ethereum?.on('chainChanged', checkConnection);
     window.ethereum?.on('accountsChanged', checkConnection);
     checkConnection();
-    
-    const updateStyle = () => {
-      const screenWidth = window.innerWidth;
-      const screenHeight = window.innerHeight;
-      const minDimension = Math.min(screenWidth, screenHeight);
-      const profilePic = imgHash.replace('ipfs://', 'https://ipfs.io/ipfs/');
-      
-
-      // Define maximum sizes for the gradients
-      const maxFirstGradientSize = 300; // Example: 300px
-      const maxSecondGradientSize = 600; // Example: 600px
-
-      // Dynamically adjust the base size of the gradients based on the smaller screen dimension
-      // Ensure it does not exceed the maximum sizes
-      const baseSize = Math.min(minDimension * 0.25, maxFirstGradientSize);
-      const firstGradient = `${baseSize}px`;
-      const secondGradient = `${Math.min(baseSize * 2, maxSecondGradientSize)}px`;
-      
-      setStyle({
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), radial-gradient(circle at center, transparent ${firstGradient}, black ${secondGradient}), url(${profilePic})`,
-        backgroundPosition: 'center, center',
-        backgroundSize: 'auto, contain',
-        backgroundRepeat: 'no-repeat, no-repeat',
-        height: '100vh',
-        width: '100vw',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-      });
-    };
-    updateStyle();
-    window.addEventListener('resize', updateStyle);
+    const newImgURL = getImgURLFromHash(imgHashes[newestCounter - 1]);
+    window.addEventListener('resize', updateStyle(newImgURL));
 
     // Cleanup
     return () => {
-      window.removeEventListener('resize', updateStyle);
+      window.removeEventListener('resize', updateStyle(newImgURL));
       window.ethereum?.removeListener('chainChanged', checkConnection);
       window.ethereum?.removeListener('accountsChanged', checkConnection);
     }
@@ -109,6 +121,9 @@ export default function Home({ imgHashes, newestPrice, newestCounter, messages, 
   const showPreviousMessage = () => {
     setCounter(prevCounter => {
       const newCounter = Math.min(prevCounter + 1, newestCounter - 1);
+      const newImgHash = imgHashes[newCounter];
+      const newImgURL = getImgURLFromHash(newImgHash);
+      updateStyle(newImgURL);
       setMessage(messages[newCounter]);
       setPrices(prices[newCounter]);
       setImgHash(imgHashes[newCounter]);
@@ -121,6 +136,9 @@ export default function Home({ imgHashes, newestPrice, newestCounter, messages, 
     setCounter(prevCounter => {
       if (prevCounter === 0) return prevCounter;
       const newCounter = Math.max(prevCounter - 1, 0);
+      const newImgHash = imgHashes[newCounter];
+      const newImgURL = getImgURLFromHash(newImgHash);
+      updateStyle(newImgURL);
       setMessage(messages[newCounter]);
       setPrices(prices[newCounter]);
       setImgHash(imgHashes[newCounter]);
