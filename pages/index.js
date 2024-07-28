@@ -59,7 +59,7 @@ export default function Home({ imgHashes, newestPrice, newestCounter, messages, 
     const viewportHeight = window.innerHeight;
   
     // Define a minimum size for the spotlight
-    const minSpotlightSize = 300; // Example minimum size
+    const minSpotlightSize = 200; // Example minimum size
 
     // Use the smaller of the viewport dimensions to influence the spotlight size
     // Ensure the spotlight size does not go below the minimum size
