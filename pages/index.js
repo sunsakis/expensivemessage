@@ -58,17 +58,18 @@ export default function Home({ imgHashes, newestPrice, newestCounter, messages, 
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
   
-    // Use the smaller of the viewport dimensions to influence the spotlight size, ensuring it works for both landscape and portrait
-    let spotlightSize = Math.min(viewportWidth, viewportHeight);
-  
-    // Cap the spotlight size at 1500px
-    spotlightSize = Math.min(spotlightSize, 1000);
+    // Define a minimum size for the spotlight
+    const minSpotlightSize = 100; // Example minimum size
+
+    // Use the smaller of the viewport dimensions to influence the spotlight size
+    // Ensure the spotlight size does not go below the minimum size
+    let spotlightSize = Math.max(Math.min(viewportWidth, viewportHeight) * 0.3, minSpotlightSize);
   
     // Calculate the first and second gradients
     // The first gradient is the transparent center of the spotlight
     // The second gradient begins the dimming effect, so it should be slightly larger than the first
-    const firstGradient = `${spotlightSize / 2.8}px`; // Half the size for a circular gradient
-    const secondGradient = `${spotlightSize / 1.8}px`; // Full size for the dimming effect to start
+    const firstGradient = `${spotlightSize * 0.5}px`; // Half the size for a circular gradient
+    const secondGradient = `${spotlightSize}px`; // Full size for the dimming effect to start
     
     setStyle({
       backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), radial-gradient(circle at center, transparent ${firstGradient}, black ${secondGradient}), url(${backgroundImageUrl})`,
@@ -115,7 +116,7 @@ export default function Home({ imgHashes, newestPrice, newestCounter, messages, 
 
     // Cleanup
     return () => {
-      window.removeEventListener('resize', updateStyle(newImgURL));
+      window.removeEventListener('resize', () => updateStyle(newImgURL));
       window.ethereum?.removeListener('chainChanged', checkConnection);
       window.ethereum?.removeListener('accountsChanged', checkConnection);
     }
