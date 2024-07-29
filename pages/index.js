@@ -9,17 +9,7 @@ import { sepolia } from "thirdweb/chains";
 import { createThirdwebClient } from "thirdweb";
 import { createWallet } from "thirdweb/wallets";
 import { useSwipeable } from 'react-swipeable';
-
-const ABI = [
-  "event MessageChanged(uint256 newPrice, address messenger, , uint256 msgCounter)",
-  "function setMessage(string memory newMessage, uint256 priceIncrease) external payable",
-  "function readMessage() public view returns (string memory, uint256)",
-  "function getMessages(uint256 _msgCounter) public view returns (string memory)",
-  "function getPrices(uint256 _msgCounter) public view returns (uint256)",
-  "function getImgHashes(uint _msgCounter) public view returns (string memory)",
-  "function getPrice() public view returns (uint256)",
-  "function withdraw() external",
-];
+import ABI from '../contract/ABI.js';
 
 const myChain = sepolia;
 
@@ -33,13 +23,14 @@ const wallets = [
   createWallet("com.trustwallet.app"),
 ];
 
-export default function Home({ imgHashes, newestPrice, newestCounter, messages, newestMessage, prices }) {
+export default function Home({ names, imgHashes, newestPrice, newestCounter, messages, newestMessage, prices }) {
   const [style, setStyle] = useState({});
   const [isConnected, setIsConnected] = useState(false);
   const [message, setMessage] = useState(newestMessage);
   const [counter, setCounter] = useState(0);
   const [msgPrices, setPrices] = useState(newestPrice);
   const [imgHash, setImgHash] = useState(imgHashes[0]);
+  const [name, setName] = useState(names[0]);
 
 
     // Step 2: Modify getImgURLFromHash to handle undefined inputs
@@ -74,7 +65,7 @@ export default function Home({ imgHashes, newestPrice, newestCounter, messages, 
     setStyle({
       backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), radial-gradient(circle at center, transparent ${firstGradient}, black ${secondGradient}), url(${backgroundImageUrl})`,
       backgroundPosition: 'center',
-      backgroundSize: 'cover',
+      backgroundSize: 'contain',
       backgroundRepeat: 'no-repeat',
       height: '100vh',
       width: '100vw',
@@ -141,6 +132,7 @@ export default function Home({ imgHashes, newestPrice, newestCounter, messages, 
       setMessage(messages[newCounter]);
       setPrices(prices[newCounter]);
       setImgHash(imgHashes[newCounter]);
+      setName(names[newCounter]);
       if (newImgHash !== undefined || newImgHash !== '') {
         const newImgURL = getImgURLFromHash(newImgHash);
         updateStyle(newImgURL);
@@ -160,6 +152,7 @@ export default function Home({ imgHashes, newestPrice, newestCounter, messages, 
       setMessage(messages[newCounter]);
       setPrices(prices[newCounter]);
       setImgHash(imgHashes[newCounter]);
+      setName(names[newCounter]);
       if (newImgHash !== undefined || newImgHash !== '') {
         const newImgURL = getImgURLFromHash(newImgHash);
         updateStyle(newImgURL);
@@ -197,7 +190,7 @@ export default function Home({ imgHashes, newestPrice, newestCounter, messages, 
       <main>
         <div style={style} {...handlers}>
             <Header isConnected={isConnected} client={client} wallets={wallets} counter={counter} showNext={showNextMessage} reset={reset}/>
-            <Message text={message} /> 
+            <Message text={message} name={name} /> 
             <Footer price={newestPrice} msgPrices={msgPrices} isConnected={isConnected} client={client} wallets={wallets} mycChain={myChain} newestCounter={newestCounter} counter={counter} showPrevious={showPreviousMessage} genesisMessage={message}/>
         </div>
       </main>
@@ -211,7 +204,6 @@ export async function getServerSideProps() {
     apiKey: process.env.ALCHEMY_API,
     network: Network.ETH_SEPOLIA,
   };
-
   const alchemy = new Alchemy(settings);
   const ethersProvider = await alchemy.config.getProvider();
   const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
@@ -225,15 +217,21 @@ export async function getServerSideProps() {
   let messages = [];
   let prices = [];
   let imgHashes = [];
+  let names = [];
   
   for (let i = newestCounter - 1; i >= 0; i--) {
-    const message = await contract.getMessages(i);
-    const price = await contract.getPrices(i);
-    const imgHash = await contract.getImgHashes(i);
-    console.log(`message nr.${i} is ${message} IMGHASH: ${imgHash}`);
+    // Fetch all data in parallel
+    const [message, price, imgHash, name] = await Promise.all([
+      contract.getMessages(i),
+      contract.getPrices(i),
+      contract.getImgHashes(i),
+      contract.getNames(i),
+    ]);
+    console.log(`message nr.${i} by ${name} is ${message} #: ${imgHash}`);
     messages.push(message);
     prices.push(ethers.utils.formatEther(price));
     imgHashes.push(imgHash);
+    names.push(name);
   }
 
   return {
@@ -244,6 +242,7 @@ export async function getServerSideProps() {
       newestMessage: newestMessage,
       prices: prices,
       imgHashes: imgHashes,
+      names: names,
     },
     //revalidate: 1,
   };

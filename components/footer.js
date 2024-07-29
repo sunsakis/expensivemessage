@@ -1,21 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ethers } from 'ethers';
 import {
   ThirdwebProvider,
   ConnectButton,
 } from "thirdweb/react";
 import { useStorageUpload } from '@thirdweb-dev/react';
-
-const ABI = [
-  "event MessageChanged(uint256 newPrice, address messenger, , uint256 msgCounter)",
-  "function setMessage(string memory newMessage, uint256 priceIncrease) external payable",
-  "function readMessage() public view returns (string memory, uint256)",
-  "function getMessages(uint256 _msgCounter) public view returns (string memory)",
-  "function getPrices(uint256 _msgCounter) public view returns (uint256)",
-  "function getImgHashes(uint _msgCounter) public view returns (string memory)",
-  "function getPrice() public view returns (uint256)",
-  "function withdraw() external",
-];
+import ABI from '../contract/ABI.js';
 
 export default function Footer( { msgPrices, price, isConnected, client, wallets, myChain, showPrevious, newestCounter, counter, genesisMessage } ) {
   const [showModal, setShowModal] = useState(false);
@@ -25,6 +15,29 @@ export default function Footer( { msgPrices, price, isConnected, client, wallets
   const [name, setName] = useState('');
   const [imgHash, setImgHash] = useState('');
   const [loading, setLoading] = useState(false);
+  const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    const fileInput = fileInputRef.current;
+    if (!fileInput) return;
+
+    const handleFileChange = (event) => {
+      const file = event.target.files[0];
+      if (file && file.size > 5 * 1024 * 1024) {
+        alert('File size should not exceed 5MB');
+        fileInput.value = ''; // Reset the file input so no file is selected
+      } else if (file && !['image/jpeg', 'image/png', 'image/gif'].includes(file.type)) {
+        alert('Please select an image file (jpg, png, gif)');
+        fileInput.value = ''; // Reset the file input so no file is selected
+      }
+    };
+
+    fileInput.addEventListener('change', handleFileChange);
+
+    return () => {
+      fileInput.removeEventListener('change', handleFileChange);
+    };
+  }, [fileInputRef.current]); // This effect runs when the ref changes
 
   const { mutateAsync: upload } = useStorageUpload();
 
@@ -75,14 +88,41 @@ export default function Footer( { msgPrices, price, isConnected, client, wallets
   }
 
   const uploadToIPFS = async (file) => {
-    if (!file) return;
-    
+    if (!file) setImgHash('');
     try {
+      setLoading(true);
       const uri = await upload({
         data: [file],
-      });
+      }
+    );
+      if (uri.length !== 0) {
       setImgHash(uri[0].toString());
+      }
+      else {
+        setImgHash('');
+      }
+      setLoading(false);
     } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const sendMessageToTelegram = async (msg) => {
+    try {
+      const response = await fetch('/api', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ msg: msg }),
+      });
+      if (response.ok) {
+        console.log('Message sent successfully');
+      } else {
+        console.error('Failed to send message');
+      }
+    }
+    catch (error) {
       console.error(error);
     }
   };
@@ -113,13 +153,15 @@ export default function Footer( { msgPrices, price, isConnected, client, wallets
       const parsedBid = ethers.utils.parseEther((bid).toString());
 
       await uploadToIPFS();
-
+      setLoading(true);
       await contract.setMessage( message, imgHash, name, { value: parsedBid } ).then((tx) => {
         return provider.waitForTransaction(tx.hash);
       }).then(() => {
-        setLoading(false);
-        handleClose();
+        sendMessageToTelegram(message);
         window.location.reload();
+        handleClose();
+        setLoading(false);
+        
       });
     } catch (error) {
       console.error(error); // Log the error for debugging
@@ -245,6 +287,7 @@ export default function Footer( { msgPrices, price, isConnected, client, wallets
                         type="text"
                         placeholder=""
                         className="px-3 py-2 border border-gray-300 rounded-md w-full text-gray-600"
+                        maxLength="50"
                     />
                     <div className="">
                       <label htmlFor="pic" className="text-black text-sm">
@@ -256,6 +299,7 @@ export default function Footer( { msgPrices, price, isConnected, client, wallets
                         type="file"
                         accept="image/*"
                         className="py-2 pl-1 border border-gray-300 rounded-md w-full text-gray-600"
+                        ref={fileInputRef}
                       />
                     </div>
                     <div className="flex items-center pt-2">
