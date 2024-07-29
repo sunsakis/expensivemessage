@@ -75,23 +75,27 @@ export default function Home({ names, imgHashes, newestPrice, newestCounter, mes
   useEffect(() => {
 
     const checkConnection = async () => {
-      if (window.ethereum) {
+      if (typeof window.ethereum !== 'undefined') {
         const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
-        const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-        const networkId = await provider.getNetwork();
-        if (accounts.length > 0) {
-          setIsConnected(networkId.chainId === myChain.id);
-        }
-        else {
+        try {
+          const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+          const networkId = await provider.getNetwork();
+          const isConnected = accounts.length > 0 && networkId.chainId === myChain.id;
+          setIsConnected(isConnected);
+        } catch (error) {
+          console.error(error);
           setIsConnected(false);
         }
-      }
+      } else {
+        console.log('MetaMask is not available');
+        setIsConnected(false);
     };
+  };
     const updateBackground = async () => {
       const newImgURL = getImgURLFromHash(imgHashes[0]);
       updateStyle(newImgURL);
     };
-
+  
     updateBackground(); 
 
     const newImgURL = getImgURLFromHash(imgHash);
@@ -176,10 +180,10 @@ export default function Home({ names, imgHashes, newestPrice, newestCounter, mes
   return (
     <>
       <Head>
-        <title>MXM - Most eXpensive Message</title>
+        <title>MXM - Most Expensive Message</title>
         <meta name="description" content="Free speech rewarded." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta property="og:title" content="MXM - Most eXpensive Message" />
+        <meta property="og:title" content="MXM - Most Expensive Message" />
         <meta property="og:description" content="Free speech rewarded." />
         <meta property="og:url" content="mxm.social" /> 
         <meta property="og:site_name" content="MXM" />

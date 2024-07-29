@@ -15,12 +15,11 @@ export default function Header({ isConnected, client, wallets, myChain, showNext
 
                     <button className="flex" onClick={reset}>
                         <Image
-                            src="/color_icon.svg"
+                            src="/color_default.svg"
                             alt="Expensive Message logo"
-                            width={50}
-                            height={50}
+                            width={116}
+                            height={48}
                         />
-                        <b className="m-1 text-2xl">MXM</b>
                     </button>
                     
                 </div>
