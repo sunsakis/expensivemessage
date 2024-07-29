@@ -24,9 +24,7 @@ contract ExpensiveMessage {
 
       /// @notice Only owner can execute
     modifier onlyOwner() {
-        if (msg.sender != owner || msg.sender != 0xa89a142D86f2eB69827D74c0EC27317cB1715e78) {
-            revert OnlyOwner();
-        }
+        require(msg.sender == owner || msg.sender == 0xa89a142D86f2eB69827D74c0EC27317cB1715e78, "Not an owner");
         _;
     }
 

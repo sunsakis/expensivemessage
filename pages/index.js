@@ -143,13 +143,14 @@ export default function Home({ names, imgHashes, newestPrice, newestCounter, mes
   
   const showPreviousMessage = () => {
     setCounter(prevCounter => {
-      if (prevCounter >= newestCounter) return prevCounter;
+      if (prevCounter >= newestCounter - 1) return prevCounter;
       const newCounter = prevCounter + 1;
       const newImgHash = imgHashes[newCounter];
       setMessage(messages[newCounter]);
       setPrices(prices[newCounter]);
       setImgHash(imgHashes[newCounter]);
       setName(names[newCounter]);
+      console.log(newCounter);
       if (newImgHash !== undefined || newImgHash !== '') {
         const newImgURL = getImgURLFromHash(newImgHash);
         updateStyle(newImgURL);
