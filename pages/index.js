@@ -36,10 +36,7 @@ export default function Home({ names, imgHashes, newestPrice, newestCounter, mes
     // Step 2: Modify getImgURLFromHash to handle undefined inputs
   function getImgURLFromHash(imgHash) {
     if (imgHash === '' || imgHash === undefined) {
-      // Return a default image URL or handle the error as appropriate
-      // return 'defaultImageUrl';
-      console.log('imgHash is undefined');
-      return;
+      return '/defaultMessage.png';
     }
     // Existing logic to generate the image URL from the hash
     return imgHash.replace('ipfs://', 'https://ipfs.io/ipfs/');
