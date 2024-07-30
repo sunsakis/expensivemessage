@@ -1,12 +1,12 @@
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    const { msg } = req.body;
-    console.log('Received message:', msg);
+    let { msg } = req.body;
+    msg = "ALERT!\n\nSomeone has just claimed the MXM. Here's their message:\n\n" + msg;
 
     try {
       const telegramToken = process.env.TELEGRAM_BOT_TOKEN;
       const channelID = "@MostXMessage";
-        const response = await fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage?chat_id=${channelID}&text=${msg}`, 
+        const response = await fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage?chat_id=${channelID}&text=${encodeURIComponent(msg)}`, 
           {
             method: 'POST',
             headers: {

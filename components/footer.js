@@ -1,21 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ethers } from 'ethers';
-import {
-  ThirdwebProvider,
-  ConnectButton,
-} from "thirdweb/react";
-import { useStorageUpload } from '@thirdweb-dev/react';
+import { useRouter } from 'next/router';
+import { useStorageUpload, Web3Button } from '@thirdweb-dev/react';
+import { Interface, FormatTypes } from 'ethers/lib/utils';
 import ABI from '../contract/ABI.js';
 
-export default function Footer( { msgPrices, price, isConnected, client, wallets, myChain, showPrevious, newestCounter, counter, genesisMessage } ) {
+export default function Footer( { msgPrices, price, showPrevious, newestCounter, counter, genesisMessage } ) {
   const [showModal, setShowModal] = useState(false);
   const [closingAnimation, setClosingAnimation] = useState(false);
   const [message, setMessage] = useState('');
-  const [bid, setBid] = useState();
+  const [bid, setBid] = useState(0.0002);
   const [name, setName] = useState('');
   const [imgHash, setImgHash] = useState('');
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef(null);
+
+  const router = useRouter();
+
+  const iface = new Interface(ABI);
+  const jsonABI = iface.format(FormatTypes.json);
 
   useEffect(() => {
     const fileInput = fileInputRef.current;
@@ -131,12 +134,11 @@ export default function Footer( { msgPrices, price, isConnected, client, wallets
   const fivePercentOfMsgPrice = msgPriceFloat * 0.05; // Calculate 5% of msgPrice
   const minBidValue = Math.max(fivePercentOfMsgPrice, 0.0002); // Compare and get the higher value
   const minBid = (parseFloat(msgPriceFloat + minBidValue)).toFixed(4);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission
     try {
-      setLoading(true); // Show loading indicator
-  
       // Validate bid is a string and not empty
       if (typeof bid !== 'string' || bid.trim() === '') {
         throw new Error('Bid must be a non-empty string');
@@ -152,8 +154,6 @@ export default function Footer( { msgPrices, price, isConnected, client, wallets
   
       const parsedBid = ethers.utils.parseEther((bid).toString());
 
-      await uploadToIPFS();
-      setLoading(true);
       await contract.setMessage( message, imgHash, name, { value: parsedBid } ).then((tx) => {
         return provider.waitForTransaction(tx.hash);
       }).then(() => {
@@ -169,6 +169,14 @@ export default function Footer( { msgPrices, price, isConnected, client, wallets
       setLoading(false);
     }
   };
+
+    const getParsedBid = () => {
+      if (!isNaN(bid)) {
+        const parsedBid = ethers.utils.parseEther((bid).toString());
+        return parsedBid;
+      }
+    }
+    let parsedBid = getParsedBid();
 
     return (
     <>
@@ -279,7 +287,7 @@ export default function Footer( { msgPrices, price, isConnected, client, wallets
                     />
                     </div>
                     <label htmlFor="name" className="text-black text-sm">
-                      Name (optional):
+                      Name, handle or ETH address (optional):
                     </label>
                     <input
                         onChange={handleNameChange}
@@ -313,39 +321,51 @@ export default function Footer( { msgPrices, price, isConnected, client, wallets
                       </label>
                     </div>
                     <div className="flex items-center justify-center p-3 pb-2 border-solid border-gray-300 rounded-b">
-                  {!isConnected ? (
-                    <ThirdwebProvider>
-                      <ConnectButton
-                        client={client}
-                        wallets={wallets}
-                        theme={"dark"}
-                        connectModal={{
-                          size: "compact",
-                          termsOfServiceUrl: "https://YadaYa",
-                          showThirdwebBranding: false,
-                        }}
-                        chain={myChain}
-                      />
-                    </ThirdwebProvider>
-                  ) : ( 
-                    loading ? (
+                    {!loading && (
+                      <Web3Button
+                        contractAddress={process.env.NEXT_PUBLIC_CONTRACT_ADDRESS}
+                        contractAbi={jsonABI}
+                        // action={async (contract) => 
+                        //   {
+                        //     try {
+                        //     await contract.call("setMessage", [message, imgHash, name], { value: ethers.utils.parseEther(bid.toString()) });
+                        //     } catch (error) {
+                        //       console.error(error);
+                        //     }
+                        //   }
+                        // }
+                        // onError={() => 
+                        //   alert("Make sure to fill out the fields properly and have enough ETH in the wallet. Message sunsakis@pm.me for guidance.")
+                        //   // .then(router.reload(window.location.pathname))
+                        // }
+
+                        // onSuccess={() => {
+                        //   sendMessageToTelegram(message);
+                        //   router.reload(window.location.pathname)
+                        // }}
+                        onClick={handleSubmit}
+                      >
+                        Submit
+                      </Web3Button>
+                    )}
+                    {loading && (
                       <button
-                      className="bg-purple-200 rounded-2xl font-medium p-2 px-5 transition-all"
+                      className="bg-gray-100 rounded-lg font-medium p-2 px-5 text-black transition-all"
                       type="button" // Change to "button" to prevent form submission when loading
                       disabled // Disable the button to prevent multiple submissions
                     >
-                      Posting...
+                      Uploading...
                     </button>
-                  ) : (
-                    <button
-                      className="
-                        bg-purple-400 rounded-2xl font-medium p-2 px-5 hover:bg-purple-500 hover:text-white transition-all
-                      " 
-                      type="submit"
-                    >
-                      Submit
-                    </button>
-                  ))} 
+                  // ) : (
+                  //   <button
+                  //     className="
+                  //       bg-purple-400 rounded-2xl font-medium p-2 px-5 hover:bg-purple-500 hover:text-white transition-all
+                  //     " 
+                  //     type="submit"
+                  //   >
+                  //     Submit
+                  //   </button>
+                  )} 
                 </div>
                   </form>
                 </div>
