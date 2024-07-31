@@ -8,7 +8,7 @@ import ABI from '../contract/ABI.js';
 import Link from 'next/link.js';
 
 
-export default function Footer( { msgPrices, price, showPrevious, newestCounter, counter, genesisMessage, settings } ) {
+export default function Footer( { msgPrices, price, settings } ) {
   const [showModal, setShowModal] = useState(false);
   const [closingAnimation, setClosingAnimation] = useState(false);
   const [message, setMessage] = useState('');
@@ -130,14 +130,14 @@ export default function Footer( { msgPrices, price, showPrevious, newestCounter,
     }
   };
 
-  const sendMessageToTelegram = async (msg) => {
+  const sendMessageToTelegram = async (msg, bid) => {
     try {
       const response = await fetch('/api', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ msg: msg }),
+        body: JSON.stringify({ msg: msg, bid: bid }),
       });
       if (response.ok) {
         console.log('Message sent successfully');
@@ -178,7 +178,7 @@ export default function Footer( { msgPrices, price, showPrevious, newestCounter,
       await contract.setMessage( message, imgHash, name, { value: parsedBid } ).then((tx) => {
         return provider.waitForTransaction(tx.hash);
       }).then(() => {
-        sendMessageToTelegram(message);
+        sendMessageToTelegram(message, bid);
         if (router.pathname === '/') {
           router.reload();
         } else {
