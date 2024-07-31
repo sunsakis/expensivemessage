@@ -90,9 +90,9 @@ export default function Home({ names, imgHashes, newestPrice, newestCounter, mes
   }, []); // Empty dependency array ensures this effect runs only once on mount
 
   const handlers = useSwipeable({
-    onSwipedUp: () => showPreviousMessage(),
-    onSwipedDown: () => showNextMessage(),
-    delta: { up: 100, down: 150 },
+    // onSwipedUp: () => showPreviousMessage(),
+    // onSwipedDown: () => showNextMessage(),
+    // delta: { up: 100, down: 150 },
   });
 
   const showNextMessage = () => {

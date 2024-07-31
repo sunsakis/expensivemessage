@@ -244,13 +244,13 @@ export default function Footer( { msgPrices, price, showPrevious, newestCounter,
                 </div>
             </div>
         </div>
-        {counter !== newestCounter && genesisMessage !== "Free speech rewarded." && (
+        {/* {counter !== newestCounter && genesisMessage !== "Free speech rewarded." && (
         <div className="absolute inset-x-0 bottom-0 mb-3 flex justify-center text-xl">
           <button className="rotate-90" onClick={showPrevious}>
             →
           </button>
         </div>
-      )}
+      )} */}
 
       {showModal ? (
         <>
