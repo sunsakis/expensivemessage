@@ -25,7 +25,6 @@ const wallets = [
 
 export default function Home({ names, imgHashes, newestPrice, newestCounter, messages, newestMessage, prices }) {
   const [style, setStyle] = useState({});
-  const [isConnected, setIsConnected] = useState(false);
   const [message, setMessage] = useState(newestMessage);
   const [counter, setCounter] = useState(0);
   const [msgPrices, setPrices] = useState(newestPrice);
@@ -116,7 +115,6 @@ export default function Home({ names, imgHashes, newestPrice, newestCounter, mes
       } else {
         console.log('imgHash is undefined');
       }
-      console.log(newImgHash); 
       return newCounter; 
     });
   };
@@ -137,7 +135,6 @@ export default function Home({ names, imgHashes, newestPrice, newestCounter, mes
       } else {
         console.log('imgHash is undefined');
       }
-      console.log(newImgHash); // Log newCounter
       return newCounter; // Return the updated counter value
     });
   };
@@ -169,7 +166,7 @@ export default function Home({ names, imgHashes, newestPrice, newestCounter, mes
         <div style={style} {...handlers}>
             <Header client={client} wallets={wallets} counter={counter} showNext={showNextMessage} reset={reset}/>
             <Message text={message} name={name} /> 
-            <Footer price={newestPrice} msgPrices={msgPrices} newestCounter={newestCounter} counter={counter} showPrevious={showPreviousMessage} genesisMessage={message}/>
+            <Footer settings={settings} price={newestPrice} msgPrices={msgPrices} newestCounter={newestCounter} counter={counter} showPrevious={showPreviousMessage} genesisMessage={message}/>
         </div>
       </main>
     </>
@@ -221,7 +218,8 @@ export async function getServerSideProps() {
       newestMessage: newestMessage,
       prices: prices,
       imgHashes: imgHashes,
-      names: names
+      names: names,
+      settings: settings,
     },
     //revalidate: 1,
   };

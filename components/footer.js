@@ -3,10 +3,11 @@ import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
 import { useStorageUpload, Web3Button, useSigner } from '@thirdweb-dev/react';
 import { Interface, FormatTypes } from 'ethers/lib/utils';
+import { Alchemy } from 'alchemy-sdk';
 import ABI from '../contract/ABI.js';
 
 
-export default function Footer( { msgPrices, price, showPrevious, newestCounter, counter, genesisMessage } ) {
+export default function Footer( { msgPrices, price, showPrevious, newestCounter, counter, genesisMessage, settings } ) {
   const [showModal, setShowModal] = useState(false);
   const [closingAnimation, setClosingAnimation] = useState(false);
   const [message, setMessage] = useState('');
@@ -31,10 +32,26 @@ export default function Footer( { msgPrices, price, showPrevious, newestCounter,
       if (file && file.size > 5 * 1024 * 1024) {
         alert('File size should not exceed 5MB');
         fileInput.value = ''; // Reset the file input so no file is selected
-      } else if (file && !['image/jpeg', 'image/png', 'image/gif'].includes(file.type)) {
-        alert('Please select an image file (jpg, png, gif)');
+      } else if (file && !['image/jpeg', 'image/png', 'image/gif', 'image/webp'].includes(file.type)) {
+        alert('Please select an image file (jpg, png, gif, webp)');
         fileInput.value = ''; // Reset the file input so no file is selected
       }
+
+    // Create a FileReader to read the uploaded file
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        // Check if the image is very wide
+        const aspectRatio = img.width / img.height;
+        if (aspectRatio > 2) { // Example threshold for "very wide" images
+          alert('Very wide images may not display well. Please select an image with a more standard aspect ratio.');
+        } 
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+
     };
 
     fileInput.addEventListener('change', handleFileChange);
@@ -146,6 +163,9 @@ export default function Footer( { msgPrices, price, showPrevious, newestCounter,
         throw new Error('Bid must be a non-empty string');
       }
 
+
+      const alchemy = new Alchemy(settings);
+      const provider = await alchemy.config.getProvider();
       const contract = new ethers.Contract(
         process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
         ABI,
