@@ -31,8 +31,6 @@ export default function What() {
             In a digital landscape of free communication, MXM offers a valuable twist: monetize your message while making an impact.
           </p>
         </div><br/>
-        <h2 className="text-2xl">How The Most Expensive Message Works:</h2>
-        <br/>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <div className="bg-gray-800 bg-opacity-50 p-6 rounded-lg">
             <h2 className="text-xl font-semibold mb-2">Bid for Space</h2>

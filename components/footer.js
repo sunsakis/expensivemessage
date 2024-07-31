@@ -39,19 +39,19 @@ export default function Footer( { msgPrices, price, settings } ) {
       }
 
     // Create a FileReader to read the uploaded file
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        // Check if the image is very wide
-        const aspectRatio = img.width / img.height;
-        if (aspectRatio > 2) { // Example threshold for "very wide" images
-          alert('Very wide images may not display well. Please select an image with a more standard aspect ratio.');
-        } 
-      };
-      img.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
+    // const reader = new FileReader();
+    // reader.onload = (e) => {
+    //   const img = new Image();
+    //   img.onload = () => {
+    //     // Check if the image is very wide
+    //     const aspectRatio = img.width / img.height;
+    //     if (aspectRatio > 2) { // Example threshold for "very wide" images
+    //       alert('Very wide images may not display well. Please select an image with a more standard aspect ratio.');
+    //     } 
+    //   };
+    //   img.src = e.target.result;
+    // };
+    // reader.readAsDataURL(file);
 
     };
 

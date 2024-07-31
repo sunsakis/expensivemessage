@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export default async function handler(req, res) {
 
   const getEthPrice = async () => {
@@ -10,11 +12,13 @@ export default async function handler(req, res) {
     }
   };
   const ethPrice = await getEthPrice();
+  console.log('ETH price:', ethPrice);
 
   if (req.method === 'POST') {
     let { msg, bid } = req.body;
+    console.log('Message:', bid);
     const usdPrice = ethPrice * bid;
-    msg = `ALERT!\n\nSomeone has just claimed the MXM for $${usdPrice}. Here's their message:\n\n` + msg;
+    msg = `ALERT!\n\nSomeone has just claimed the MXM for $${usdPrice.toFixed(2)}. Here's their message:\n\n` + msg;
 
     try {
       const telegramToken = process.env.TELEGRAM_BOT_TOKEN;
