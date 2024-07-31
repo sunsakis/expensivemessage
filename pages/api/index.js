@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     try {
       const telegramToken = process.env.TELEGRAM_BOT_TOKEN;
       const channelID = "@MostXMessage";
-        const response = await fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage?chat_id=${channelID}&text=${encodeURIComponent(msg)}`, 
+        const response = await fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage?chat_id=${channelID}&text=${encodeURIComponent(msg)}&disable_notification=true`, 
           {
             method: 'POST',
             headers: {

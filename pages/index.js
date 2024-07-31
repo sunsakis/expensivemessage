@@ -74,23 +74,6 @@ export default function Home({ names, imgHashes, newestPrice, newestCounter, mes
 
   useEffect(() => {
 
-    const checkConnection = async () => {
-      if (typeof window.ethereum !== 'undefined') {
-        const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
-        try {
-          const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-          const networkId = await provider.getNetwork();
-          const isConnected = accounts.length > 0 && networkId.chainId === myChain.id;
-          setIsConnected(isConnected);
-        } catch (error) {
-          console.error(error);
-          setIsConnected(false);
-        }
-      } else {
-        console.log('MetaMask is not available');
-        setIsConnected(false);
-    };
-  };
     const updateBackground = async () => {
       const newImgURL = getImgURLFromHash(imgHashes[0]);
       updateStyle(newImgURL);
@@ -100,17 +83,10 @@ export default function Home({ names, imgHashes, newestPrice, newestCounter, mes
 
     const newImgURL = getImgURLFromHash(imgHash);
     window.addEventListener('resize', updateStyle(newImgURL));
-    window.ethereum?.on('chainChanged', checkConnection);
-    window.ethereum?.on('accountsChanged', checkConnection);
-
-    checkConnection();
-
 
     // Cleanup
     return () => {
       window.removeEventListener('resize', () => updateStyle(newImgURL));
-      window.ethereum?.removeListener('chainChanged', checkConnection);
-      window.ethereum?.removeListener('accountsChanged', checkConnection);
     }
   }, []); // Empty dependency array ensures this effect runs only once on mount
 
@@ -191,9 +167,9 @@ export default function Home({ names, imgHashes, newestPrice, newestCounter, mes
       </Head>
       <main>
         <div style={style} {...handlers}>
-            <Header isConnected={isConnected} client={client} wallets={wallets} counter={counter} showNext={showNextMessage} reset={reset}/>
+            <Header client={client} wallets={wallets} counter={counter} showNext={showNextMessage} reset={reset}/>
             <Message text={message} name={name} /> 
-            <Footer price={newestPrice} msgPrices={msgPrices} isConnected={isConnected} client={client} wallets={wallets} mycChain={myChain} newestCounter={newestCounter} counter={counter} showPrevious={showPreviousMessage} genesisMessage={message}/>
+            <Footer price={newestPrice} msgPrices={msgPrices} newestCounter={newestCounter} counter={counter} showPrevious={showPreviousMessage} genesisMessage={message}/>
         </div>
       </main>
     </>
@@ -206,6 +182,7 @@ export async function getServerSideProps() {
     apiKey: process.env.ALCHEMY_API,
     network: Network.ETH_SEPOLIA,
   };
+
   const alchemy = new Alchemy(settings);
   const ethersProvider = await alchemy.config.getProvider();
   const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
@@ -244,7 +221,7 @@ export async function getServerSideProps() {
       newestMessage: newestMessage,
       prices: prices,
       imgHashes: imgHashes,
-      names: names,
+      names: names
     },
     //revalidate: 1,
   };

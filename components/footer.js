@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
-import { useStorageUpload, Web3Button } from '@thirdweb-dev/react';
+import { useStorageUpload, Web3Button, useSigner } from '@thirdweb-dev/react';
 import { Interface, FormatTypes } from 'ethers/lib/utils';
 import ABI from '../contract/ABI.js';
+
 
 export default function Footer( { msgPrices, price, showPrevious, newestCounter, counter, genesisMessage } ) {
   const [showModal, setShowModal] = useState(false);
@@ -16,6 +17,7 @@ export default function Footer( { msgPrices, price, showPrevious, newestCounter,
   const fileInputRef = useRef(null);
 
   const router = useRouter();
+  const signer = useSigner();
 
   const iface = new Interface(ABI);
   const jsonABI = iface.format(FormatTypes.json);
@@ -144,21 +146,23 @@ export default function Footer( { msgPrices, price, showPrevious, newestCounter,
         throw new Error('Bid must be a non-empty string');
       }
 
-      const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
-      const signer = provider.getSigner();
       const contract = new ethers.Contract(
         process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
         ABI,
         signer
       );
-  
+    
       const parsedBid = ethers.utils.parseEther((bid).toString());
 
       await contract.setMessage( message, imgHash, name, { value: parsedBid } ).then((tx) => {
         return provider.waitForTransaction(tx.hash);
       }).then(() => {
         sendMessageToTelegram(message);
-        window.location.reload();
+        if (router.pathname === '/') {
+          router.reload();
+        } else {
+          router.push('/');
+        }
         handleClose();
         setLoading(false);
         
@@ -169,14 +173,6 @@ export default function Footer( { msgPrices, price, showPrevious, newestCounter,
       setLoading(false);
     }
   };
-
-    const getParsedBid = () => {
-      if (!isNaN(bid)) {
-        const parsedBid = ethers.utils.parseEther((bid).toString());
-        return parsedBid;
-      }
-    }
-    let parsedBid = getParsedBid();
 
     return (
     <>
