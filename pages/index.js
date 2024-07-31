@@ -23,7 +23,7 @@ const wallets = [
   createWallet("com.trustwallet.app"),
 ];
 
-export default function Home({ names, imgHashes, newestPrice, newestCounter, messages, newestMessage, prices }) {
+export default function Home({ names, imgHashes, newestPrice, newestCounter, messages, newestMessage, prices, settings }) {
   const [style, setStyle] = useState({});
   const [message, setMessage] = useState(newestMessage);
   const [counter, setCounter] = useState(0);
