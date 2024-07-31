@@ -1,18 +1,14 @@
-import { useState } from 'react';
 import Image from 'next/image';
-import {
-    ThirdwebProvider,
-    ConnectButton,
-  } from "thirdweb/react";
+import Link from 'next/link';
 
-export default function Header({ isConnected, client, wallets, myChain, showNext, counter, reset }) {
-    const [showWallet, setShowWallet] = useState(true);
+export default function Header() {
     
     return (
         <>
             <div className="flex">
                 <div className="m-2 absolute top-5 left-5 z-10">
-                    <button className="flex" onClick={reset}>
+                    <Link href="/">
+                    <button className="flex">
                         <Image
                             src="/color_default.svg"
                             alt="Expensive Message logo"
@@ -20,6 +16,7 @@ export default function Header({ isConnected, client, wallets, myChain, showNext
                             height={48}
                         />
                     </button>
+                    </Link>
                 </div>
                 {/* <div className="m-2 absolute top-3 right-1">
                     {isConnected && showWallet === true && (

@@ -5,6 +5,7 @@ import { useStorageUpload, Web3Button, useSigner } from '@thirdweb-dev/react';
 import { Interface, FormatTypes } from 'ethers/lib/utils';
 import { Alchemy } from 'alchemy-sdk';
 import ABI from '../contract/ABI.js';
+import Link from 'next/link.js';
 
 
 export default function Footer( { msgPrices, price, showPrevious, newestCounter, counter, genesisMessage, settings } ) {
@@ -239,8 +240,8 @@ export default function Footer( { msgPrices, price, showPrevious, newestCounter,
             </div>
             <div className="absolute bottom-1 flex justify-center mx-auto w-full sm:w-auto m-2 sm:m-5">
                 <div className="flex text-xs sm:text-sm text-gray-200 ml-1">
-                    <p className="mx-2">What is the MXM?</p>
-                    <p className="mx-2">Terms and conditions</p>
+                    <Link href="/what"><p className="mx-2">What is the MXM?</p></Link>
+                    <Link href="/terms"><p className="mx-2">Terms and conditions</p></Link>
                 </div>
             </div>
         </div>
