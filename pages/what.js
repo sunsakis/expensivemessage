@@ -51,14 +51,14 @@ export default function What() {
             <h2 className="text-3xl font-bold mb-2">3. Profit from Exposure</h2>
             <p>Enjoy the limelight, but when someone takes it from you, you’ll make a profit.</p>
           </div>
-          <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800">
+          {/* <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800">
             <h2 className="text-3xl font-bold mb-2">Anonymous influence</h2>
             <p>Reach and impact the world and your communities without necessarily revealing your identity.</p>
           </div>
           <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800">
             <h2 className="text-3xl font-bold mb-2">Social Advocacy</h2>
             <p>Make powerful statements advocating Good. Promotion of Bad is illegal and will not be rewarded.</p>
-          </div>
+          </div> */}
           <div className="bg-green-700 bg-opacity-50 p-8 rounded-xl border border-green-800">
             <h2 className="text-3xl font-bold mb-2 text-purple-200">Join the Revolution</h2>
             <p className="text-purple-50">Own your message. Profit from its power. Welcome to The Most Expensive Message.</p>
