@@ -23,7 +23,7 @@ export default function What() {
     <br/><br/><br/><br/>
     <main className="max-w-xl sm:max-w-2xl md:max-w-4xl mx-auto my-8">
         <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-center">
-            The Most Expensive Message - free speech rewarded.
+            Free speech is rewarded with the Most Expensive Message.
         </h1>
         <i className="block text-center">Bid, share, profit!</i>
         <p className="text-2xl font-thin sm:text-xl mb-8 mt-4">
@@ -38,7 +38,7 @@ export default function What() {
           </p>
           <br/>
         </div>
-        <div className="grid grid-cols-1 gap-4 mb-8 w-96 mx-auto">
+        <div className="grid grid-cols-1 gap-4 mb-8 mx-auto">
           <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800">
             <h2 className="text-3xl font-bold mb-2">1. Bid for Space</h2>
             <p>Secure the MXM by outbidding the previous price paid.</p>
@@ -51,22 +51,20 @@ export default function What() {
             <h2 className="text-3xl font-bold mb-2">3. Profit from Exposure</h2>
             <p>Enjoy the limelight, but when someone takes it from you, you’ll make a profit.</p>
           </div>
+          <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800">
+            <h2 className="text-3xl font-bold mb-2">Anonymous influence</h2>
+            <p>Reach and impact the world and your communities without necessarily revealing your identity.</p>
+          </div>
+          <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800">
+            <h2 className="text-3xl font-bold mb-2">Social Advocacy</h2>
+            <p>Make powerful statements advocating Good. Promotion of Bad is illegal and will not be rewarded.</p>
+          </div>
+          <div className="bg-green-700 bg-opacity-50 p-8 rounded-xl border border-green-800">
+            <h2 className="text-3xl font-bold mb-2 text-purple-200">Join the Revolution</h2>
+            <p className="text-purple-50">Own your message. Profit from its power. Welcome to The Most Expensive Message.</p>
+          </div>
         </div>
       </main>
-      <footer className="bg-opacity-75 p-4 mt-8 bottom-0 absolute">
-  <div className="max-w-4xl mx-auto flex justify-between items-center space-x-5">
-    <div className="text-white">
-      <Link href="/what">
-        <p className="text-gray-200 hover:text-gray-400">What is MXM?</p>
-      </Link>
-    </div>
-    <div className="text-white">
-      <Link href="/terms">
-        <p className="text-gray-200 hover:text-gray-400">Terms and Conditions</p>
-      </Link>
-    </div>
-  </div>
-</footer>
     </div>
   )
 }
