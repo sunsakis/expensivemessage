@@ -241,15 +241,12 @@ export default function Footer( { msgPrices, price, settings } ) {
             <div className="absolute bottom-1 flex justify-center mx-auto w-full sm:w-auto m-2 sm:m-5">
                 <div className="flex text-xs sm:text-sm text-gray-200 ml-1">
                     <Link href="/what"><p className="mx-2">What is the MXM?</p></Link>
+                    <Link href="https://t.me/MostXMessage" rel="nofollow" target="_blank" className="mr-1">T</Link>
+                    <Link href="https://x.com/MostXMessage" rel="nofollow" target="_blank" className="ml-1">X</Link>
                     <Link href="/terms"><p className="mx-2">Terms and conditions</p></Link>
                 </div>
             </div>
         </div>
-        <div className="absolute bottom-1 flex justify-center mx-auto w-full sm:w-auto m-2 sm:m-5">
-                <p className="text-xs sm:text-sm text-gray-200">
-                    © 2021 Most Expensive Message. All rights reserved.
-                </p>
-            </div>
         {/* {counter !== newestCounter && genesisMessage !== "Free speech rewarded." && (
         <div className="absolute inset-x-0 bottom-0 mb-3 flex justify-center text-xl">
           <button className="rotate-90" onClick={showPrevious}>
