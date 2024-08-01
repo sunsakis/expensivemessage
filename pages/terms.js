@@ -4,14 +4,14 @@ import Header from '@/components/header'
 export default function TermsOfUse() {
   return (
     <div 
-      style={{
+        style={{
         backgroundImage: "url('/background_green.svg')",
         backgroundSize: 'cover',
-        backgroundPosition: 'center center',
         width: '100%',
-        minHeight: '100vh', // Ensures the div stretches to at least the full height of the viewport
-      }}
-      className="text-white"
+        minHeight: '100vh',
+        minWidth: '100vw',
+        }}
+        className="text-white px-4 sm:px-6 lg:px-8" // Adjust padding based on screen size
     >
       <Head>
         <title>Terms of Use - Most Expensive Message (MXM) Platform</title>
@@ -37,9 +37,8 @@ export default function TermsOfUse() {
             { title: "12. Autonomous Smart Contracts", content: "We do not directly administer or participate in the Platform's autonomous smart contract operations besides providing the initial code. Transactions occur automatically with no interference ability." },
             { title: "13. Limitation of Liability", content: "Under no circumstances, including negligence, shall the owners/operators/developers be liable for damages related to smart contract operations, bugs, hacks, failures or disruptions. Use indicates your agreement that liability is limited to the fullest extent under Estonian law." },
             { title: "14. Most Expensive Name", content: "We make no guarantees or warranties that Platform messages constitute the actual \"most expensive\" message in existence. This is simply the branded name for this service." },
-            { title: "15. Commemorative NFT (Optional)", content: "You may choose to receive an optional NFT providing a record of your prior window ownership period/content. This does not convey rights - it is solely commemorative. You are responsible for any gas fees." },
-            { title: "16. Governing Law & Dispute Resolution", content: "These Terms shall be governed by Estonian law. Any disputes must be resolved through binding arbitration in Estonia." },
-            { title: "17. Agreement", content: "By checking below or using this Platform, you accept the most current version of these Terms of Use." },
+            { title: "15. Governing Law & Dispute Resolution", content: "These Terms shall be governed by Estonian law. Any disputes must be resolved through binding arbitration in Estonia." },
+            { title: "16. Agreement", content: "By checking below or using this Platform, you accept the most current version of these Terms of Use." },
           ].map((section, index) => (
             <section key={index}>
               <h2 className="text-2xl font-semibold mb-4">{section.title}</h2>
