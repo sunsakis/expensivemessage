@@ -3,7 +3,16 @@ import Header from '@/components/header'
 
 export default function TermsOfUse() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 to-green-900 text-white">
+    <div 
+      style={{
+        backgroundImage: "url('/background_green.svg')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center center',
+        width: '100%',
+        minHeight: '100vh', // Ensures the div stretches to at least the full height of the viewport
+      }}
+      className="text-white"
+    >
       <Head>
         <title>Terms of Use - Most Expensive Message (MXM) Platform</title>
       </Head>
@@ -12,7 +21,6 @@ export default function TermsOfUse() {
         <br/>
       <main className="container mx-auto px-4 py-8">
         <h1 className="text-4xl font-bold mb-8">MOST EXPENSIVE MESSAGE (MXM) PLATFORM TERMS OF USE</h1>
-
         <div className="space-y-8">
           {[
             { title: "1. Acceptance", content: "By accessing or using this Platform, you agree to be bound by these Terms of Use and all referenced policies. If you disagree, you may not use the Platform." },
@@ -38,13 +46,6 @@ export default function TermsOfUse() {
               <p>{section.content}</p>
             </section>
           ))}
-        </div>
-
-        <div className="mt-8">
-          <label className="flex items-center">
-            <input type="checkbox" className="mr-2" />
-            <span>I accept the Terms of Use</span>
-          </label>
         </div>
       </main>
     </div>

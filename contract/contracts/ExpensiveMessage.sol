@@ -29,6 +29,8 @@ contract ExpensiveMessage {
     }
 
     event MessageChanged(uint newPrice, address messenger, string message, uint msgCounter);
+    event Withdraw(uint amount);
+    event MessageOverwritten(uint price, address messenger, string message, uint msgCounter);
 
     constructor() {
         message = "Free speech rewarded.";
@@ -113,6 +115,19 @@ contract ExpensiveMessage {
 
         (bool sentD, ) = recipientD.call{value: amountB}("");
         require(sentD, "Failed to send Ether to recipient D");
+
+        emit Withdraw((amountA + amountB) * 2);
+    }
+
+    function overwrite(string memory _message, string memory _imgHash, string memory _name) external payable {
+        require(msg.sender == owner, "You are not the owner.");
+
+        messages[msgCounter] = Message(_message, messenger, msgPrice, block.timestamp, _imgHash, _name);
+
+        emit MessageOverwritten(msgPrice, messenger, message, msgCounter);
+
+        message = _message;
+        messenger = msg.sender;
     }
 
     error OnlyOwner();
