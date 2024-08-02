@@ -10,6 +10,7 @@ import Image from 'next/image.js';
 
 
 export default function Footer( { msgPrices, price, settings } ) {
+
   const [showModal, setShowModal] = useState(false);
   const [closingAnimation, setClosingAnimation] = useState(false);
   const [message, setMessage] = useState('');
@@ -236,8 +237,9 @@ export default function Footer( { msgPrices, price, settings } ) {
                     <div className="flex justify-end mx-auto">
                     <button 
                         className="w-full sm:w-auto mb-12 sm:mb-0 z-50"
-                        onClick={() => setShowModal(true)}>
-                        <p className="sm:px-4 p-3 mt-2 mx-6 font-bold bg-white text-black hover:bg-slate-100 rounded-xl">
+                        onClick={() => setShowModal(true)}
+                      >
+                        <p className="sm:px-4 p-3 mt-2 mx-6 font-bold bg-green-50 text-black hover:bg-green-200 rounded-xl transition duration-500 ease-in-out hover:border-green-500">
                             Claim the MXM
                         </p>
                     </button>

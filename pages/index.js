@@ -56,10 +56,10 @@ export default function Home({ names, imgHashes, newestPrice, newestCounter, mes
     // The first gradient is the transparent center of the spotlight
     // The second gradient begins the dimming effect, so it should be slightly larger than the first
     const firstGradient = `${spotlightSize * 0.5}px`; // Half the size for a circular gradient
-    const secondGradient = `${spotlightSize}px`; // Full size for the dimming effect to start
+    const secondGradient = `${spotlightSize * 0.95}px`; // Full size for the dimming effect to start
     
     setStyle({
-      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), radial-gradient(circle at center, transparent ${firstGradient}, black ${secondGradient}), url(${backgroundImageUrl})`,
+      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), radial-gradient(circle at center, transparent ${firstGradient}, black ${secondGradient}), url(${backgroundImageUrl})`,
       backgroundPosition: 'center',
       backgroundSize: 'contain',
       backgroundRepeat: 'no-repeat',

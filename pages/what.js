@@ -1,9 +1,9 @@
 import Head from 'next/head'
 import Header from '../components/header'
 import Footer from '../components/footer'
-import Link from 'next/link'
 
 export default function What() {
+
   return (
     <div 
         style={{
@@ -14,7 +14,9 @@ export default function What() {
             minWidth: '100vw',
             flexDirection: 'column',
             justifyContent: 'space-between',
+            backgroundRepeat: 'no-repeat',
             display: 'flex',
+            backgroundAttachment: 'fixed',
             }}
             className="text-white px-4 sm:px-6 lg:px-8" // Adjust padding based on screen size
     >
@@ -167,10 +169,14 @@ export default function What() {
             <p>Archive preservation of all messages.</p>
         </div>
         </div>
-        <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-green-800 mx-10">
-            <h2 className="text-3xl font-bold mb-2">Join the MXM Revolution.</h2>
-            <p className="text-xl">Be part of history.</p>
-            <p>Own the world's Most eXpensive Message.</p>
+        <div onClick={() => window.scrollTo({
+                top: document.documentElement.scrollHeight,
+                behavior: 'smooth'
+                })} 
+            className="bg-black bg-opacity-50 p-8 rounded-xl border border-green-800 mx-10 transition duration-500 ease-in-out hover:bg-green-500 hover:border-green-500 hover:text-white">
+                    <h2 className="text-3xl font-bold mb-2">Join the MXM Revolution.</h2>
+                    <p className="text-xl">Be part of history.</p>
+                    <p>Own the world's Most eXpensive Message.</p>
         </div>
         <br/>
         <div className="my-8 text-xl font-thin">
@@ -204,8 +210,8 @@ export default function What() {
             Own it.
             Profit from its impact.</p>
         </div><br/>
-        <div className="my-8 text-lg font-light text-center">
-        <i className="text-center mx-auto">The Most Expensive Message: where free speech is rewarded.</i>
+        <div className="my-8 text-lg font-light">
+        <p>The Most Expensive Message: <i>where free speech is rewarded.</i></p>
         </div>
       </main>
       <Footer />
