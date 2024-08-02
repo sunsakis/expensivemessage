@@ -219,7 +219,7 @@ export default function Footer( { msgPrices, price, settings } ) {
             }
         `}
       </style>
-      <div className="relative bottom-6 left-0 right-0">
+      <div className="relative bottom-3 left-0 right-0">
             <div className="sm:m-5">
               {msgPrices && (
                 <p className="text-sm text-right tracking-tight mr-9 text-gray-300">

@@ -12,6 +12,9 @@ export default function What() {
         width: '100%',
         minHeight: '100vh',
         minWidth: '100vw',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        display: 'flex',
         }}
         className="text-white px-4 sm:px-6 lg:px-8" // Adjust padding based on screen size
     >
