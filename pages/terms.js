@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import Header from '@/components/header'
 
 export default function TermsOfUse() {
   return (
@@ -16,7 +15,7 @@ export default function TermsOfUse() {
       <Head>
         <title>Terms of Use - Most Expensive Message (MXM) Platform</title>
       </Head>
-        <Header />
+        
         <br/>
         <br/>
       <main className="container mx-auto px-4 py-8">

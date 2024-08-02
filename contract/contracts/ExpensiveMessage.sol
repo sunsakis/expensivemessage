@@ -119,10 +119,11 @@ contract ExpensiveMessage {
         emit Withdraw((amountA + amountB) * 2);
     }
 
-    function overwrite(string memory _message, string memory _imgHash, string memory _name) external payable {
+    function overwrite(string memory _message, string memory _imgHash, string memory _name, uint _counter) external payable {
         require(msg.sender == owner, "You are not the owner.");
+        require(_counter == msgCounter, "You can only overwrite the last message.");
 
-        messages[msgCounter] = Message(_message, messenger, msgPrice, block.timestamp, _imgHash, _name);
+        messages[_counter] = Message(_message, messenger, msgPrice, block.timestamp, _imgHash, _name);
 
         emit MessageOverwritten(msgPrice, messenger, message, msgCounter);
 

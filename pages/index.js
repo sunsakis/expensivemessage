@@ -2,8 +2,8 @@ import Head from 'next/head'
 import { ethers } from 'ethers';
 import { Network, Alchemy } from 'alchemy-sdk';
 import { useState, useEffect } from 'react';
-import Header from '../components/header.js';
 import Footer from '../components/footer.js';
+import Header from '../components/header.js';
 import Message from '../components/message.js';
 import { sepolia } from "thirdweb/chains";
 import { createThirdwebClient } from "thirdweb";
@@ -163,10 +163,14 @@ export default function Home({ names, imgHashes, newestPrice, newestCounter, mes
         <meta name="twitter:creator" content="@MostXMessage" /> 
       </Head>
       <main>
-        <div style={style} {...handlers}>
+        <div style={style} {...handlers} className="w-full">
+          <div className="min-h-screen flex-col flex">
             <Header client={client} wallets={wallets} counter={counter} showNext={showNextMessage} reset={reset}/>
-            <Message text={message} name={name} /> 
+            <div className="flex flex-grow justify-center items-center">
+              <Message text={message} name={name} /> 
+            </div>
             <Footer settings={settings} price={newestPrice} msgPrices={msgPrices} newestCounter={newestCounter} counter={counter} showPrevious={showPreviousMessage} genesisMessage={message}/>
+          </div>
         </div>
       </main>
     </>

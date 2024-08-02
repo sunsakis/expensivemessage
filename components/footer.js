@@ -6,6 +6,7 @@ import { Interface, FormatTypes } from 'ethers/lib/utils';
 import { Alchemy } from 'alchemy-sdk';
 import ABI from '../contract/ABI.js';
 import Link from 'next/link.js';
+import Image from 'next/image.js';
 
 
 export default function Footer( { msgPrices, price, settings } ) {
@@ -218,16 +219,20 @@ export default function Footer( { msgPrices, price, settings } ) {
             }
         `}
       </style>
-      <div className="absolute bottom-10 left-0 right-0">
+      <div className="relative bottom-6 left-0 right-0">
             <div className="sm:m-5">
+              {msgPrices && (
                 <p className="text-sm text-right tracking-tight mr-9 text-gray-300">
                         This MXM cost
                     </p>
+              )}
+              {msgPrices && (
                     <p className="text-right mr-8">
                         <b className="text-2xl">
                         {msgPrices} ETH
                         </b>
                     </p>
+              )}
                     <div className="flex justify-end mx-auto">
                     <button 
                         className="w-full sm:w-auto mb-12 sm:mb-0 z-50"
@@ -241,12 +246,68 @@ export default function Footer( { msgPrices, price, settings } ) {
             <div className="absolute bottom-1 flex justify-center mx-auto w-full sm:w-auto m-2 sm:m-5">
                 <div className="flex text-xs sm:text-sm text-gray-200 ml-1">
                     <Link href="/what"><p className="mx-2">What is the MXM?</p></Link>
-                    <Link href="https://t.me/MostXMessage" rel="nofollow" target="_blank" className="mr-1">T</Link>
-                    <Link href="https://x.com/MostXMessage" rel="nofollow" target="_blank" className="ml-1">X</Link>
                     <Link href="/terms"><p className="mx-2">Terms and conditions</p></Link>
                 </div>
             </div>
         </div>
+        <div className="flex justify-center items-center mx-auto mb-5 space-x-5 w-full">
+                    <Link href="https://t.me/MostXMessage" rel="nofollow" target="_blank" className="mr-1">
+                        <Image
+                            src="/telegram.svg"
+                            alt="Telegram logo"
+                            width={15}
+                            height={15}
+                        />
+                    </Link>
+                    <Link href="https://www.threads.net/@mxm.social" rel="nofollow" target="_blank" className="ml-1">
+                        <Image
+                            src="/threads.svg"
+                            alt="Threads logo"
+                            width={15}
+                            height={15}
+                        />
+                    </Link>
+                    <Link href="https://www.instagram.com/mxm.social" rel="nofollow" target="_blank" className="ml-1">
+                        <Image
+                            src="/instagram.svg"
+                            alt="Instagram logo"
+                            width={15}
+                            height={15}
+                        />
+                    </Link>
+                    <Link href="https://x.com/MostXMessage" rel="nofollow" target="_blank" className="ml-1">
+                      <Image
+                          src="/x.svg"
+                          alt="X logo"
+                          width={15}
+                          height={15}
+                      />
+                    </Link>
+                    <Link href="https://www.facebook.com/profile.php?id=61563047402139" rel="nofollow" target="_blank" className="ml-1">
+                        <Image
+                            src="/facebook.svg"
+                            alt="Facebook logo"
+                            width={15}
+                            height={15}
+                        />
+                    </Link>
+                    <Link href="https://warpcast.com/mostxmessage" rel="nofollow" target="_blank" className="ml-1">
+                        <Image
+                            src="/farcaster.svg"
+                            alt="Farcaster logo"
+                            width={15}
+                            height={15}
+                        />
+                    </Link>
+                    <Link href="https://www.tiktok.com/@mxm.social" rel="nofollow" target="_blank" className="ml-1">
+                        <Image
+                            src="/tiktok.svg"
+                            alt="TikTok logo"
+                            width={15}
+                            height={15}
+                        />
+                    </Link>
+            </div>
         {/* {counter !== newestCounter && genesisMessage !== "Free speech rewarded." && (
         <div className="absolute inset-x-0 bottom-0 mb-3 flex justify-center text-xl">
           <button className="rotate-90" onClick={showPrevious}>

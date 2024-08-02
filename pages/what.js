@@ -1,5 +1,6 @@
 import Head from 'next/head'
-import Header from '@/components/header'
+import Header from '../components/header'
+import Footer from '../components/footer'
 import Link from 'next/link'
 
 export default function What() {
@@ -19,8 +20,9 @@ export default function What() {
         <meta name="description" content="Bid, Share, Profit" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-    <Header />
+    
     <br/><br/><br/><br/>
+    <Header />
     <main className="max-w-xl sm:max-w-2xl md:max-w-4xl mx-auto my-8">
         <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-center">
             Free speech is rewarded with the Most Expensive Message.
@@ -65,6 +67,7 @@ export default function What() {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   )
 }
