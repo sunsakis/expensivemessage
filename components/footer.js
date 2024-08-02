@@ -219,7 +219,7 @@ export default function Footer( { msgPrices, price, settings } ) {
             }
         `}
       </style>
-      <div className="relative bottom-3 left-0 right-0">
+      <div className="relative bottom-3 left-0 right-0 sm:w-full">
             <div className="sm:m-5">
               {msgPrices && (
                 <p className="text-sm text-right tracking-tight mr-9 text-gray-300">
@@ -379,7 +379,7 @@ export default function Footer( { msgPrices, price, settings } ) {
                     />
                     <div className="">
                       <label htmlFor="pic" className="text-black text-sm">
-                        Picture (optional):
+                        Picture (optional, 1:1 aspect ratio best):
                       </label>
                       <input
                         onChange={handleImageChange}

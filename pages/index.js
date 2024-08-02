@@ -153,11 +153,11 @@ export default function Home({ names, imgHashes, newestPrice, newestCounter, mes
   return (
     <>
       <Head>
-        <title>MXM - Most Expensive Message</title>
+        <title>Most Expensive Message | MXM</title>
         <meta name="description" content="Free speech rewarded." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta property="og:title" content="MXM - Most Expensive Message" />
-        <meta property="og:description" content="Free speech rewarded." />
+        <meta property="og:title" content="Most Expensive Message | MXM" />
+        <meta property="og:description" content="The Most Expensive Message - free speech rewarded." />
         <meta property="og:url" content="mxm.social" /> 
         <meta property="og:site_name" content="MXM" />
         <meta name="twitter:creator" content="@MostXMessage" /> 
