@@ -6,18 +6,17 @@ import Link from 'next/link'
 export default function What() {
   return (
     <div 
-    style={{
-        backgroundImage: "url('/background_green.svg')",
-        backgroundSize: 'cover',
-        width: '100%',
-        minHeight: '100vh',
-        minWidth: '100vw',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        display: 'flex',
-        boxSizing: 'border-box', // Include padding and border in the width calculation
-    }}
-    className="text-white px-4 sm:px-6 lg:px-8" // Adjust padding based on screen size
+        style={{
+            backgroundImage: "url('/background_green.svg')",
+            backgroundSize: 'cover',
+            width: '100%',
+            minHeight: '100vh',
+            minWidth: '100vw',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            display: 'flex',
+            }}
+            className="text-white px-4 sm:px-6 lg:px-8" // Adjust padding based on screen size
     >
     <Head>
         <title>Most Expensive Message | MXM</title>
@@ -90,8 +89,8 @@ export default function What() {
           </h2>
           <br/>
         </div>
-        <div className="grid grid-rows-1 gap-4 mb-8 mx-auto font-thin">
-            <div className="bg-black bg-opacity-50 p-8 mx-auto rounded-xl border border-gray-800 flex items-center text-center space-x-5">
+        <div className="gap-4 mb-8 mx-auto font-thin max-w-xl grid grid-flow-row">
+            <div className="bg-black bg-opacity-50 p-8 mx-auto rounded-xl border border-gray-800 space-x-2" style={{ display: 'flex', flexWrap: 'nowrap', overflowX: 'auto', maxWidth: '100%' }}>
                 <p className="text-purple-200 hover:text-purple-400">Influence</p>
                 <p className="text-gray-200 hover:text-gray-400">Advocacy</p>
                 <p className="text-rose-100 hover:text-rose-300">Celebration</p>
@@ -168,8 +167,8 @@ export default function What() {
             <p>Archive preservation of all messages.</p>
         </div>
         </div>
-        <div className="bg-green-500 bg-opacity-50 p-8 rounded-xl border border-green-800 mx-10">
-            <h2 className="text-3xl font-bold mb-2">Join the MXM Revolution</h2>
+        <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-green-800 mx-10">
+            <h2 className="text-3xl font-bold mb-2">Join the MXM Revolution.</h2>
             <p className="text-xl">Be part of history.</p>
             <p>Own the world's Most eXpensive Message.</p>
         </div>
@@ -199,14 +198,14 @@ export default function What() {
             </p>
             <br/>
         </div>
-        <div className="bg-opacity-50 p-8 rounded-xl mx-10">
+        <div className="bg-opacity-50 rounded-xl">
             <h2 className="text-3xl font-bold mb-2">Ready to Make Your Mark?</h2>
             <p className="text-xl">Embrace the World's Most Expensive Message.
             Own it.
             Profit from its impact.</p>
-        </div>
-        <div className="my-8 text-xl font-thin text-center">
-        <i className="text-center mx-auto">The Most Expensive Message: Free speech rewarded.</i>
+        </div><br/>
+        <div className="my-8 text-lg font-light text-center">
+        <i className="text-center mx-auto">The Most Expensive Message: where free speech is rewarded.</i>
         </div>
       </main>
       <Footer />
