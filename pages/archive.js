@@ -5,29 +5,14 @@ import { useState, useEffect } from 'react';
 import Footer from '../components/footer.js';
 import Header from '../components/header.js';
 import Message from '../components/message.js';
-import { sepolia } from "thirdweb/chains";
-import { createThirdwebClient } from "thirdweb";
-import { createWallet } from "thirdweb/wallets";
 import { useSwipeable } from 'react-swipeable';
 import ABI from '../contract/ABI.js';
 
-const myChain = sepolia;
-
-const client = createThirdwebClient({
-  clientId: process.env.NEXT_PUBLIC_THIRDWEB_ID,
-});
-
-const wallets = [
-  createWallet("io.metamask"),
-  createWallet("com.coinbase.wallet"),
-  createWallet("com.trustwallet.app"),
-];
-
-export default function Archive({ names, imgHashes, newestPrice, newestCounter, messages, newestMessage, prices, settings }) {
+export default function Archive({ names, imgHashes, newestPrice, newestCounter, messages, prices, settings }) {
   const [style, setStyle] = useState({});
-  const [message, setMessage] = useState(newestMessage);
+  const [message, setMessage] = useState(messages[0]);
   const [counter, setCounter] = useState(0);
-  const [msgPrices, setPrices] = useState(newestPrice);
+  const [msgPrices, setPrices] = useState(prices[0]);
   const [imgHash, setImgHash] = useState(imgHashes[0]);
   const [name, setName] = useState(names[0]);
 
@@ -90,32 +75,28 @@ export default function Archive({ names, imgHashes, newestPrice, newestCounter, 
   }, []); // Empty dependency array ensures this effect runs only once on mount
 
   const handlers = useSwipeable({
-    // onSwipedUp: () => showPreviousMessage(),
-    // onSwipedDown: () => showNextMessage(),
-    // delta: { up: 100, down: 150 },
+    onSwipedUp: () => showPreviousMessage(),
+    onSwipedDown: () => showNextMessage(),
+    delta: { up: 100, down: 150 },
   });
 
   const showNextMessage = () => {
     setCounter(prevCounter => {
-      const lastIndex = messages.length - 1;
-      let newCounter;
-      if (prevCounter === lastIndex) {
-        newCounter = 0;
-      } else {
-        newCounter = prevCounter - 1;
-      }
-      const newImgHash = imgHashes[newCounter];
-      setMessage(messages[newCounter]);
-      setPrices(prices[newCounter]);
-      setImgHash(imgHashes[newCounter]);
-      setName(names[newCounter]);
-      if (newImgHash !== undefined || newImgHash !== '') {
-        const newImgURL = getImgURLFromHash(newImgHash);
-        updateStyle(newImgURL);
-      } else {
-        console.log('imgHash is undefined');
-      }
-      return newCounter; 
+        if (prevCounter <= 0) return prevCounter;
+        const newCounter = prevCounter - 1;
+        const newImgHash = imgHashes[newCounter];
+        setMessage(messages[newCounter]);
+        setPrices(prices[newCounter]);
+        setImgHash(imgHashes[newCounter]);
+        setName(names[newCounter]);
+        console.log(newCounter);
+        if (newImgHash !== undefined || newImgHash !== '') {
+            const newImgURL = getImgURLFromHash(newImgHash);
+            updateStyle(newImgURL);
+        } else {
+            console.log('imgHash is undefined');
+        }
+        return newCounter; 
     });
   };
   
@@ -129,6 +110,7 @@ export default function Archive({ names, imgHashes, newestPrice, newestCounter, 
       setImgHash(imgHashes[newCounter]);
       setName(names[newCounter]);
       console.log(newCounter);
+      console.log(prices[newCounter]);
       if (newImgHash !== undefined || newImgHash !== '') {
         const newImgURL = getImgURLFromHash(newImgHash);
         updateStyle(newImgURL);
@@ -153,8 +135,8 @@ export default function Archive({ names, imgHashes, newestPrice, newestCounter, 
   return (
     <>
       <Head>
-        <title>Most Expensive Message | MXM</title>
-        <meta name="description" content="Free speech rewarded." />
+        <title>Most Expensive Message Archive | MXM</title>
+        <meta name="description" content="An archive of all of the most expensive messages." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta property="og:title" content="Most Expensive Message | MXM" />
         <meta property="og:description" content="The Most Expensive Message - free speech rewarded." />
@@ -163,16 +145,32 @@ export default function Archive({ names, imgHashes, newestPrice, newestCounter, 
         <meta name="twitter:creator" content="@MostXMessage" /> 
       </Head>
       <main>
-        <div style={style} {...handlers} className="w-full">
-          <div className="min-h-screen flex-col flex">
-            <Header showNext={showNextMessage} reset={reset}/>
-            <div className="flex flex-grow justify-center items-center">
-              <Message text={message} name={name} /> 
-            </div>
-            <Footer settings={settings} price={newestPrice} msgPrices={msgPrices} newestCounter={newestCounter} counter={counter} showPrevious={showPreviousMessage} />
+  <div style={style} {...handlers} className="w-full">
+    <div className="min-h-screen flex flex-col justify-between"> {/* Adjusted for vertical spacing */}
+      <Header showNext={showNextMessage} reset={reset}/>
+      <div className="flex flex-grow justify-center items-center">
+        <div className="relative w-full max-w-4xl px-4">
+          <div className="flex justify-center items-center h-full">
+            <Message text={message} name={name} />
           </div>
         </div>
-      </main>
+      </div>
+      <div className="absolute bottom-0 left-0 right-0 pb-4 flex justify-between px-4"> {/* Container for arrows at the bottom */}
+        {/* {counter !== 0 && ( */}
+          <button className="rotate-180 text-3xl" onClick={showNextMessage}>
+            →
+          </button>
+        {/* )} */}
+        {/* {message !== "Free speech rewarded." && ( */}
+          <button className="text-3xl" onClick={showPreviousMessage}>
+            →
+          </button>
+        {/* )} */}
+      </div>
+      <Footer settings={settings} msgPrices={msgPrices} price={newestPrice} />
+    </div>
+  </div>
+</main>
     </>
   )
 }
@@ -188,8 +186,7 @@ export async function getServerSideProps() {
   const ethersProvider = await alchemy.config.getProvider();
   const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
   const newMessageCall = await contract.readMessage();
-  const newestMessage = newMessageCall[0].toString();
-  const newestCounter = newMessageCall[1].toNumber();
+  const newestCounter = newMessageCall[1].toNumber() - 1;
   const newestPrice = await contract.getPrice();
   const formatPrice = ethers.utils.formatEther(newestPrice);
   console.log(`newest counter is ${newestCounter}`);
@@ -219,7 +216,6 @@ export async function getServerSideProps() {
       newestPrice: formatPrice,
       newestCounter: newestCounter,
       messages: messages,
-      newestMessage: newestMessage,
       prices: prices,
       imgHashes: imgHashes,
       names: names,

@@ -87,7 +87,7 @@ export default function Home({ name, imgHash, price, message, settings }) {
             <div className="flex flex-grow justify-center items-center">
               <Message text={message} name={name} /> 
             </div>
-            <Footer settings={settings} price={price} />
+            <Footer settings={settings} msgPrices={price} />
           </div>
         </div>
       </main>

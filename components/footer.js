@@ -9,7 +9,7 @@ import Link from 'next/link.js';
 import Image from 'next/image.js';
 
 
-export default function Footer( { msgPrices, price, settings } ) {
+export default function Footer( { msgPrices, price, settings, showPrevious } ) {
 
   const [showModal, setShowModal] = useState(false);
   const [closingAnimation, setClosingAnimation] = useState(false);
@@ -239,7 +239,7 @@ export default function Footer( { msgPrices, price, settings } ) {
                         className="w-full sm:w-auto mb-12 sm:mb-0 z-50"
                         onClick={() => setShowModal(true)}
                       >
-                        <p className="text-2xl sm:px-10 p-3 mt-2 mx-6 font-semibold bg-purple-600 text-white hover:bg-green-200 border-purple-400 border rounded-xl transition duration-500 ease-in-out hover:border-green-500">
+                        <p className="text-2xl sm:px-10 p-3 mt-2 mx-6 font-semibold bg-purple-600 text-white hover:bg-green-200 border-purple-800 border rounded-xl transition duration-500 ease-in-out hover:border-green-500">
                             Claim the MXM
                         </p>
                     </button>
@@ -311,14 +311,6 @@ export default function Footer( { msgPrices, price, settings } ) {
                         />
                     </Link>
             </div>
-        {/* {counter !== newestCounter && genesisMessage !== "Free speech rewarded." && (
-        <div className="absolute inset-x-0 bottom-0 mb-3 flex justify-center text-xl">
-          <button className="rotate-90" onClick={showPrevious}>
-            →
-          </button>
-        </div>
-      )} */}
-
       {showModal ? (
         <>
          <div className="fixed inset-0 bg-black opacity-60 z-40 flex justify-center items-center" onClick={() => handleClose()}></div> 
