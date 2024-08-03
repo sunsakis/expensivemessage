@@ -127,7 +127,7 @@ export default function How({ newestPrice, settings }) {
           </div>
           <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800">
             <h3 className="text-3xl font-bold mb-2">New Owner Bids</h3>
-            <p>1.05 ETH</p>
+            <p>At least 5% more, so 1.05 ETH for example</p>
           </div>
           <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800">
             <h3 className="text-3xl font-bold mb-2">You Receive</h3>
@@ -145,7 +145,7 @@ export default function How({ newestPrice, settings }) {
             className="bg-black bg-opacity-50 p-8 rounded-xl border border-purple-800 mx-10 transition duration-500 ease-in-out hover:bg-purple-950 hover:border-purple-500 hover:text-white">
                     <h2 className="text-3xl font-bold mb-2">What are you waiting for?</h2>
                     <br/>
-                    <p className="text-xl">Embrace the Most Expensive Message!</p>
+                    <p className="text-xl">Get rewarded for free speech now!</p>
         </div>
         </Link>
         <br/>

@@ -239,7 +239,7 @@ export default function Footer( { msgPrices, price, settings, showPrevious } ) {
                         className="w-full sm:w-auto mb-12 sm:mb-0 z-50"
                         onClick={() => setShowModal(true)}
                       >
-                        <p className="text-2xl sm:px-10 p-3 mt-2 mx-6 font-semibold bg-purple-600 text-white hover:bg-green-200 border-purple-800 border rounded-xl transition duration-500 ease-in-out hover:border-green-500">
+                        <p className="text-2xl sm:px-10 p-3 mt-2 mx-6 font-semibold bg-violet-700 text-white hover:bg-green-200 border-purple-800 border rounded-xl transition duration-500 ease-in-out hover:border-green-500">
                             Claim the MXM
                         </p>
                     </button>
@@ -306,6 +306,14 @@ export default function Footer( { msgPrices, price, settings, showPrevious } ) {
                         <Image
                             src="/tiktok.svg"
                             alt="TikTok logo"
+                            width={15}
+                            height={15}
+                        />
+                    </Link>
+                    <Link href="https://hey.xyz/u/mxmsocial" rel="nofollow" target="_blank" className="ml-1">
+                        <Image
+                            src="/lens.svg"
+                            alt="Lens logo"
                             width={15}
                             height={15}
                         />
