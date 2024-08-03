@@ -2,7 +2,7 @@ import '@/styles/globals.css';
 import Head from 'next/head';
 import { ThirdwebProvider } from '@thirdweb-dev/react';
 import { Ethereum, Sepolia } from "@thirdweb-dev/chains";
-import { Titillium_Web } from '@next/font/google';
+import { Titillium_Web } from 'next/font/google';
 
 const titties = Titillium_Web({
   subsets: ['latin'],
