@@ -239,7 +239,7 @@ export default function Footer( { msgPrices, price, settings } ) {
                         className="w-full sm:w-auto mb-12 sm:mb-0 z-50"
                         onClick={() => setShowModal(true)}
                       >
-                        <p className="sm:px-4 p-3 mt-2 mx-6 font-bold bg-green-50 text-black hover:bg-green-200 rounded-xl transition duration-500 ease-in-out hover:border-green-500">
+                        <p className="text-2xl sm:px-10 p-3 mt-2 mx-6 font-semibold bg-purple-600 text-white hover:bg-green-200 border-purple-400 border rounded-xl transition duration-500 ease-in-out hover:border-green-500">
                             Claim the MXM
                         </p>
                     </button>
@@ -248,6 +248,7 @@ export default function Footer( { msgPrices, price, settings } ) {
             <div className="absolute bottom-1 flex justify-center mx-auto w-full sm:w-auto m-2 sm:m-5">
                 <div className="flex text-xs sm:text-sm text-gray-200 ml-1">
                     <Link href="/what"><p className="mx-2">What is the MXM?</p></Link>
+                    <Link href="/how"><p className="mx-2">How it works?</p></Link>
                     <Link href="/terms"><p className="mx-2">Terms and conditions</p></Link>
                 </div>
             </div>
@@ -369,19 +370,19 @@ export default function Footer( { msgPrices, price, settings } ) {
                     />
                     </div>
                     <label htmlFor="name" className="text-black text-sm">
-                      Name, handle or ETH address (optional):
+                      Name, handle or e-mail (optional):
                     </label>
                     <input
                         onChange={handleNameChange}
                         id="name"
                         type="text"
-                        placeholder=""
+                        placeholder="@"
                         className="px-3 py-2 border border-gray-300 rounded-md w-full text-gray-600"
                         maxLength="50"
                     />
                     <div className="">
                       <label htmlFor="pic" className="text-black text-sm">
-                        Picture (optional, 1:1 aspect ratio best):
+                        Picture, 1:1 aspect ratio best (optional):
                       </label>
                       <input
                         onChange={handleImageChange}
@@ -399,7 +400,7 @@ export default function Footer( { msgPrices, price, settings } ) {
                         required
                         className="form-checkbox h-5 w-5 text-gray-600"
                       /><label htmlFor="termsAndConditions" className="ml-2 text-sm text-gray-700">
-                        I have read and accept the terms and conditions
+                        I have read and accept the <Link href="/terms" className="underline text-blue-400">terms and conditions</Link>
                       </label>
                     </div>
                     <div className="flex items-center justify-center p-3 pb-2 border-solid border-gray-300 rounded-b">

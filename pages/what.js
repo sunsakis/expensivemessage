@@ -1,8 +1,11 @@
 import Head from 'next/head'
 import Header from '../components/header'
 import Footer from '../components/footer'
+import { Network, Alchemy } from 'alchemy-sdk';
+import { ethers } from 'ethers';
+import ABI from '../contract/ABI.js';
 
-export default function What() {
+export default function What({ newestPrice }) {
 
   return (
     <div 
@@ -17,11 +20,12 @@ export default function What() {
             backgroundRepeat: 'no-repeat',
             display: 'flex',
             backgroundAttachment: 'fixed',
+            backgroundPosition: 'right top',
             }}
             className="text-white px-4 sm:px-6 lg:px-8" // Adjust padding based on screen size
     >
     <Head>
-        <title>Most Expensive Message | MXM</title>
+        <title>What Is The MXM? | MXM</title>
         <meta name="description" content="The Most Expensive Message - free speech rewarded." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -173,10 +177,8 @@ export default function What() {
                 top: document.documentElement.scrollHeight,
                 behavior: 'smooth'
                 })} 
-            className="bg-black bg-opacity-50 p-8 rounded-xl border border-green-800 mx-10 transition duration-500 ease-in-out hover:bg-green-500 hover:border-green-500 hover:text-white">
-                    <h2 className="text-3xl font-bold mb-2">Join the MXM Revolution.</h2>
-                    <p className="text-xl">Be part of history.</p>
-                    <p>Own the world's Most eXpensive Message.</p>
+            className="bg-black bg-opacity-50 p-8 rounded-xl border border-purple-800 mx-10 transition duration-500 ease-in-out hover:bg-purple-950 hover:border-purple-500 hover:text-white">
+                    <h2 className="text-3xl font-bold mb-2">Join the MXM Revolution. <br/> Be part of internet history. <br/> Own the world's Most Expensive Message.</h2>
         </div>
         <br/>
         <div className="my-8 text-xl font-thin">
@@ -209,12 +211,34 @@ export default function What() {
             <p className="text-xl">Embrace the World's Most Expensive Message.
             Own it.
             Profit from its impact.</p>
+            <p>Claim it. Share it. Change the world.</p>
         </div><br/>
         <div className="my-8 text-lg font-light">
         <p>The Most Expensive Message: <i>where free speech is rewarded.</i></p>
         </div>
       </main>
-      <Footer />
+      <Footer price={newestPrice}/>
     </div>
   )
 }
+
+export async function getServerSideProps() {
+
+    const settings = {
+      apiKey: process.env.ALCHEMY_API,
+      network: Network.ETH_SEPOLIA,
+    };
+  
+    const alchemy = new Alchemy(settings);
+    const ethersProvider = await alchemy.config.getProvider();
+    const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
+    const newestPrice = await contract.getPrice();
+    const formatPrice = ethers.utils.formatEther(newestPrice);
+  
+    return {
+      props: {
+        newestPrice: formatPrice,
+      },
+      //revalidate: 1,
+    };
+  }
