@@ -6,7 +6,7 @@ import { Network, Alchemy } from 'alchemy-sdk';
 import { ethers } from 'ethers';
 import ABI from '../contract/ABI.js';
 
-export default function How({ newestPrice }) {
+export default function How({ newestPrice, settings }) {
 
   return (
     <div 
@@ -47,7 +47,10 @@ export default function How({ newestPrice }) {
         </div>
         <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
             <div className="bg-white rounded-full h-4 w-4 flex-shrink-0 mr-4"></div>
-            <p>Click on "Claim the MXM".</p>
+            <p>Click on <span className="underline text-blue-300" onClick={() => window.scrollTo({
+                top: document.documentElement.scrollHeight,
+                behavior: 'smooth'
+                })}>Claim the MXM</span>.</p>
         </div>
         <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
             <div className="bg-white rounded-full h-4 w-4 flex-shrink-0 mr-4"></div>
@@ -147,7 +150,7 @@ export default function How({ newestPrice }) {
         </Link>
         <br/>
       </main>
-      <Footer price={newestPrice}/>
+      <Footer price={newestPrice} settings={settings}/>
     </div>
   )
 }
@@ -168,6 +171,7 @@ export async function getServerSideProps() {
     return {
       props: {
         newestPrice: formatPrice,
+        settings: settings,
       },
       //revalidate: 1,
     };

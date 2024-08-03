@@ -5,7 +5,7 @@ import { Network, Alchemy } from 'alchemy-sdk';
 import { ethers } from 'ethers';
 import ABI from '../contract/ABI.js';
 
-export default function What({ newestPrice }) {
+export default function What({ newestPrice, settings }) {
 
   return (
     <div 
@@ -217,7 +217,7 @@ export default function What({ newestPrice }) {
         <p>The Most Expensive Message: <i>where free speech is rewarded.</i></p>
         </div>
       </main>
-      <Footer price={newestPrice}/>
+      <Footer price={newestPrice} settings={settings}/>
     </div>
   )
 }
@@ -238,6 +238,7 @@ export async function getServerSideProps() {
     return {
       props: {
         newestPrice: formatPrice,
+        settings: settings,
       },
       //revalidate: 1,
     };

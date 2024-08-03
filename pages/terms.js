@@ -6,7 +6,7 @@ import { ethers } from 'ethers';
 import ABI from '../contract/ABI.js';
 
 
-export default function TermsOfUse({ newestPrice }) {
+export default function TermsOfUse({ newestPrice, settings }) {
   return (
     <div 
         style={{
@@ -24,7 +24,10 @@ export default function TermsOfUse({ newestPrice }) {
             className="text-white px-4 sm:px-6 lg:px-8" // Adjust padding based on screen size
     >
       <Head>
-        <title>Terms of Use - Most Expensive Message (MXM) Platform</title>
+        <title>Terms of Use | MXM</title>
+        <meta name="description" content="Most Expensive Message (MXM) Platform Terms of Use" />
+        <link rel="icon" href="/favicon
+        .ico" />
       </Head>
         <Header />
         <br/>
@@ -62,7 +65,7 @@ export default function TermsOfUse({ newestPrice }) {
           ))}
         </div>
       </main>
-      <Footer price={newestPrice}/>
+      <Footer price={newestPrice} settings={settings}/>
     </div>
   )
 }
@@ -83,6 +86,7 @@ export async function getServerSideProps() {
     return {
       props: {
         newestPrice: formatPrice,
+        settings: settings,
       },
       //revalidate: 1,
     };
