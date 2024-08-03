@@ -75,9 +75,9 @@ export default function Archive({ names, imgHashes, newestPrice, newestCounter, 
   }, []); // Empty dependency array ensures this effect runs only once on mount
 
   const handlers = useSwipeable({
-    onSwipedRight: () => showPreviousMessage(),
-    onSwipedLeft: () => showNextMessage(),
-    delta: { right: 100, left: 150 },
+    onSwipedLeft: () => showPreviousMessage(),
+    onSwipedRight: () => showNextMessage(),
+    delta: { right: 100, left: 100 },
   });
 
   const showNextMessage = () => {
