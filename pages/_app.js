@@ -2,9 +2,16 @@ import '@/styles/globals.css';
 import Head from 'next/head';
 import { ThirdwebProvider } from '@thirdweb-dev/react';
 import { Ethereum, Sepolia } from "@thirdweb-dev/chains";
+import { Titillium_Web } from '@next/font/google';
+
+const titties = Titillium_Web({
+  subsets: ['latin'],
+  weight: ['200', '300', '400', '600', '700'],
+})
 
 export default function App({ Component, pageProps }) {
-  return <>
+  return (
+  <main className={titties.className}>
   <ThirdwebProvider 
       activeChain={Sepolia}
       supportedChains={[Ethereum, Sepolia]}
@@ -21,5 +28,6 @@ export default function App({ Component, pageProps }) {
     <meta name="theme-color" content="#ffffff" />
   </Head>
   </ThirdwebProvider>
-  </>
+  </main>
+  )
 }

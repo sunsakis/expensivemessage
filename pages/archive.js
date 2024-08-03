@@ -75,9 +75,9 @@ export default function Archive({ names, imgHashes, newestPrice, newestCounter, 
   }, []); // Empty dependency array ensures this effect runs only once on mount
 
   const handlers = useSwipeable({
-    onSwipedUp: () => showPreviousMessage(),
-    onSwipedDown: () => showNextMessage(),
-    delta: { up: 100, down: 150 },
+    onSwipedRight: () => showPreviousMessage(),
+    onSwipedLeft: () => showNextMessage(),
+    delta: { right: 100, left: 150 },
   });
 
   const showNextMessage = () => {
@@ -121,16 +121,16 @@ export default function Archive({ names, imgHashes, newestPrice, newestCounter, 
     });
   };
 
-  const reset = () => {
-    if (counter !== 0) { // Check if counter is not already 0
-      console.log('Resetting counter');
-      setCounter(0);
-      setMessage(messages[0]);
-      setImgHash(imgHashes[0]);
-    } else {
-      console.log('Counter is already at its default state');
-    }
-  };
+  // const reset = () => {
+  //   if (counter !== 0) { // Check if counter is not already 0
+  //     console.log('Resetting counter');
+  //     setCounter(0);
+  //     setMessage(messages[0]);
+  //     setImgHash(imgHashes[0]);
+  //   } else {
+  //     console.log('Counter is already at its default state');
+  //   }
+  // };
 
   return (
     <>
@@ -145,32 +145,58 @@ export default function Archive({ names, imgHashes, newestPrice, newestCounter, 
         <meta name="twitter:creator" content="@MostXMessage" /> 
       </Head>
       <main>
-  <div style={style} {...handlers} className="w-full">
-    <div className="min-h-screen flex flex-col justify-between"> {/* Adjusted for vertical spacing */}
-      <Header showNext={showNextMessage} reset={reset}/>
-      <div className="flex flex-grow justify-center items-center">
-        <div className="relative w-full max-w-4xl px-4">
-          <div className="flex justify-center items-center h-full">
-            <Message text={message} name={name} />
+        <div style={style} {...handlers} className="w-full relative">
+          <div className="min-h-screen flex-col flex"> {/* Adjusted for flexbox layout */}
+            <Header />
+            <div className="flex flex-grow justify-center items-center">
+                  <Message text={message} name={name} />
+            </div>
+            <Footer settings={settings} msgPrices={msgPrices} price={newestPrice} />
+          </div>
+          <div className="w-full absolute top-28 items-center flex left-0 right-0 justify-between px-10 sm:px-20 md:px-32 lg:px-56 xl:px-96">
+            <div className="justify-start">
+              {counter !== 0 && (
+              <button className="text-3xl" onClick={showNextMessage}>
+                ←
+              </button>
+              )}
+            </div>
+            <div className="justify-end">
+              {message !== "Free speech rewarded." && (
+              <button className="text-3xl" onClick={showPreviousMessage}>
+                →
+              </button>
+              )}
+            </div>
+        </div>
+        </div>
+      </main>
+    </>
+  )
+
+  return (
+    <>
+      <Head>
+        <title>Most Expensive Message | MXM</title>
+        <meta name="description" content="Free speech rewarded." />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:title" content="Most Expensive Message | MXM" />
+        <meta property="og:description" content="The Most Expensive Message - free speech rewarded." />
+        <meta property="og:url" content="mxm.social" /> 
+        <meta property="og:site_name" content="MXM" />
+        <meta name="twitter:creator" content="@MostXMessage" /> 
+      </Head>
+      <main>
+        <div style={style} className="w-full">
+          <div className="min-h-screen flex-col flex">
+            <Header />
+            <div className="flex flex-grow justify-center items-center">
+              <Message text={message} name={name} /> 
+            </div>
+            <Footer settings={settings} msgPrices={price} />
           </div>
         </div>
-      </div>
-      <div className="absolute bottom-0 left-0 right-0 pb-4 flex justify-between px-4"> {/* Container for arrows at the bottom */}
-        {/* {counter !== 0 && ( */}
-          <button className="rotate-180 text-3xl" onClick={showNextMessage}>
-            →
-          </button>
-        {/* )} */}
-        {/* {message !== "Free speech rewarded." && ( */}
-          <button className="text-3xl" onClick={showPreviousMessage}>
-            →
-          </button>
-        {/* )} */}
-      </div>
-      <Footer settings={settings} msgPrices={msgPrices} price={newestPrice} />
-    </div>
-  </div>
-</main>
+      </main>
     </>
   )
 }
