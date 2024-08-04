@@ -65,7 +65,7 @@ export default function TermsOfUse({ newestPrice, settings }) {
           ))}
         </div>
       </main>
-      <Footer msgPrices={newestPrice} text={"Last"} settings={settings}/>
+      <Footer msgPrices={newestPrice} text={"Newest"} settings={settings}/>
     </div>
   )
 }

@@ -1,9 +1,25 @@
-import Link from 'next/link';
 import { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+// import { ConnectButton, ThirdwebProvider } from 'thirdweb/react';
+// import { sepolia } from "thirdweb/chains";
+// import { createThirdwebClient } from "thirdweb";
+// import { createWallet } from "thirdweb/wallets";
+
+// const myChain = sepolia;
+
+// const client = createThirdwebClient({
+//   clientId: process.env.NEXT_PUBLIC_THIRDWEB_ID,
+// });
+
+// const wallets = [
+//   createWallet("io.metamask"),
+//   createWallet("com.coinbase.wallet"),
+//   createWallet("com.trustwallet.app"),
+// ];
+
 
 export default function Header() {
-
+    //const [showWallet, setShowWallet] = useState(false);
     const router = useRouter();
     const ref = useRef(null);
     const [lottie, setLottie] = useState(null);
@@ -39,6 +55,24 @@ export default function Header() {
                     </div>
                 </button>
             </div>
+                            <div className="m-2 absolute top-3 right-1">
+                    {/* {isConnected && showWallet === true && ( */}
+                        {/* <ThirdwebProvider>
+                            <ConnectButton
+                                client={client}
+                                wallets={wallets}
+                                theme={"dark"}
+                                    connectModal={{
+                                    size: "compact",
+                                    termsOfServiceUrl: "https://mxm.social/terms",
+                                    showThirdwebBranding: false,
+                                }}
+                                chain={myChain}
+                                onDisconnect={() => setShowWallet(false)}
+                            />
+                        </ThirdwebProvider> */}
+                    {/* )} */}
+                </div>
         </>
     )
 }

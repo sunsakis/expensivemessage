@@ -9,6 +9,7 @@ import ABI from '../contract/ABI.js';
 
 export default function Home({ name, imgHash, price, message, settings }) {
   const [style, setStyle] = useState({});
+  const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
 
 
     // Step 2: Modify getImgURLFromHash to handle undefined inputs
@@ -40,7 +41,7 @@ export default function Home({ name, imgHash, price, message, settings }) {
     setStyle({
       backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), radial-gradient(circle at center, transparent ${firstGradient}, black ${secondGradient}), url(${backgroundImageUrl})`,
       backgroundPosition: 'center',
-      backgroundSize: 'contain',
+      backgroundSize: window.innerWidth < 450 ? 'cover' : 'contain',
       backgroundRepeat: 'no-repeat',
       height: '100vh',
       width: '100vw',
@@ -55,17 +56,19 @@ export default function Home({ name, imgHash, price, message, settings }) {
       const newImgURL = getImgURLFromHash(imgHash);
       updateStyle(newImgURL);
     };
+    const handleResize = () => {
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+    };
   
     updateBackground(); 
 
     const newImgURL = getImgURLFromHash(imgHash);
-    window.addEventListener('resize', updateStyle(newImgURL));
+    window.addEventListener('resize', handleResize);
 
-    // Cleanup
     return () => {
-      window.removeEventListener('resize', () => updateStyle(newImgURL));
-    }
-  }, []); // Empty dependency array ensures this effect runs only once on mount
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [imgHash, windowSize]);
 
   return (
     <>

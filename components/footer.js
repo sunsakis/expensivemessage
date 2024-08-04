@@ -240,7 +240,7 @@ export default function Footer( { msgPrices, text, settings } ) {
                         onClick={() => setShowModal(true)}
                       >
                         <p className="text-2xl sm:px-10 p-3 mt-2 mx-6 font-semibold bg-green-900 text-white hover:bg-green-200 border-green-700 border rounded-xl transition duration-500 ease-in-out hover:border-green-500">
-                            Claim the MXM
+                            Post the MXM
                         </p>
                     </button>
                 </div>
@@ -251,6 +251,7 @@ export default function Footer( { msgPrices, text, settings } ) {
                     <Link href="/how"><p className="mx-2">How it works?</p></Link>
                     <Link href="/terms"><p className="mx-2">Terms and conditions</p></Link>
                 </div>
+                
             </div>
         </div>
         <div className="flex justify-center items-center mx-auto mb-5 space-x-5 w-full">
@@ -363,7 +364,7 @@ export default function Footer( { msgPrices, text, settings } ) {
                     <textarea
                         onChange={handleTextChange}
                         rows="4"
-                        placeholder="The message"
+                        placeholder="Max 160 chars"
                         className="px-3 py-3 mt-1 border border-gray-300 rounded-md w-full text-gray-600"
                         required
                         maxLength="160"
@@ -382,7 +383,7 @@ export default function Footer( { msgPrices, text, settings } ) {
                     />
                     <div className="">
                       <label htmlFor="pic" className="text-black text-sm">
-                        Picture, 1:1 aspect ratio best (optional):
+                        Picture 1:1 aspect ratio (optional):
                       </label>
                       <input
                         onChange={handleImageChange}

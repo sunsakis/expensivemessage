@@ -33,13 +33,13 @@ contract ExpensiveMessage {
     event MessageOverwritten(uint price, address messenger, string message, uint msgCounter);
 
     constructor() {
-        message = "Free speech rewarded.";
-        msgPrice = 0.0001 ether;
+        message = "If you think women are treated unfairly these Olympics, know that in Ancient Olympic Games married women had to remain on the south side of the river Alpheus.";
+        msgPrice = 0.01 ether;
         owner = msg.sender;
         messenger = msg.sender;
         msgCounter = 0;
-        fee = (msgPrice * 5) / 100 > 0.0002 ether ? (msgPrice * 5) / 100 : 0.0002 ether;
-        messages[msgCounter] = Message(message, messenger, msgPrice, block.timestamp, "", "");
+        fee = (msgPrice * 5) / 100 > 0.02 ether ? (msgPrice * 5) / 100 : 0.02 ether;
+        messages[msgCounter] = Message(message, messenger, msgPrice, block.timestamp, "ipfs://Qma8rd3aZsXHEgyzadxqGMgDo1zbQJq9VUujW7RriKgsRm", "");
         emit MessageChanged(msgPrice, msg.sender, message, msgCounter);
         msgCounter++;
     }
@@ -121,7 +121,7 @@ contract ExpensiveMessage {
 
     function overwrite(string memory _message, string memory _imgHash, string memory _name, uint _counter) external payable {
         require(msg.sender == owner, "You are not the owner.");
-        require(_counter == msgCounter, "You can only overwrite the last message.");
+        require(_counter == msgCounter - 1, "You can only overwrite the last message.");
 
         messages[_counter] = Message(_message, messenger, msgPrice, block.timestamp, _imgHash, _name);
 
