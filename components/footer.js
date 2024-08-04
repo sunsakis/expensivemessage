@@ -154,8 +154,8 @@ export default function Footer( { msgPrices, text, settings } ) {
 
   const msgPriceFloat = parseFloat(msgPrices); // Convert msgPrice to a number
   const fivePercentOfMsgPrice = msgPriceFloat * 0.05; // Calculate 5% of msgPrice
-  const minBidValue = Math.max(fivePercentOfMsgPrice, 0.0002); // Compare and get the higher value
-  const minBid = (parseFloat(msgPriceFloat + minBidValue)).toFixed(4);
+  const minBidValue = Math.max(fivePercentOfMsgPrice, 0.02); // Compare and get the higher value
+  const minBid = (parseFloat(msgPriceFloat + minBidValue)).toFixed(2);
   
 
   const handleSubmit = async (e) => {
@@ -345,13 +345,13 @@ export default function Footer( { msgPrices, text, settings } ) {
                     onSubmit={handleSubmit}
                 >
                     <label htmlFor="bid" className="text-black">
-                        Your bid:
+                        ETH bid:
                     </label>
                     <input
                         onChange={handleBidChange}
                         id="bid"
                         type="number"
-                        step="0.0001"
+                        step="0.01"
                         min={minBid}
                         placeholder={minBid + " ETH or higher"}
                         className="px-3 py-2 border border-gray-300 rounded-md w-full text-gray-600"
@@ -359,7 +359,7 @@ export default function Footer( { msgPrices, text, settings } ) {
                     />
                     <div className="pt-4">
                     <label className="text-black">
-                        The message:
+                        Message:
                     </label>
                     <textarea
                         onChange={handleTextChange}
