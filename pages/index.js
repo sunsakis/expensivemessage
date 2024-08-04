@@ -9,7 +9,7 @@ import ABI from '../contract/ABI.js';
 
 export default function Home({ name, imgHash, price, message, settings }) {
   const [style, setStyle] = useState({});
-  const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
+  const [windowSize, setWindowSize] = useState({});
 
 
     // Step 2: Modify getImgURLFromHash to handle undefined inputs
