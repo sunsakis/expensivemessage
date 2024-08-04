@@ -7,6 +7,6 @@ const nextConfig = {
     appDir: false,
   }
 }
-module.exports = withPlausibleProxy()({
+module.exports = withPlausibleProxy()(
   nextConfig
-})
+)
