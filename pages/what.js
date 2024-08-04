@@ -217,7 +217,7 @@ export default function What({ newestPrice, settings }) {
         <p>The Most Expensive Message: <i>where free speech is rewarded.</i></p>
         </div>
       </main>
-      <Footer price={newestPrice} settings={settings}/>
+      <Footer msgPrices={newestPrice} text={"Last"} settings={settings}/>
     </div>
   )
 }

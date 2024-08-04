@@ -9,7 +9,7 @@ import Link from 'next/link.js';
 import Image from 'next/image.js';
 
 
-export default function Footer( { msgPrices, price, settings, showPrevious } ) {
+export default function Footer( { msgPrices, text, settings } ) {
 
   const [showModal, setShowModal] = useState(false);
   const [closingAnimation, setClosingAnimation] = useState(false);
@@ -152,7 +152,7 @@ export default function Footer( { msgPrices, price, settings, showPrevious } ) {
     }
   };
 
-  const msgPriceFloat = parseFloat(price); // Convert msgPrice to a number
+  const msgPriceFloat = parseFloat(msgPrices); // Convert msgPrice to a number
   const fivePercentOfMsgPrice = msgPriceFloat * 0.05; // Calculate 5% of msgPrice
   const minBidValue = Math.max(fivePercentOfMsgPrice, 0.0002); // Compare and get the higher value
   const minBid = (parseFloat(msgPriceFloat + minBidValue)).toFixed(4);
@@ -224,7 +224,7 @@ export default function Footer( { msgPrices, price, settings, showPrevious } ) {
             <div className="sm:m-5">
               {msgPrices && (
                 <p className="text-sm text-right tracking-tight mr-9 text-gray-300">
-                        This MXM cost
+                        {text} MXM cost
                     </p>
               )}
               {msgPrices && (

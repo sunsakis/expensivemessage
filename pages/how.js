@@ -150,7 +150,7 @@ export default function How({ newestPrice, settings }) {
         </Link>
         <br/>
       </main>
-      <Footer price={newestPrice} settings={settings}/>
+      <Footer msgPrices={newestPrice} text={"Last"} settings={settings}/>
     </div>
   )
 }

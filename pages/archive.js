@@ -151,7 +151,7 @@ export default function Archive({ names, imgHashes, newestPrice, newestCounter, 
             <div className="flex flex-grow justify-center items-center">
                   <Message text={message} name={name} />
             </div>
-            <Footer settings={settings} msgPrices={msgPrices} price={newestPrice} />
+            <Footer settings={settings} msgPrices={msgPrices} price={newestPrice} text={"This"} />
           </div>
           <div className="w-full absolute top-28 items-center flex left-0 right-0 justify-between px-10 sm:px-20 md:px-32 lg:px-56 xl:px-96">
             <div className="justify-start">
@@ -169,32 +169,6 @@ export default function Archive({ names, imgHashes, newestPrice, newestCounter, 
               )}
             </div>
         </div>
-        </div>
-      </main>
-    </>
-  )
-
-  return (
-    <>
-      <Head>
-        <title>Most Expensive Message | MXM</title>
-        <meta name="description" content="Free speech rewarded." />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta property="og:title" content="Most Expensive Message | MXM" />
-        <meta property="og:description" content="The Most Expensive Message - free speech rewarded." />
-        <meta property="og:url" content="mxm.social" /> 
-        <meta property="og:site_name" content="MXM" />
-        <meta name="twitter:creator" content="@MostXMessage" /> 
-      </Head>
-      <main>
-        <div style={style} className="w-full">
-          <div className="min-h-screen flex-col flex">
-            <Header />
-            <div className="flex flex-grow justify-center items-center">
-              <Message text={message} name={name} /> 
-            </div>
-            <Footer settings={settings} msgPrices={price} />
-          </div>
         </div>
       </main>
     </>

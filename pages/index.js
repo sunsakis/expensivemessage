@@ -51,7 +51,6 @@ export default function Home({ name, imgHash, price, message, settings }) {
   };
 
   useEffect(() => {
-
     const updateBackground = async () => {
       const newImgURL = getImgURLFromHash(imgHash);
       updateStyle(newImgURL);
@@ -87,7 +86,7 @@ export default function Home({ name, imgHash, price, message, settings }) {
             <div className="flex flex-grow justify-center items-center">
               <Message text={message} name={name} /> 
             </div>
-            <Footer settings={settings} msgPrices={price} />
+            <Footer settings={settings} msgPrices={price} text={"This"} />
           </div>
         </div>
       </main>
