@@ -15,64 +15,66 @@ export default function Archive({ names, imgHashes, newestPrice, newestCounter, 
   const [msgPrices, setPrices] = useState(prices[0]);
   const [imgHash, setImgHash] = useState(imgHashes[0]);
   const [name, setName] = useState(names[0]);
+  const [windowSize, setWindowSize] = useState({});
 
 
-    // Step 2: Modify getImgURLFromHash to handle undefined inputs
-  function getImgURLFromHash(imgHash) {
-    if (imgHash === '' || imgHash === undefined) {
-      return '/defaultMessage.png';
-    }
-    // Existing logic to generate the image URL from the hash
-    return imgHash.replace('ipfs://', 'https://ipfs.io/ipfs/');
+  // Step 2: Modify getImgURLFromHash to handle undefined inputs
+function getImgURLFromHash(imgHash) {
+  if (imgHash === '' || imgHash === undefined) {
+    return '/defaultMessage.png';
   }
+  // Existing logic to generate the image URL from the hash
+  return imgHash.replace('ipfs://', 'https://ipfs.io/ipfs/');
+}
 
-  const updateStyle = (backgroundImageUrl) => {
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-  
-    // Define a minimum size for the spotlight
-    const minSpotlightSize = 200; // Example minimum size
+const updateStyle = (backgroundImageUrl) => {
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
 
-    // Use the smaller of the viewport dimensions to influence the spotlight size
-    // Ensure the spotlight size does not go below the minimum size
-    let spotlightSize = Math.max(Math.min(viewportWidth, viewportHeight) * 0.3, minSpotlightSize);
+  // Define a minimum size for the spotlight
+  const minSpotlightSize = 200; // Example minimum size
+
+  // Use the smaller of the viewport dimensions to influence the spotlight size
+  // Ensure the spotlight size does not go below the minimum size
+  let spotlightSize = Math.max(Math.min(viewportWidth, viewportHeight) * 0.3, minSpotlightSize);
+
+  // Calculate the first and second gradients
+  // The first gradient is the transparent center of the spotlight
+  // The second gradient begins the dimming effect, so it should be slightly larger than the first
+  const firstGradient = `${spotlightSize * 0.5}px`; // Half the size for a circular gradient
+  const secondGradient = `${spotlightSize}px`; // Full size for the dimming effect to start
   
-    // Calculate the first and second gradients
-    // The first gradient is the transparent center of the spotlight
-    // The second gradient begins the dimming effect, so it should be slightly larger than the first
-    const firstGradient = `${spotlightSize * 0.5}px`; // Half the size for a circular gradient
-    const secondGradient = `${spotlightSize * 0.95}px`; // Full size for the dimming effect to start
-    
-    setStyle({
-      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), radial-gradient(circle at center, transparent ${firstGradient}, black ${secondGradient}), url(${backgroundImageUrl})`,
-      backgroundPosition: 'center',
-      backgroundSize: 'contain',
-      backgroundRepeat: 'no-repeat',
-      height: '100vh',
-      width: '100vw',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-    });
+  setStyle({
+    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), radial-gradient(circle at center, transparent ${firstGradient}, black ${secondGradient}), url(${backgroundImageUrl})`,
+    backgroundPosition: 'center',
+    backgroundSize: window.innerWidth < 450 ? 'cover' : 'contain',
+    backgroundRepeat: 'no-repeat',
+    height: '100vh',
+    width: '100vw',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  });
+};
+
+useEffect(() => {
+  const updateBackground = async () => {
+    const newImgURL = getImgURLFromHash(imgHash);
+    updateStyle(newImgURL);
+  };
+  const handleResize = () => {
+    setWindowSize({ width: window.innerWidth, height: window.innerHeight });
   };
 
-  useEffect(() => {
+  updateBackground(); 
 
-    const updateBackground = async () => {
-      const newImgURL = getImgURLFromHash(imgHashes[0]);
-      updateStyle(newImgURL);
-    };
-  
-    updateBackground(); 
+  const newImgURL = getImgURLFromHash(imgHash);
+  window.addEventListener('resize', handleResize);
 
-    const newImgURL = getImgURLFromHash(imgHash);
-    window.addEventListener('resize', updateStyle(newImgURL));
-
-    // Cleanup
-    return () => {
-      window.removeEventListener('resize', () => updateStyle(newImgURL));
-    }
-  }, []); // Empty dependency array ensures this effect runs only once on mount
+  return () => {
+    window.removeEventListener('resize', handleResize);
+  };
+}, [imgHash, windowSize]);
 
   const handlers = useSwipeable({
     onSwipedLeft: () => showPreviousMessage(),
@@ -121,17 +123,6 @@ export default function Archive({ names, imgHashes, newestPrice, newestCounter, 
     });
   };
 
-  // const reset = () => {
-  //   if (counter !== 0) { // Check if counter is not already 0
-  //     console.log('Resetting counter');
-  //     setCounter(0);
-  //     setMessage(messages[0]);
-  //     setImgHash(imgHashes[0]);
-  //   } else {
-  //     console.log('Counter is already at its default state');
-  //   }
-  // };
-
   return (
     <>
       <Head>
@@ -162,7 +153,7 @@ export default function Archive({ names, imgHashes, newestPrice, newestCounter, 
               )}
             </div>
             <div className="justify-end">
-              {message !== "Free speech rewarded." && (
+              {message !== "If you think women are treated unfairly these Olympics, know that in Ancient Olympic Games married women had to remain on the south side of the river Alpheus." && (
               <button className="text-3xl" onClick={showPreviousMessage}>
                 →
               </button>
@@ -186,7 +177,7 @@ export async function getServerSideProps() {
   const ethersProvider = await alchemy.config.getProvider();
   const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
   const newMessageCall = await contract.readMessage();
-  const newestCounter = newMessageCall[1].toNumber() - 1;
+  const newestCounter = newMessageCall[1].toNumber();
   const newestPrice = await contract.getPrice();
   const formatPrice = ethers.utils.formatEther(newestPrice);
   console.log(`newest counter is ${newestCounter}`);

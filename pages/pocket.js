@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 import React from 'react';
 import ABI from '../contract/ABI.js';
 
-export default function WithdrawPage() {
+export default function Pocket() {
 
   const withdraw = async () => {
     try {
@@ -25,6 +25,29 @@ export default function WithdrawPage() {
       console.error(error);
     }
   };
+
+  const overwrite = async () => {
+    try {
+      if (window.ethereum) {
+        const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(
+          process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
+          ABI,
+          signer
+        );
+
+        const transaction = await contract.overwrite("This message was overwritten due to inciting hatred", "", "admin", 1);
+        await transaction.wait();
+        console.log('Overwrite successful');
+      } else {
+        console.log('Something went wrong');
+      }
+    }
+    catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <div>

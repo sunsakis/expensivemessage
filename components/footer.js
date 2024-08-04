@@ -383,7 +383,7 @@ export default function Footer( { msgPrices, text, settings } ) {
                     />
                     <div className="">
                       <label htmlFor="pic" className="text-black text-sm">
-                        Picture 1:1 aspect ratio (optional):
+                        Picture, 1:1 aspect ratio (optional):
                       </label>
                       <input
                         onChange={handleImageChange}

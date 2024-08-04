@@ -41,7 +41,6 @@ contract ExpensiveMessage {
         fee = (msgPrice * 5) / 100 > 0.02 ether ? (msgPrice * 5) / 100 : 0.02 ether;
         messages[msgCounter] = Message(message, messenger, msgPrice, block.timestamp, "ipfs://Qma8rd3aZsXHEgyzadxqGMgDo1zbQJq9VUujW7RriKgsRm", "");
         emit MessageChanged(msgPrice, msg.sender, message, msgCounter);
-        msgCounter++;
     }
 
     function getMessages(uint _msgCounter) public view returns (string memory) {
@@ -121,7 +120,7 @@ contract ExpensiveMessage {
 
     function overwrite(string memory _message, string memory _imgHash, string memory _name, uint _counter) external payable {
         require(msg.sender == owner, "You are not the owner.");
-        require(_counter == msgCounter - 1, "You can only overwrite the last message.");
+        require(_counter == msgCounter, "You can only overwrite the last message.");
 
         messages[_counter] = Message(_message, messenger, msgPrice, block.timestamp, _imgHash, _name);
 
