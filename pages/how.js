@@ -47,10 +47,10 @@ export default function How({ newestPrice, settings }) {
         </div>
         <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
             <div className="bg-white rounded-full h-4 w-4 flex-shrink-0 mr-4"></div>
-            <p>Click on <span className="underline text-blue-300" onClick={() => window.scrollTo({
+            <p>Click on <button className="underline text-blue-300" onClick={() => window.scrollTo({
                 top: document.documentElement.scrollHeight,
                 behavior: 'smooth'
-                })}>Claim the MXM</span>.</p>
+                })}>Claim your MXM</button>.</p>
         </div>
         <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
             <div className="bg-white rounded-full h-4 w-4 flex-shrink-0 mr-4"></div>
@@ -70,7 +70,7 @@ export default function How({ newestPrice, settings }) {
         </div>
         <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
             <div className="bg-white rounded-full h-4 w-4 flex-shrink-0 mr-4"></div>
-            <p>Read the terms and conditions page carefully and tick that you accept.</p>
+            <p>Read the <Link href="/terms" className="underline text-blue-300">terms and conditions</Link> carefully and tick that you accept them.</p>
         </div>
         <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
             <div className="bg-white rounded-full h-4 w-4 flex-shrink-0 mr-4"></div>

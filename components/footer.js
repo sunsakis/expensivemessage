@@ -240,7 +240,7 @@ export default function Footer( { msgPrices, text, settings } ) {
                         onClick={() => setShowModal(true)}
                       >
                         <p className="text-2xl sm:px-10 p-3 mt-2 mx-6 font-semibold bg-green-900 text-white hover:bg-green-200 border-green-700 border rounded-xl transition duration-500 ease-in-out hover:border-green-500">
-                            Post the MXM
+                            Claim your MXM
                         </p>
                     </button>
                 </div>
@@ -328,7 +328,7 @@ export default function Footer( { msgPrices, text, settings } ) {
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col bg-white outline-none focus:outline-none">
                 <div className="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
                   <h3 className="text-xl font-semibold text-black">
-                    Claim the MXM
+                    Claim your MXM
                   </h3>
                   <button
                     className="ml-auto bg-transparent border-0 float-right leading-none font-semibold outline-none focus:outline-none"

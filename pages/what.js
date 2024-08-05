@@ -126,7 +126,7 @@ export default function What({ newestPrice, settings }) {
             <p>Showcase art.</p>
         </div>
         <div className="justify-center bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
-            <p>Champion human rights</p>
+            <p>Champion human rights.</p>
         </div>
         <div className="justify-center bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
             <p>Expose corruption.</p>
