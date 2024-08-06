@@ -14,7 +14,7 @@ export default function App({ Component, pageProps }) {
   return (
   <main className={titties.className}>
     <ThirdwebProvider 
-        activeChain={Sepolia}
+        activeChain={Ethereum}
         supportedChains={[Ethereum, Sepolia]}
         clientId={process.env.NEXT_PUBLIC_THIRDWEB_ID}
       >

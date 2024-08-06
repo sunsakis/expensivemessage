@@ -130,7 +130,7 @@ useEffect(() => {
         <meta name="description" content="An archive of all of the most expensive messages." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta property="og:title" content="Most Expensive Message | MXM" />
-        <meta property="og:description" content="The Most Expensive Message - free speech rewarded." />
+        <meta property="og:description" content="An archive of all of the most expensive messages." />
         <meta property="og:url" content="mxm.social" /> 
         <meta property="og:site_name" content="MXM" />
         <meta name="twitter:creator" content="@MostXMessage" /> 
@@ -153,7 +153,7 @@ useEffect(() => {
               )}
             </div>
             <div className="justify-end">
-              {message !== "If you think women are treated unfairly these Olympics, know that in Ancient Olympic Games married women had to remain on the south side of the river Alpheus." && (
+              {message !== "Who dares to profit from owning the first MXM?" && (
               <button className="text-3xl" onClick={showPreviousMessage}>
                 →
               </button>
@@ -170,7 +170,7 @@ export async function getServerSideProps() {
 
   const settings = {
     apiKey: process.env.ALCHEMY_API,
-    network: Network.ETH_SEPOLIA,
+    network: Network.ETH_MAINNET,
   };
 
   const alchemy = new Alchemy(settings);

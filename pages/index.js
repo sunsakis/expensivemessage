@@ -101,7 +101,7 @@ export async function getServerSideProps() {
 
   const settings = {
     apiKey: process.env.ALCHEMY_API,
-    network: Network.ETH_SEPOLIA,
+    network: Network.ETH_MAINNET,
   };
 
   const alchemy = new Alchemy(settings);
@@ -112,8 +112,8 @@ export async function getServerSideProps() {
   const newestCounter = newMessageCall[1].toNumber();
   const newestPrice = await contract.getPrice();
   const formatPrice = ethers.utils.formatEther(newestPrice);
-  const newestImgHash = await contract.getImgHashes(newestCounter - 1);
-  const newestName = await contract.getNames(newestCounter - 1);
+  const newestImgHash = await contract.getImgHashes(newestCounter);
+  const newestName = await contract.getNames(newestCounter);
 
   return {
     props: {

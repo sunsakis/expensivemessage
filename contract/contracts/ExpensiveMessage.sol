@@ -33,13 +33,13 @@ contract ExpensiveMessage {
     event MessageOverwritten(uint price, address messenger, string message, uint msgCounter);
 
     constructor() {
-        message = "If you think women are treated unfairly these Olympics, know that in Ancient Olympic Games married women had to remain on the south side of the river Alpheus.";
+        message = "Who dares to profit from owning the first MXM?";
         msgPrice = 0.01 ether;
         owner = msg.sender;
         messenger = msg.sender;
         msgCounter = 0;
         fee = (msgPrice * 5) / 100 > 0.02 ether ? (msgPrice * 5) / 100 : 0.02 ether;
-        messages[msgCounter] = Message(message, messenger, msgPrice, block.timestamp, "ipfs://Qma8rd3aZsXHEgyzadxqGMgDo1zbQJq9VUujW7RriKgsRm", "");
+        messages[msgCounter] = Message(message, messenger, msgPrice, block.timestamp, "ipfs://QmVUy1fsPrFa4nx2WN8BppiqLYfYdYUXeg5G6BiNMnfARz", "");
         emit MessageChanged(msgPrice, msg.sender, message, msgCounter);
     }
 

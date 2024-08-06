@@ -239,7 +239,7 @@ export default function Footer( { msgPrices, text, settings } ) {
                         className="w-full sm:w-auto mb-12 sm:mb-0 z-50"
                         onClick={() => setShowModal(true)}
                       >
-                        <p className="text-2xl sm:px-10 p-3 mt-2 mx-6 font-semibold bg-green-900 text-white hover:bg-green-200 border-green-700 border rounded-xl transition duration-500 ease-in-out hover:border-green-500">
+                        <p className="text-2xl sm:px-10 p-3 mt-2 mx-6 font-semibold bg-green-900 bg-opacity-60 text-white hover:bg-green-200 border-green-700 border rounded-xl transition duration-500 ease-in-out hover:border-green-500">
                             Claim your MXM
                         </p>
                     </button>

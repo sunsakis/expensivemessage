@@ -52,11 +52,11 @@ export default function TermsOfUse({ newestPrice, settings }) {
             { title: "12. Autonomous Smart Contracts", content: "We do not directly administer or participate in the Platform's autonomous smart contract operations besides providing the initial code. Transactions occur automatically with no interference ability." },
             { title: "13. Limitation of Liability", content: "Under no circumstances, including negligence, shall the owners/operators/developers be liable for damages related to smart contract operations, bugs, hacks, failures or disruptions, or any negative user experience. Use indicates your agreement that liability is limited to the fullest extent under Estonian law.  There is no end date to this clause." },
             { title: "14. Most Expensive Name", content: "We make no guarantees or warranties that Platform messages constitute the actual 'most expensive' message in existence. This is simply the branded name for this service." },
-            { title: "15. Governing Law & Dispute Resolution", content: "These Terms shall be governed by Estonian law. Any disputes must be resolved through binding arbitration in Estonia." },
+            { title: "15. Force Majeur", content: "All normally recognised force majeur exclusions apply." },
             { title: "16. Agreement", content: "By checking below and/or using this Platform, you accept the most current version of these Terms of Use." },
-            { title: "17. Force Majeur", content: "All normally recognised force majeur exclusions apply." },
-            { title: "18. Updates to Terms", content: "18.1. We reserve the right to update these Terms of Use at any time. 18.2. Any changes will be effective immediately upon posting to the Platform. 18.3. Your continued use of the Platform after changes are posted constitutes your acceptance of the updated Terms. 18.4. We will make reasonable efforts to notify users of significant changes via social or platform notification."},
-            { title: "19. Severability", content: "If any provision of these Terms is found to be unenforceable or invalid, that provision shall be limited or eliminated to the minimum extent necessary so that these Terms shall otherwise remain in full force and effect and enforceable."},
+            { title: "17. Updates to Terms", content: "18.1. We reserve the right to update these Terms of Use at any time. 18.2. Any changes will be effective immediately upon posting to the Platform. 18.3. Your continued use of the Platform after changes are posted constitutes your acceptance of the updated Terms. 18.4. We will make reasonable efforts to notify users of significant changes via social or platform notification."},
+            { title: "18. Severability", content: "If any provision of these Terms is found to be unenforceable or invalid, that provision shall be limited or eliminated to the minimum extent necessary so that these Terms shall otherwise remain in full force and effect and enforceable."},
+            { title: "19. Governing Law & Dispute Resolution", content: "These Terms shall be governed by Estonian law. Any disputes must be resolved through binding arbitration in Estonia." },
           ].map((section, index) => (
             <section key={index}>
               <h2 className="text-2xl font-semibold mb-4">{section.title}</h2>
@@ -74,7 +74,7 @@ export async function getServerSideProps() {
 
     const settings = {
       apiKey: process.env.ALCHEMY_API,
-      network: Network.ETH_SEPOLIA,
+      network: Network.ETH_MAINNET,
     };
   
     const alchemy = new Alchemy(settings);
