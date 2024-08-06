@@ -21,37 +21,38 @@ import { useRouter } from 'next/router';
 export default function Header() {
     //const [showWallet, setShowWallet] = useState(false);
     const router = useRouter();
-    const ref = useRef(null);
-    const [lottie, setLottie] = useState(null);
+    // const ref = useRef(null);
+    // const [lottie, setLottie] = useState(null);
 
-    useEffect(() => {
-        import('lottie-web').then((lot) => { setLottie(lot.default) });
-    }, []);
+    // useEffect(() => {
+    //     import('lottie-web').then((lot) => { setLottie(lot.default) });
+    // }, []);
 
-    useEffect(() => {
-        if (lottie && ref.current) {
-            const animation = lottie.loadAnimation({
-                container: ref.current,
-                renderer: 'svg',
-                loop: false,
-                autoplay: true,
-                path: 'MXM_lottie.json',
-            });
+    // useEffect(() => {
+    //     if (lottie && ref.current) {
+    //         const animation = lottie.loadAnimation({
+    //             container: ref.current,
+    //             renderer: 'svg',
+    //             loop: false,
+    //             autoplay: true,
+    //             path: 'MXM_lottie.json',
+    //         });
 
-        return () => animation.destroy()
-        }
-    },[lottie])
+    //     return () => animation.destroy()
+    //     }
+    // },[lottie])
 
     return (
         <>
             <div className="flex">
                 <button>
-                    <div className="m-2 absolute top-5 left-5 z-10" ref={ref} onClick={() => {
+                    <div className="m-2 absolute top-5 left-5 z-10 mx-auto" onClick={() => {
                         // Check if the current path is not the homepage
                         if (router.pathname !== '/') {
                             router.push('/');
                         }
                         }}>
+                        <img src="/color_expanded.svg" alt="MXM Logo" className="h-30 w-50" />
                     </div>
                 </button>
             </div>
