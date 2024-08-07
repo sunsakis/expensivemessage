@@ -15,7 +15,7 @@ const Message = ({ text, name }) => {
       <div className="max-w-md lg:max-w-xl p-4 text-center mx-auto w-full px-4">
         <br/><br/><br/><br/><br/><br/><br/><br/>
         <h1 className="text-2xl sm:text-3xl font-semibold drop-shadow-xl">
-          <b>{text}</b>
+          <b><i>{text}</i></b>
         </h1><br/>
         <p className="text-base drop-shadow-xl text-gray-50 font-medium">
           {name}

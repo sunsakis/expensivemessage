@@ -126,11 +126,11 @@ useEffect(() => {
   return (
     <>
       <Head>
-        <title>Most Expensive Message Archive | MXM</title>
-        <meta name="description" content="An archive of all of the most expensive messages." />
+        <title>Archives | MXM</title>
+        <meta name="description" content="An archive of all of the previously most expensive messages." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta property="og:title" content="Most Expensive Message | MXM" />
-        <meta property="og:description" content="An archive of all of the most expensive messages." />
+        <meta property="og:title" content="Archives | MXM" />
+        <meta property="og:description" content="An archive of all of the previously most expensive messages." />
         <meta property="og:url" content="mxm.social" /> 
         <meta property="og:site_name" content="MXM" />
         <meta name="twitter:creator" content="@MostXMessage" /> 

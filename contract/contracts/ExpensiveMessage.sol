@@ -33,13 +33,13 @@ contract ExpensiveMessage {
     event MessageOverwritten(uint price, address messenger, string message, uint msgCounter);
 
     constructor() {
-        message = "Who dares to profit from owning the first MXM?";
+        message = "The Times 07/Aug/2024: The world seeks truth in the noise of social media";
         msgPrice = 0.01 ether;
         owner = msg.sender;
         messenger = msg.sender;
         msgCounter = 0;
         fee = (msgPrice * 5) / 100 > 0.02 ether ? (msgPrice * 5) / 100 : 0.02 ether;
-        messages[msgCounter] = Message(message, messenger, msgPrice, block.timestamp, "ipfs://QmVUy1fsPrFa4nx2WN8BppiqLYfYdYUXeg5G6BiNMnfARz", "");
+        messages[msgCounter] = Message(message, messenger, msgPrice, block.timestamp, "", "");
         emit MessageChanged(msgPrice, msg.sender, message, msgCounter);
     }
 

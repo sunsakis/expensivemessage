@@ -26,7 +26,7 @@ export default function What({ newestPrice, settings }) {
     >
     <Head>
         <title>What Is The MXM? | MXM</title>
-        <meta name="description" content="The Most Expensive Message - free speech rewarded." />
+        <meta name="description" content="Free speech rewarded." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
     
