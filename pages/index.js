@@ -113,7 +113,12 @@ export async function getServerSideProps() {
   const newestPrice = await contract.getPrice();
   const formatPrice = ethers.utils.formatEther(newestPrice);
   const newestImgHash = await contract.getImgHashes(newestCounter);
-  const newestName = await contract.getNames(newestCounter);
+  let newestName;
+  if (newestCounter === 0) {
+      newestName = "Aria Veritas";
+  } else {
+      newestName = await contract.getNames(newestCounter);
+  }
 
   return {
     props: {
