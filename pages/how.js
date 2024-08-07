@@ -140,14 +140,12 @@ export default function How({ newestPrice, settings }) {
           <i className="text-center mx-auto">No action required on your part – funds are automatically sent to your wallet.</i>
         </div>
         <br/><br/>
-        <Link href="/">
         <div
-            className="bg-black bg-opacity-50 p-8 rounded-xl border mx-10 transition duration-500 ease-in-out hover:bg-purple-950 hover:border-purple-500 hover:text-white">
+            className="bg-black bg-opacity-50 p-8 rounded-xl border mx-10 transition duration-500 ease-in-out hover:bg-white hover:text-black hover:border-black">
                     <h2 className="text-3xl font-bold mb-2">What are you waiting for?</h2>
                     <br/>
                     <p className="text-xl">Get rewarded for free speech now!</p>
         </div>
-        </Link>
         <br/>
       </main>
       <Footer msgPrices={newestPrice} text={"Newest"} settings={settings}/>

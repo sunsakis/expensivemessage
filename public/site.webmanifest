@@ -1,5 +1,5 @@
 {
-  "name": "MXM - Most Expensive Message",
+  "name": "Most Expensive Message | MXM",
   "short_name": "MXM",
   "icons": [
     {
@@ -13,6 +13,21 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
     }
   ],
   "theme_color": "#000000",
@@ -22,5 +37,18 @@
   "orientation": "portrait-primary",
   "scope": "/",
   "description": "Free speech rewarded.",
-  "lang": "en-US"
+  "lang": "en-US",
+  "screenshots": [
+    {
+      "src": "/screenshots/screenshot1.png",
+      "sizes": "640x480",
+      "type": "image/png"
+    },
+    {
+      "src": "/screenshots/screenshot2.png",
+      "sizes": "640x480",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["social", "communication", "socialfi", "socialfinance", "crypto", "cryptocurrency", "blockchain", "web3", "decentralized", "decentralization", "freedom", "free speech", "censorship", "censorship resistance", "privacy", "security", "encryption"]
 }

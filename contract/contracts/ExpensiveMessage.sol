@@ -33,13 +33,13 @@ contract ExpensiveMessage {
     event MessageOverwritten(uint price, address messenger, string message, uint msgCounter);
 
     constructor() {
-        message = "The Times 07/Aug/2024: The world seeks truth in the noise of social media";
+        message = "The Times 07/Aug/2024 The world seeks truth in the noise of social media";
         msgPrice = 0.01 ether;
         owner = msg.sender;
         messenger = msg.sender;
         msgCounter = 0;
         fee = (msgPrice * 5) / 100 > 0.02 ether ? (msgPrice * 5) / 100 : 0.02 ether;
-        messages[msgCounter] = Message(message, messenger, msgPrice, block.timestamp, "", "");
+        messages[msgCounter] = Message(message, messenger, msgPrice, block.timestamp, "", "Aria Veritas");
         emit MessageChanged(msgPrice, msg.sender, message, msgCounter);
     }
 

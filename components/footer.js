@@ -263,22 +263,22 @@ export default function Footer( { msgPrices, text, settings } ) {
                             height={15}
                         />
                     </Link>
-                    <Link href="https://www.threads.net/@mxm.social" rel="nofollow" target="_blank" className="ml-1">
+                    {/* <Link href="https://www.threads.net/@mxm.social" rel="nofollow" target="_blank" className="ml-1">
                         <Image
                             src="/threads.svg"
                             alt="Threads logo"
                             width={15}
                             height={15}
                         />
-                    </Link>
-                    <Link href="https://www.instagram.com/mxm.social" rel="nofollow" target="_blank" className="ml-1">
+                    </Link> */}
+                    {/* <Link href="https://www.instagram.com/mxm.social" rel="nofollow" target="_blank" className="ml-1">
                         <Image
                             src="/instagram.svg"
                             alt="Instagram logo"
                             width={15}
                             height={15}
                         />
-                    </Link>
+                    </Link> */}
                     <Link href="https://x.com/MostXMessage" rel="nofollow" target="_blank" className="ml-1">
                       <Image
                           src="/x.svg"
@@ -287,14 +287,14 @@ export default function Footer( { msgPrices, text, settings } ) {
                           height={15}
                       />
                     </Link>
-                    <Link href="https://www.facebook.com/profile.php?id=61563047402139" rel="nofollow" target="_blank" className="ml-1">
+                    {/* <Link href="https://www.facebook.com/profile.php?id=61563047402139" rel="nofollow" target="_blank" className="ml-1">
                         <Image
                             src="/facebook.svg"
                             alt="Facebook logo"
                             width={15}
                             height={15}
                         />
-                    </Link>
+                    </Link> */}
                     <Link href="https://warpcast.com/mostxmessage" rel="nofollow" target="_blank" className="ml-1">
                         <Image
                             src="/farcaster.svg"
@@ -303,14 +303,14 @@ export default function Footer( { msgPrices, text, settings } ) {
                             height={15}
                         />
                     </Link>
-                    <Link href="https://www.tiktok.com/@mxm.social" rel="nofollow" target="_blank" className="ml-1">
+                    {/* <Link href="https://www.tiktok.com/@mxm.social" rel="nofollow" target="_blank" className="ml-1">
                         <Image
                             src="/tiktok.svg"
                             alt="TikTok logo"
                             width={15}
                             height={15}
                         />
-                    </Link>
+                    </Link> */}
                     <Link href="https://hey.xyz/u/mxmsocial" rel="nofollow" target="_blank" className="ml-1">
                         <Image
                             src="/lens.svg"

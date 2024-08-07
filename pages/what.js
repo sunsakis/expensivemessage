@@ -40,7 +40,7 @@ export default function What({ newestPrice, settings }) {
         <i className="block text-left">Discover MXM - where free speech is rewarded.</i>
         <br/>
         <p className="text-2xl font-thin mb-8 mt-4">
-        Welcome to the MXM, a groundbreaking Socialfi platform that empowers you to monetize your voice and make a global impact.
+        Welcome to MXM, a groundbreaking Socialfi platform that uploads messages on-chain, empowers you to monetize your voice and make a global impact.
         </p>
         <br/>
 
@@ -53,10 +53,10 @@ export default function What({ newestPrice, settings }) {
         <div className="grid grid-cols-1 gap-6 mb-8 mx-auto px-10">
           <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800">
             <h3 className="text-3xl font-bold mb-2">1. Bid for Influence</h3>
-            <p>Secure the MXM by outbidding the current price (minimum 5% increase or 0.02 ETH, whichever is higher).</p>
+            <p>Secure the MXM by outbidding the current price. One must increase the price by at least 5% or 0.02 ETH, whichever is higher.</p>
           </div>
           <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800">
-            <h3 className="text-3xl font-bold mb-2">2. Share Your Powerful Message</h3>
+            <h3 className="text-3xl font-bold mb-2">2. Share Your Powerful Messages</h3>
             <p>From personal declarations to world-changing statements.</p>
           </div>
           <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800">
@@ -94,7 +94,7 @@ export default function What({ newestPrice, settings }) {
         <br/>
 
         <div className="font-bold my-8 text-xl">
-          <h3 className="text-left">
+          <h3 className="text-center">
             Why Choose MXM?
           </h3>
         </div>
