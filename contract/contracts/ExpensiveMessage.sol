@@ -6,6 +6,7 @@ contract ExpensiveMessage {
     string public message;
     address public messenger;
     uint public fee;
+    uint public percentage;
 
     struct Message {
         string message;
@@ -31,6 +32,7 @@ contract ExpensiveMessage {
     event MessageChanged(uint newPrice, address messenger, string message, uint msgCounter);
     event Withdraw(uint amount);
     event MessageOverwritten(uint price, address messenger, string message, uint msgCounter);
+    event PercentageChanged(uint newPercentage);
 
     constructor() {
         message = "The Times 07/Aug/2024 The world seeks truth in the noise of social media";
@@ -38,7 +40,8 @@ contract ExpensiveMessage {
         owner = msg.sender;
         messenger = msg.sender;
         msgCounter = 0;
-        fee = (msgPrice * 5) / 100 > 0.02 ether ? (msgPrice * 5) / 100 : 0.02 ether;
+        percentage = 5;
+        fee = (msgPrice * percentage) / 100 > 0.02 ether ? (msgPrice * percentage) / 100 : 0.02 ether;
         messages[msgCounter] = Message(message, messenger, msgPrice, block.timestamp, "", "Aria Veritas");
         emit MessageChanged(msgPrice, msg.sender, message, msgCounter);
     }
@@ -128,6 +131,14 @@ contract ExpensiveMessage {
 
         message = _message;
         messenger = msg.sender;
+    }
+
+    function changePercentage(uint newPercentage) external {
+        require(msg.sender == owner, "You are not the owner.");
+        percentage = newPercentage;
+        fee = (msgPrice * percentage) / 100 > 0.02 ether ? (msgPrice * percentage) / 100 : 0.02 ether;
+
+        emit PercentageChanged(newPercentage);
     }
 
     error OnlyOwner();
