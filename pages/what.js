@@ -52,7 +52,7 @@ export default function What({ newestPrice, settings }) {
         </div>
         <div className="grid grid-cols-1 gap-6 mb-8 mx-auto px-10">
           <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800">
-            <h3 className="text-3xl font-bold mb-2">1. Bid for Influence</h3>
+            <h3 className="text-3xl font-bold mb-2">1. Instant Bid for Influence</h3>
             <p>Secure the MXM by outbidding the current price. One must increase the price by at least 5% or 0.02 ETH, whichever is higher.</p>
           </div>
           <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800">
