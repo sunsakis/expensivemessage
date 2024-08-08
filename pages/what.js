@@ -101,28 +101,22 @@ export default function What({ newestPrice, settings }) {
         <br/>
         <div className="grid grid-cols-2 gap-5 mb-8 mx-auto font-thin px-5">
           <div className="justify-center bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
-              <p>Monetize your message while influencing the world.</p>
+              <p>Monetize your message while influencing the world</p>
           </div>
           <div className="justify-center bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
-              <p>Gain exposure through our free promotion.</p>
+              <p>Share 50% profit on price increase</p>
           </div>
           <div className="justify-center bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
-              <p>Profit from the rising value of digital real estate.</p>
+              <p>Gain exposure through our free promotion</p>
           </div>
           <div className="justify-center bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
-              <p>Secure blockchain-backed permanence for your statement.</p>
+              <p>Own prime digital real estate</p>
           </div>
           <div className="justify-center bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
-              <p>Promotion of your message.</p>
+              <p>Secure blockchain-backed permanence for your statement</p>
           </div>
           <div className="justify-center bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
-              <p>Ownership of prime digital real estate.</p>
-          </div>
-          <div className="justify-center bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
-              <p>50% profit share on price increase.</p>
-          </div>
-          <div className="justify-center bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
-              <p>Preservation of all messages.</p>
+              <p>Become a part of Most Expensive Message archive</p>
           </div>
         </div>
         <br/>
