@@ -114,6 +114,7 @@ export async function getServerSideProps() {
   const formatPrice = ethers.utils.formatEther(newestPrice);
   const newestImgHash = await contract.getImgHashes(newestCounter);
   const newestName = await contract.getNames(newestCounter);
+  console.log(newestImgHash)
 
   return {
     props: {

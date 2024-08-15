@@ -7,6 +7,7 @@ import Header from '../components/header.js';
 import Message from '../components/message.js';
 import { useSwipeable } from 'react-swipeable';
 import ABI from '../contract/ABI.js';
+import Image from 'next/image.js';
 
 export default function Archive({ names, imgHashes, newestPrice, newestCounter, messages, prices, settings }) {
   const [style, setStyle] = useState({});
@@ -126,7 +127,7 @@ useEffect(() => {
   return (
     <>
       <Head>
-        <title>Archives | MXM</title>
+        <title>Hall of Fame | MXM</title>
         <meta name="description" content="An archive of all of the previously most expensive messages." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta property="og:title" content="Archives | MXM" />
@@ -148,14 +149,14 @@ useEffect(() => {
             <div className="justify-start">
               {counter !== 0 && (
               <button className="text-3xl" onClick={showNextMessage}>
-                ←
+                <Image src="arrowLeft.svg" alt="Arrow to the left" width={25} height={25}/>
               </button>
               )}
             </div>
             <div className="justify-end">
               {message !== "Who dares to profit from owning the first MXM?" && (
               <button className="text-3xl" onClick={showPreviousMessage}>
-                →
+                <Image src="arrowRight.svg" alt="Arrow to the right" width={25} height={25}/>
               </button>
               )}
             </div>
@@ -187,7 +188,7 @@ export async function getServerSideProps() {
   let imgHashes = [];
   let names = [];
   
-  for (let i = newestCounter - 1; i >= 0; i--) {
+  for (let i = newestCounter - 2; i >= 0; i--) {
     // Fetch all data in parallel
     const [message, price, imgHash, name] = await Promise.all([
       contract.getMessages(i),

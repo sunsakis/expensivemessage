@@ -29,9 +29,9 @@ contract ExpensiveMessage {
         _;
     }
 
-    event MessageChanged(uint newPrice, address messenger, string message, uint msgCounter);
+    event MessageChanged(uint newPrice, address messenger, string message, string imgHash, uint msgCounter);
     event Withdraw(uint amount);
-    event MessageOverwritten(uint price, address messenger, string message, uint msgCounter);
+    event MessageOverwritten(uint price, address messenger, string message, string imgHash, uint msgCounter);
     event PercentageChanged(uint newPercentage);
 
     constructor() {
@@ -43,7 +43,7 @@ contract ExpensiveMessage {
         percentage = 5;
         fee = (msgPrice * percentage) / 100 > 0.02 ether ? (msgPrice * percentage) / 100 : 0.02 ether;
         messages[msgCounter] = Message(message, messenger, msgPrice, block.timestamp, "", "Aria Veritas");
-        emit MessageChanged(msgPrice, msg.sender, message, msgCounter);
+        emit MessageChanged(msgPrice, msg.sender, message, "", msgCounter);
     }
 
     function getMessages(uint _msgCounter) public view returns (string memory) {
@@ -93,7 +93,7 @@ contract ExpensiveMessage {
         (bool sent, ) = previousMessenger.call{ value: previousPrice + (msgPrice - previousPrice) / 2 }("");
         require(sent, "Failed to send Ether.");
 
-        emit MessageChanged(msgPrice, msg.sender, message, msgCounter);
+        emit MessageChanged(msgPrice, msg.sender, message, _imgHash, msgCounter);
     }
 
     function withdraw() external onlyOwner {
@@ -127,7 +127,7 @@ contract ExpensiveMessage {
 
         messages[_counter] = Message(_message, messenger, msgPrice, block.timestamp, _imgHash, _name);
 
-        emit MessageOverwritten(msgPrice, messenger, message, msgCounter);
+        emit MessageOverwritten(msgPrice, messenger, message, _imgHash, msgCounter);
 
         message = _message;
         messenger = msg.sender;

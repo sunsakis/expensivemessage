@@ -37,8 +37,24 @@ export default function How({ newestPrice, settings }) {
             How does it work?
         </h1>
         <p className="text-2xl font-thin mb-8 mt-4">
-        It's all about the message. The Most Expensive Message (MXM) is a platform where you can post your message to the world. Here's how to do it and earn while you're at it:
+        It's all about the message. The Most Expensive Message (MXM) is a platform where you can post your message to the world. 
+        <br/><br/>
+        Here's how to do it and earn while you're at it:
         </p>
+        <br/>
+        <div className="mx-auto w-full max-w-[560px] md:max-w-[640px] lg:max-w-[800px] xl:max-w-[960px]">
+          <div className="relative" style={{ paddingBottom: '56.25%' }}>
+            <iframe 
+              className="absolute top-0 left-0 w-full h-full"
+              src="https://www.youtube.com/embed/u7lkKGd1-M8?si=_3-H-q68AhsT47KJ" 
+              title="YouTube video player" 
+              frameBorder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              referrerPolicy="strict-origin-when-cross-origin" 
+              allowFullScreen
+            ></iframe>
+          </div>
+        </div>
         <br/>
         <div className="grid grid-cols-1 gap-4 mb-8 mx-auto font-thin">
         <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">

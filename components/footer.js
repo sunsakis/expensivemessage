@@ -14,7 +14,7 @@ export default function Footer( { msgPrices, text, settings } ) {
   const [showModal, setShowModal] = useState(false);
   const [closingAnimation, setClosingAnimation] = useState(false);
   const [message, setMessage] = useState('');
-  const [bid, setBid] = useState(0.0002);
+  const [bid, setBid] = useState(0.02);
   const [name, setName] = useState('');
   const [imgHash, setImgHash] = useState('');
   const [loading, setLoading] = useState(false);
@@ -239,7 +239,7 @@ export default function Footer( { msgPrices, text, settings } ) {
                         className="w-full sm:w-auto mb-12 sm:mb-0 z-50"
                         onClick={() => setShowModal(true)}
                       >
-                        <p className="text-2xl sm:px-10 p-3 mt-2 mx-6 font-semibold hover:bg-green-200 border-green-700 border rounded-xl transition duration-500 ease-in-out hover:border-green-500">
+                        <p className="text-2xl sm:px-10 p-3 mt-2 mx-6 font-semibold hover:bg-green-800 border-green-700 border rounded-xl transition duration-500 ease-in-out hover:border-green-500">
                             Claim your MXM
                         </p>
                     </button>
@@ -249,7 +249,7 @@ export default function Footer( { msgPrices, text, settings } ) {
                 <div className="flex text-xs sm:text-sm text-gray-200 ml-1">
                     <Link href="/what"><p className="mx-2">What is the MXM?</p></Link>
                     <Link href="/how"><p className="mx-2">How it works?</p></Link>
-                    <Link href="/terms"><p className="mx-2">Terms and conditions</p></Link>
+                    <Link href="/terms"><p className="mx-2">Terms & conditions</p></Link>
                 </div>
                 
             </div>
