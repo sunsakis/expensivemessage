@@ -311,14 +311,14 @@ export default function Footer( { msgPrices, text, settings } ) {
                             height={15}
                         />
                     </Link> */}
-                    <Link href="https://hey.xyz/u/mxmsocial" rel="nofollow" target="_blank" className="ml-1">
+                    {/* <Link href="https://hey.xyz/u/mxmsocial" rel="nofollow" target="_blank" className="ml-1">
                         <Image
                             src="/lens.svg"
                             alt="Lens logo"
                             width={15}
                             height={15}
                         />
-                    </Link>
+                    </Link> */}
             </div>
       {showModal ? (
         <>

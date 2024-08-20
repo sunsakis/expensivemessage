@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 // import { ConnectButton, ThirdwebProvider } from 'thirdweb/react';
 // import { sepolia } from "thirdweb/chains";
 // import { createThirdwebClient } from "thirdweb";
@@ -21,42 +22,51 @@ import { useRouter } from 'next/router';
 export default function Header() {
     //const [showWallet, setShowWallet] = useState(false);
     const router = useRouter();
-    // const ref = useRef(null);
-    // const [lottie, setLottie] = useState(null);
+    const ref = useRef(null);
+    const [lottie, setLottie] = useState(null);
 
-    // useEffect(() => {
-    //     import('lottie-web').then((lot) => { setLottie(lot.default) });
-    // }, []);
+    useEffect(() => {
+        import('lottie-web').then((lot) => { setLottie(lot.default) });
+    }, []);
 
-    // useEffect(() => {
-    //     if (lottie && ref.current) {
-    //         const animation = lottie.loadAnimation({
-    //             container: ref.current,
-    //             renderer: 'svg',
-    //             loop: false,
-    //             autoplay: true,
-    //             path: 'MXM_lottie.json',
-    //         });
+    useEffect(() => {
+        if (lottie && ref.current) {
+            const animation = lottie.loadAnimation({
+                container: ref.current,
+                renderer: 'svg',
+                loop: false,
+                autoplay: true,
+                path: 'MXM_lottie_monochrome.json',
+            });
 
-    //     return () => animation.destroy()
-    //     }
-    // },[lottie])
+        return () => animation.destroy()
+        }
+    },[lottie])
 
     return (
         <>
-            <div className="flex">
-                <button>
-                    <div className="m-2 absolute top-5 left-5 z-10 mx-auto" onClick={() => {
-                        // Check if the current path is not the homepage
+            <div className="fixed top-5 left-5 w-2/3 sm:w-1/4 flex justify-start z-10" ref={ref} onClick={() => {
+                         // Check if the current path is not the homepage
+                         if (router.pathname !== '/') {
+                             router.push('/');
+                         }
+                         }}>
+                    {/* <button onClick={() => {
                         if (router.pathname !== '/') {
                             router.push('/');
                         }
-                        }}>
-                        <img src="/color_expanded.svg" alt="MXM Logo" className="h-30 w-50" />
-                    </div>
-                </button>
-            </div>
-                            <div className="m-2 absolute top-3 right-1">
+                    }}>
+                        <Image 
+                            src="/color_expanded.svg" 
+                            alt="MXM Logo" 
+                            width={250} 
+                            height={100} 
+                            className="mt-5"
+                        />
+                    </button> */}
+                </div>
+                
+                            {/* <div className="m-2 absolute top-3 right-1"> */}
                     {/* {isConnected && showWallet === true && ( */}
                         {/* <ThirdwebProvider>
                             <ConnectButton
@@ -73,7 +83,7 @@ export default function Header() {
                             />
                         </ThirdwebProvider> */}
                     {/* )} */}
-                </div>
+                {/* </div> */}
         </>
     )
 }
