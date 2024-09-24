@@ -45,7 +45,7 @@ export default function Header() {
 
     return (
         <>
-            <div className="fixed top-5 left-5 w-2/3 sm:w-1/4 flex justify-start z-10" ref={ref} onClick={() => {
+            <div className="fixed top-5 left-5 w-2/3 sm:w-1/5 flex justify-start z-10" ref={ref} onClick={() => {
                          // Check if the current path is not the homepage
                          if (router.pathname !== '/') {
                              router.push('/');
