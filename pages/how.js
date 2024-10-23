@@ -25,7 +25,7 @@ export default function How({ newestPrice, settings }) {
             className="text-white px-4 sm:px-6 lg:px-8" // Adjust padding based on screen size
     >
     <Head>
-        <title>How It Works? | MXM</title>
+        <title>How It Works?</title>
         <meta name="description" content="How does posting the Most Expensive Message reward your free speech?" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -37,7 +37,7 @@ export default function How({ newestPrice, settings }) {
             How does it work?
         </h1>
         <p className="text-2xl font-thin mb-8 mt-4">
-        It's all about the message. The Most Expensive Message (MXM) is a platform where you can post your message to the world. 
+        It's all about the message. Expensive Message is a platform where you can post your message to the world. 
         <br/><br/>
         Here's how to do it and earn while you're at it:
         </p>
@@ -66,11 +66,11 @@ export default function How({ newestPrice, settings }) {
             <p>Click on <button className="underline text-blue-300" onClick={() => window.scrollTo({
                 top: document.documentElement.scrollHeight,
                 behavior: 'smooth'
-                })}>Claim your MXM</button>.</p>
+                })}>Post Your Message</button>.</p>
         </div>
         <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
             <div className="bg-white rounded-full h-4 w-4 flex-shrink-0 mr-4"></div>
-            <p>You must outbid the current owner by a minimum of 5% or 0.02 ETH, whichever is higher.</p>
+            <p>You must outbid the current owner by 2x.</p>
         </div>
         <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
             <div className="bg-white rounded-full h-4 w-4 flex-shrink-0 mr-4"></div>
@@ -94,7 +94,7 @@ export default function How({ newestPrice, settings }) {
         </div>
         <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
             <div className="bg-white rounded-full h-4 w-4 flex-shrink-0 mr-4"></div>
-            <p>Choose the wallet from the choices available (we recommend Metamask).</p>
+            <p>Choose the wallet from the choices available (Metamask recommended).</p>
         </div>
         <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
             <div className="bg-white rounded-full h-4 w-4 flex-shrink-0 mr-4"></div>
@@ -106,11 +106,7 @@ export default function How({ newestPrice, settings }) {
         </div>
         <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
             <div className="bg-white rounded-full h-4 w-4 flex-shrink-0 mr-4"></div>
-            <p>Now you'll see your Most eXpensive Message.</p>
-        </div>
-        <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
-            <div className="bg-white rounded-full h-4 w-4 flex-shrink-0 mr-4"></div>
-            <p>We'll publish it on our social channels, from where you can share it.</p>
+            <p>Now you'll see your Expensive Message.</p>
         </div>
         <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
             <div className="bg-white rounded-full h-4 w-4 flex-shrink-0 mr-4"></div>
@@ -118,7 +114,7 @@ export default function How({ newestPrice, settings }) {
         </div>
         <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
             <div className="bg-white rounded-full h-4 w-4 flex-shrink-0 mr-4"></div>
-            <p>When you are outbid by someone else, you get back your full investment <b>plus</b> half the price increase.</p>
+            <p>When you are outbid by someone else, you get back your full investment <b>plus half</b> the price increase.</p>
         </div>
         <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
             <div className="bg-white rounded-full h-4 w-4 flex-shrink-0 mr-4"></div>
@@ -139,19 +135,19 @@ export default function How({ newestPrice, settings }) {
         <div className="grid grid-cols-1 gap-6 mb-8 mx-auto px-10">
           <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800">
             <h3 className="text-3xl font-bold mb-2">You Pay</h3>
-            <p>1 ETH</p>
+            <p>1 RGCVII</p>
           </div>
           <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800">
             <h3 className="text-3xl font-bold mb-2">New Owner Bids</h3>
-            <p>At least 5% more, so 1.05 ETH for example</p>
+            <p>2 RGCVII</p>
           </div>
           <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800">
             <h3 className="text-3xl font-bold mb-2">You Receive</h3>
-            <p>1 ETH <span className="text-green-500">+ 0.025 ETH profit</span>, which is 50% of the price increase</p>
+            <p>Your 1 RGCVII back <span className="text-green-500">+ 0.5 RGCVII profit</span>, while the other 50% (0.5 RGCVII) go to the treasury.</p>
           </div>
           <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800">
             <h3 className="text-3xl font-bold mb-2 text-green-200">Plus</h3>
-            <p>The prestige of having owned and broadcast the MXM</p>
+            <p>The prestige of having owned an Expensive Message.</p>
           </div>
           <i className="text-center mx-auto">No action required on your part – funds are automatically sent to your wallet.</i>
         </div>
@@ -160,11 +156,11 @@ export default function How({ newestPrice, settings }) {
             className="bg-black bg-opacity-50 p-8 rounded-xl border mx-10 transition duration-500 ease-in-out hover:bg-white hover:text-black hover:border-black">
                     <h2 className="text-3xl font-bold mb-2">What are you waiting for?</h2>
                     <br/>
-                    <p className="text-xl">Get rewarded for free speech now!</p>
+                    <p className="text-xl">Go turn your free speech into profit now!</p>
         </div>
         <br/>
       </main>
-      <Footer msgPrices={newestPrice} text={"Newest"} settings={settings}/>
+      <Footer msgPrices={newestPrice} text={""} settings={settings}/>
     </div>
   )
 }

@@ -73,23 +73,22 @@ export default function Home({ name, imgHash, price, message, settings }) {
   return (
     <>
       <Head>
-        <title>Most Expensive Message | MXM</title>
-        <meta name="description" content="Free speech rewarded." />
+        <title>Expensive Message</title>
+        <meta name="description" content="Free speech for profit." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta property="og:title" content="Most Expensive Message | MXM" />
-        <meta property="og:description" content="The Most Expensive Message - free speech rewarded." />
-        <meta property="og:url" content="mxm.social" /> 
-        <meta property="og:site_name" content="MXM" />
-        <meta name="twitter:creator" content="@MostXMessage" /> 
+        <meta property="og:title" content="Expensive Message" />
+        <meta property="og:description" content="Expensive Message - free speech for profit." />
+        <meta property="og:url" content="https://www.expensivemessage.com" /> 
+        <meta property="og:site_name" content="Expensive Message" />
       </Head>
+      <Header />
       <main>
         <div style={style} className="w-full">
           <div className="min-h-screen flex-col flex">
-            <Header />
             <div className="flex flex-grow justify-center items-center">
               <Message text={message} name={name} /> 
             </div>
-            <Footer settings={settings} msgPrices={price} text={"This"} />
+            <Footer settings={settings} msgPrices={price} text={""} />
           </div>
         </div>
       </main>

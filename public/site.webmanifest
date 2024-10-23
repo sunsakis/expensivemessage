@@ -1,6 +1,6 @@
 {
-  "name": "Most Expensive Message | MXM",
-  "short_name": "MXM",
+  "name": "Expensive Message",
+  "short_name": "Expensive Message",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",

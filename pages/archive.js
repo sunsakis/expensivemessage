@@ -127,14 +127,13 @@ useEffect(() => {
   return (
     <>
       <Head>
-        <title>Hall of Fame | MXM</title>
+        <title>Hall of Fame</title>
         <meta name="description" content="An archive of all of the previously most expensive messages." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta property="og:title" content="Archives | MXM" />
+        <meta property="og:title" content="Archives" />
         <meta property="og:description" content="An archive of all of the previously most expensive messages." />
-        <meta property="og:url" content="mxm.social" /> 
-        <meta property="og:site_name" content="MXM" />
-        <meta name="twitter:creator" content="@MostXMessage" /> 
+        <meta property="og:url" content="https://www.expensivemessage.com" /> 
+        <meta property="og:site_name" content="Expensive Message" />
       </Head>
       <main>
         <div style={style} {...handlers} className="w-full relative">
@@ -154,7 +153,7 @@ useEffect(() => {
               )}
             </div>
             <div className="justify-end">
-              {message !== "Who dares to profit from owning the first MXM?" && (
+              {message !== "Who dares to profit from owning the first Expensive Message?" && (
               <button className="text-3xl" onClick={showPreviousMessage}>
                 <Image src="arrowRight.svg" alt="Arrow to the right" width={25} height={25}/>
               </button>

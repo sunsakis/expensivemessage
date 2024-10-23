@@ -22,68 +22,55 @@ import Image from 'next/image';
 export default function Header() {
     //const [showWallet, setShowWallet] = useState(false);
     const router = useRouter();
-    const ref = useRef(null);
-    const [lottie, setLottie] = useState(null);
+    // const ref = useRef(null);
+    // const [lottie, setLottie] = useState(null);
 
-    useEffect(() => {
-        import('lottie-web').then((lot) => { setLottie(lot.default) });
-    }, []);
+    // useEffect(() => {
+    //     import('lottie-web').then((lot) => { setLottie(lot.default) });
+    // }, []);
 
-    useEffect(() => {
-        if (lottie && ref.current) {
-            const animation = lottie.loadAnimation({
-                container: ref.current,
-                renderer: 'svg',
-                loop: false,
-                autoplay: true,
-                path: 'MXM_lottie_monochrome.json',
-            });
+    // useEffect(() => {
+    //     if (lottie && ref.current) {
+    //         const animation = lottie.loadAnimation({
+    //             container: ref.current,
+    //             renderer: 'svg',
+    //             loop: false,
+    //             autoplay: true,
+    //             path: 'MXM_lottie_monochrome.json',
+    //         });
 
-        return () => animation.destroy()
-        }
-    },[lottie])
+    //     return () => animation.destroy()
+    //     }
+    // },[lottie])
 
     return (
         <>
-            <div className="fixed top-5 left-5 w-2/3 sm:w-1/5 flex justify-start z-10" ref={ref} onClick={() => {
+            {/* <div className="fixed top-5 left-5 w-2/3 sm:w-1/5 flex justify-start z-10" ref={ref} onClick={() => {
+                         // Check if the current path is not the homepage
+                         if (router.pathname !== '/') {
+                             router.push('/');
+                         }
+                         }}> */}
+            <div className="fixed top-5 left-5 w-2/3 sm:w-1/5 flex justify-start z-10" onClick={() => {
                          // Check if the current path is not the homepage
                          if (router.pathname !== '/') {
                              router.push('/');
                          }
                          }}>
-                    {/* <button onClick={() => {
+                    <button onClick={() => {
                         if (router.pathname !== '/') {
                             router.push('/');
                         }
                     }}>
                         <Image 
-                            src="/color_expanded.svg" 
-                            alt="MXM Logo" 
-                            width={250} 
+                            src="/hamster.webp" 
+                            alt="Hamster with cash." 
+                            width={100} 
                             height={100} 
                             className="mt-5"
                         />
-                    </button> */}
+                    </button>
                 </div>
-                
-                            {/* <div className="m-2 absolute top-3 right-1"> */}
-                    {/* {isConnected && showWallet === true && ( */}
-                        {/* <ThirdwebProvider>
-                            <ConnectButton
-                                client={client}
-                                wallets={wallets}
-                                theme={"dark"}
-                                    connectModal={{
-                                    size: "compact",
-                                    termsOfServiceUrl: "https://mxm.social/terms",
-                                    showThirdwebBranding: false,
-                                }}
-                                chain={myChain}
-                                onDisconnect={() => setShowWallet(false)}
-                            />
-                        </ThirdwebProvider> */}
-                    {/* )} */}
-                {/* </div> */}
         </>
     )
 }

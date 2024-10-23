@@ -25,8 +25,8 @@ export default function What({ newestPrice, settings }) {
             className="text-white px-4 sm:px-6 lg:px-8" // Adjust padding based on screen size
     >
     <Head>
-        <title>What Is The MXM? | MXM</title>
-        <meta name="description" content="Free speech rewarded." />
+        <title>What Is This?</title>
+        <meta name="description" content="Free speech for profit." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
     
@@ -34,41 +34,41 @@ export default function What({ newestPrice, settings }) {
     <Header />
     <main className="max-w-xl sm:max-w-2xl md:max-w-4xl mx-auto my-8">
         <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-left">
-            The Most Expensive Message (MXM): A Revolutionary Socialfi Experiment
+            Expensive Message: A Revolutionary SocialFi Experiment
         </h1>
         <br/>
-        <i className="block text-left">Discover MXM - where free speech is rewarded.</i>
+        <i className="block text-left">Discover the platform that lets you profit from free speech.</i>
         <br/>
         <p className="text-2xl font-thin mb-8 mt-4">
-        Welcome to MXM, a groundbreaking Socialfi platform that uploads messages on-chain, empowers you to monetize your voice and make a global impact.
+          Uploads messages on-chain. Monetize your voice. Make a global splash.
         </p>
         <br/>
 
         <div className="my-8 text-xl font-bold text-left">
           <h3>
-            How MXM Works:
+            How it works:
           </h3>
           <br/>
         </div>
         <div className="grid grid-cols-1 gap-6 mb-8 mx-auto px-10">
           <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800">
-            <h3 className="text-3xl font-bold mb-2">1. Instant Bid for Influence</h3>
-            <p>Secure the MXM by outbidding the current price. One must increase the price by at least 5% or 0.02 ETH, whichever is higher.</p>
+            <h3 className="text-3xl font-bold mb-2">Bid Instantly</h3>
+            <p>Put your message in the spotlight by outbidding the current price by 2x.</p>
           </div>
           <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800">
-            <h3 className="text-3xl font-bold mb-2">2. Share Your Powerful Messages</h3>
-            <p>From personal declarations to world-changing statements.</p>
+            <h3 className="text-3xl font-bold mb-2">Get Outbid</h3>
+            <p>Wait until someone outbids you. You get 50% of the profit, the other 50% goes to Raid Guild treasury.</p>
           </div>
           <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800">
-            <h3 className="text-3xl font-bold mb-2">3. Profit from Global Exposure</h3>
-            <p>Enjoy the spotlight and earn when someone outbids you.</p>
+            <h3 className="text-3xl font-bold mb-2">Or Enjoy The Spotlight</h3>
+            <p>The most expensive message is always displayed on the front page.</p>
           </div>
         </div>
         <br/>
 
         <div className="my-8 text-xl font-bold text-center">
           <h3>
-            MXM is Your Platform for:
+            Your Space for:
           </h3>
           <br/>
         </div>
@@ -84,7 +84,7 @@ export default function What({ newestPrice, settings }) {
                   <p className="text-white font-medium hover:text-purple-200">Celebration</p>
                 </div>
                 <div className="bg-sky-700 p-5 rounded-lg">
-                  <p className="text-white font-medium hover:text-purple-200">Business</p>
+                  <p className="text-white font-medium hover:text-purple-200">Memes</p>
                 </div>
                 <div className="bg-cyan-700 p-5 rounded-lg">
                   <p className="text-white font-medium hover:text-purple-200">Promises</p>
@@ -95,7 +95,7 @@ export default function What({ newestPrice, settings }) {
 
         <div className="font-bold my-8 text-xl">
           <h3 className="text-center">
-            Why Choose MXM?
+            Why Send Expensive Message?
           </h3>
         </div>
         <br/>
@@ -104,26 +104,26 @@ export default function What({ newestPrice, settings }) {
               <p>Monetize your message while influencing the world</p>
           </div>
           <div className="justify-center bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
-              <p>Share 50% profit on price increase</p>
+              <p>Earn 50% profit on price increase</p>
           </div>
           <div className="justify-center bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
-              <p>Gain exposure through our free promotion</p>
+              <p>Gain exposure through our promotion</p>
           </div>
           <div className="justify-center bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
               <p>Own prime digital real estate</p>
           </div>
           <div className="justify-center bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
-              <p>Secure blockchain-backed permanence for your statement</p>
+              <p>Secure blockchain-backed permanence</p>
           </div>
           <div className="justify-center bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
-              <p>Become a part of Most Expensive Message archive</p>
+              <p>Become a part of Expensive Message archive</p>
           </div>
         </div>
         <br/>
 
         <div className="my-8 text-xl font-bold text-center">
           <h3>
-            Innovative Ways to Leverage MXM:
+            Innovative Ways for Leverage:
           </h3>
           <br/>
         </div>
@@ -163,7 +163,7 @@ export default function What({ newestPrice, settings }) {
       
         <div 
             className="bg-white w-full text-black text-center p-8 rounded-xl border border-green-950 transition duration-500 ease-in-out">
-                    <h2 className="text-3xl font-bold py-5">Ready to Make Your Mark?<br/> <span className="font-thin text-2xl">Be part of internet history.</span> <br/> <span className="font-light text-2xl">Own the world's Most Expensive Message.</span></h2>
+                    <h2 className="text-3xl font-bold py-5">Ready to Make Your Mark?<br/> <span className="font-thin text-2xl">Be part of internet history.</span> <br/> <span className="font-light text-2xl">Own an Expensive Message.</span></h2>
         <br/>
         <br/>
         <p className="text-xl font-thin">How high will the price soar?</p>
@@ -177,11 +177,11 @@ export default function What({ newestPrice, settings }) {
             Claim it. Share it. Change the world.
         </p>
         </div>
-        <div className="my-8 text-lg text-center font-light">
-        <p>The Most Expensive Message: <i>where free speech is rewarded.</i></p>
+        <div className="my-8 text-sm text-center font-light">
+        <p>Expensive Message: <i>free speech for profit.</i></p>
         </div>
       </main>
-      <Footer msgPrices={newestPrice} text={"Newest"} settings={settings}/>
+      <Footer msgPrices={newestPrice} text={""} settings={settings}/>
     </div>
   )
 }

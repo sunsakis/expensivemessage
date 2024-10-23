@@ -126,14 +126,13 @@ export default function MessagePage({ message, counter, newestCounter }) {
     return (
     <>
       <Head>
-      <title>MXM - Most eXpensive Message</title>
+      <title>Expensive Message</title>
         <meta name="description" content="Your message written on-chain forever, each message more valuable than the last." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta property="og:title" content="MXM - Most eXpensive Message" />
+        <meta property="og:title" content="Expensive Message" />
         <meta property="og:description" content="Your message written on-chain forever, each message more valuable than the last." />
-        <meta property="og:url" content="mxm.social" /> 
-        <meta property="og:site_name" content="MXM" />
-        <meta name="twitter:creator" content="@MostXMessage" /> 
+        <meta property="og:url" content="https://www.expensivemessage.com" /> 
+        <meta property="og:site_name" content="Expensive Message" />
       </Head>
       <main>
         <div style={style}>

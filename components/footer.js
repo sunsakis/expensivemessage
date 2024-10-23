@@ -39,22 +39,6 @@ export default function Footer( { msgPrices, text, settings } ) {
         alert('Please select an image file (jpg, png, gif, webp)');
         fileInput.value = ''; // Reset the file input so no file is selected
       }
-
-    // Create a FileReader to read the uploaded file
-    // const reader = new FileReader();
-    // reader.onload = (e) => {
-    //   const img = new Image();
-    //   img.onload = () => {
-    //     // Check if the image is very wide
-    //     const aspectRatio = img.width / img.height;
-    //     if (aspectRatio > 2) { // Example threshold for "very wide" images
-    //       alert('Very wide images may not display well. Please select an image with a more standard aspect ratio.');
-    //     } 
-    //   };
-    //   img.src = e.target.result;
-    // };
-    // reader.readAsDataURL(file);
-
     };
 
     fileInput.addEventListener('change', handleFileChange);
@@ -224,13 +208,13 @@ export default function Footer( { msgPrices, text, settings } ) {
             <div className="sm:m-5">
               {msgPrices && (
                 <p className="text-sm text-right tracking-tight mr-9 text-gray-300">
-                        {text} MXM cost
+                        {text} Last message cost
                     </p>
               )}
               {msgPrices && (
                     <p className="text-right mr-8">
                         <b className="text-2xl">
-                        {msgPrices} ETH
+                        {msgPrices} RGCVII
                         </b>
                     </p>
               )}
@@ -240,14 +224,14 @@ export default function Footer( { msgPrices, text, settings } ) {
                         onClick={() => setShowModal(true)}
                       >
                         <p className="text-2xl sm:px-10 p-3 mt-2 mx-6 font-semibold hover:bg-green-800 border-green-700 border rounded-xl transition duration-500 ease-in-out hover:border-green-500">
-                            Claim your MXM
+                            Post Your Message
                         </p>
                     </button>
                 </div>
             </div>
             <div className="absolute bottom-1 flex justify-center mx-auto w-full sm:w-auto m-2 sm:m-5">
                 <div className="flex text-xs sm:text-sm text-gray-200 ml-1">
-                    <Link href="/what"><p className="mx-2">What is the MXM?</p></Link>
+                    <Link href="/what"><p className="mx-2">What is this?</p></Link>
                     <Link href="/how"><p className="mx-2">How it works?</p></Link>
                     <Link href="/terms"><p className="mx-2">Terms & conditions</p></Link>
                 </div>
@@ -279,14 +263,14 @@ export default function Footer( { msgPrices, text, settings } ) {
                             height={15}
                         />
                     </Link> */}
-                    <Link href="https://x.com/MostXMessage" rel="nofollow" target="_blank" className="ml-1">
+                    {/* <Link href="https://x.com/MostXMessage" rel="nofollow" target="_blank" className="ml-1">
                       <Image
                           src="/x.svg"
                           alt="X logo"
                           width={15}
                           height={15}
                       />
-                    </Link>
+                    </Link> */}
                     {/* <Link href="https://www.facebook.com/profile.php?id=61563047402139" rel="nofollow" target="_blank" className="ml-1">
                         <Image
                             src="/facebook.svg"
@@ -295,14 +279,14 @@ export default function Footer( { msgPrices, text, settings } ) {
                             height={15}
                         />
                     </Link> */}
-                    <Link href="https://warpcast.com/mostxmessage" rel="nofollow" target="_blank" className="ml-1">
+                    {/* <Link href="https://warpcast.com/mostxmessage" rel="nofollow" target="_blank" className="ml-1">
                         <Image
                             src="/farcaster.svg"
                             alt="Farcaster logo"
                             width={15}
                             height={15}
                         />
-                    </Link>
+                    </Link> */}
                     {/* <Link href="https://www.tiktok.com/@mxm.social" rel="nofollow" target="_blank" className="ml-1">
                         <Image
                             src="/tiktok.svg"
@@ -328,7 +312,7 @@ export default function Footer( { msgPrices, text, settings } ) {
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col bg-white outline-none focus:outline-none">
                 <div className="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
                   <h3 className="text-xl font-semibold text-black">
-                    Claim your MXM
+                    Post your message
                   </h3>
                   <button
                     className="ml-auto bg-transparent border-0 float-right leading-none font-semibold outline-none focus:outline-none"

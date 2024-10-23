@@ -18,9 +18,9 @@ export default function App({ Component, pageProps }) {
         supportedChains={[Ethereum, Sepolia]}
         clientId={process.env.NEXT_PUBLIC_THIRDWEB_ID}
       >
-    <PlausibleProvider domain="mxm.social">
+    {/* <PlausibleProvider domain="expensivemessage.com"> */}
       <Component {...pageProps} />
-    </PlausibleProvider>
+    {/* </PlausibleProvider> */}
       <Head>
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
