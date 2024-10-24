@@ -9,15 +9,13 @@ import Link from 'next/link.js';
 import Image from 'next/image.js';
 
 
-export default function Footer( { msgPrices, text, settings } ) {
+export default function FooterNew( { msgPrices, text, settings } ) {
 
   const [showModal, setShowModal] = useState(false);
   const [closingAnimation, setClosingAnimation] = useState(false);
   const [message, setMessage] = useState('');
-  // const [bid, setBid] = useState(0.02);
-  // const [name, setName] = useState('');
-  const bid = msgPrices * 2;
-  const name = '';
+  const [bid, setBid] = useState(0.02);
+  const [name, setName] = useState('');
   const [imgHash, setImgHash] = useState('');
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef(null);
@@ -68,23 +66,23 @@ export default function Footer( { msgPrices, text, settings } ) {
         }
   };
 
-  // const handleBidChange = (e) => {
-  //   try {
-  //     // Parse the input value to a float
-  //     const inputBid = parseFloat(e.target.value);
-  //     setBid(inputBid.toString()); // Convert back to string
-  //   } catch (error) {
-  //     alert(error);
-  //   }
-  // };
+  const handleBidChange = (e) => {
+    try {
+      // Parse the input value to a float
+      const inputBid = parseFloat(e.target.value);
+      setBid(inputBid.toString()); // Convert back to string
+    } catch (error) {
+      alert(error);
+    }
+  };
 
-  // const handleNameChange = (e) => {
-  //   try {
-  //     setName(e.target.value.toString());
-  //   } catch (error) {
-  //     alert(error);
-  //   }
-  // }
+  const handleNameChange = (e) => {
+    try {
+      setName(e.target.value.toString());
+    } catch (error) {
+      alert(error);
+    }
+  }
 
   const handleImageChange = (e) => {
     
@@ -330,7 +328,7 @@ export default function Footer( { msgPrices, text, settings } ) {
                     className="space-y-1"
                     onSubmit={handleSubmit}
                 >
-                    {/* <label htmlFor="bid" className="text-black">
+                    <label htmlFor="bid" className="text-black">
                         ETH bid:
                     </label>
                     <input
@@ -342,7 +340,7 @@ export default function Footer( { msgPrices, text, settings } ) {
                         placeholder={minBid + " ETH or higher"}
                         className="px-3 py-2 border border-gray-300 rounded-md w-full text-gray-600"
                         required
-                    /> */}
+                    />
                     <div className="pt-4">
                     <label className="text-black">
                         Message:
@@ -356,7 +354,7 @@ export default function Footer( { msgPrices, text, settings } ) {
                         maxLength="160"
                     />
                     </div>
-                    {/* <label htmlFor="name" className="text-black text-sm">
+                    <label htmlFor="name" className="text-black text-sm">
                       Name, handle or e-mail (optional):
                     </label>
                     <input
@@ -366,7 +364,7 @@ export default function Footer( { msgPrices, text, settings } ) {
                         placeholder="@"
                         className="px-3 py-2 border border-gray-300 rounded-md w-full text-gray-600"
                         maxLength="50"
-                    /> */}
+                    />
                     <div className="">
                       <label htmlFor="pic" className="text-black text-sm">
                         Picture, 1:1 aspect ratio (optional):

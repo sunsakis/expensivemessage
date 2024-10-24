@@ -12,5 +12,6 @@ export default [
     "function getPrice() public view returns (uint)",
     "function withdraw() external",
     "function overwrite(string memory _message, string memory _imgHash, string memory _name, uint _counter) external payable",
+    "function getMessengers(uint _msgCounter) public view returns (address)",
 ];
       

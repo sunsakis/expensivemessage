@@ -169,11 +169,11 @@ export async function getServerSideProps() {
 
     const settings = {
       apiKey: process.env.ALCHEMY_API,
-      network: Network.ETH_MAINNET,
+      network: Network.BASE_MAINNET,
     };
   
     const alchemy = new Alchemy(settings);
-    const ethersProvider = await alchemy.config.getProvider();
+    const ethersProvider = new ethers.providers.JsonRpcProvider("https://mainnet.base.org");
     const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
     const newestPrice = await contract.getPrice();
     const formatPrice = ethers.utils.formatEther(newestPrice);

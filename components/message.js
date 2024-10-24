@@ -1,6 +1,6 @@
 import React from "react";
 
-const Message = ({ text, name }) => {
+const Message = ({ text, messenger }) => {
   if (!text || typeof text !== "string") {
     return null; // Return early if the text prop is invalid
   }
@@ -18,7 +18,7 @@ const Message = ({ text, name }) => {
           <b><i>{text}</i></b>
         </h1><br/>
         <p className="text-base drop-shadow-xl text-gray-50 font-medium">
-          {name}
+          {messenger}
         </p>
       </div>
     </div>

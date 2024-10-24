@@ -3,11 +3,13 @@ import { ethers } from 'ethers';
 import { Network, Alchemy } from 'alchemy-sdk';
 import { useState, useEffect } from 'react';
 import Footer from '../components/footer.js';
+import FooterTelegram from '@/components/footerTelegram.js';
+import FooterNew from '@/components/footerNew.js';
 import Header from '../components/header.js';
 import Message from '../components/message.js';
 import ABI from '../contract/ABI.js';
 
-export default function Home({ name, imgHash, price, message, settings }) {
+export default function Home({ imgHash, price, message, settings, messenger }) {
   const [style, setStyle] = useState({});
   const [windowSize, setWindowSize] = useState({});
 
@@ -86,7 +88,7 @@ export default function Home({ name, imgHash, price, message, settings }) {
         <div style={style} className="w-full">
           <div className="min-h-screen flex-col flex">
             <div className="flex flex-grow justify-center items-center">
-              <Message text={message} name={name} /> 
+              <Message text={message} messenger={messenger} /> 
             </div>
             <Footer settings={settings} msgPrices={price} text={""} />
           </div>
@@ -97,33 +99,69 @@ export default function Home({ name, imgHash, price, message, settings }) {
 }
 
 export async function getServerSideProps() {
+  try {
+    const settings = {
+      apiKey: process.env.ALCHEMY_API,
+      network: Network.BASE_MAINNET,
+    };
 
-  const settings = {
-    apiKey: process.env.ALCHEMY_API,
-    network: Network.ETH_MAINNET,
-  };
+    const alchemy = new Alchemy(settings);
+    const ethersProvider = new ethers.providers.JsonRpcProvider("https://mainnet.base.org");
+    const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
+    
+    console.log("Contract instance:", contract);
 
-  const alchemy = new Alchemy(settings);
-  const ethersProvider = await alchemy.config.getProvider();
-  const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
-  const newMessageCall = await contract.readMessage();
-  const newestMessage = newMessageCall[0].toString();
-  const newestCounter = newMessageCall[1].toNumber();
-  const newestPrice = await contract.getPrice();
-  const formatPrice = ethers.utils.formatEther(newestPrice);
-  const newestImgHash = await contract.getImgHashes(newestCounter);
-  const newestName = await contract.getNames(newestCounter);
-  console.log(newestImgHash)
+    let newestMessage, newestCounter, newestPrice, newestImgHash, newestMessenger;
 
-  return {
-    props: {
-      price: formatPrice,
-      message: newestMessage,
-      settings: settings,
-      imgHash: newestImgHash,
-      name: newestName,
-    },
-    //revalidate: 1,
-  };
+    try {
+      const newMessageCall = await contract.readMessage();
+      newestMessage = newMessageCall[0].toString();
+      newestCounter = newMessageCall[1].toNumber();
+    } catch (error) {
+      console.error("Error calling readMessage:", error);
+      newestMessage = "Error reading message";
+      newestCounter = 0;
+    }
+
+    try {
+      newestPrice = await contract.getPrice();
+    } catch (error) {
+      console.error("Error calling getPrice:", error);
+      newestPrice = ethers.BigNumber.from(0);
+    }
+
+    const formatPrice = ethers.utils.formatEther(newestPrice);
+
+    try {
+      newestImgHash = await contract.getImgHashes(newestCounter);
+    } catch (error) {
+      console.error("Error calling getImgHashes:", error);
+      newestImgHash = "";
+    }
+
+    try {
+      newestMessenger = await contract.getMessengers(newestCounter);
+    } catch (error) {
+      console.error("Error calling getMessengers:", error);
+      newestMessenger = ethers.constants.AddressZero;
+    }
+
+    return {
+      props: {
+        price: formatPrice,
+        message: newestMessage,
+        imgHash: newestImgHash,
+        messenger: newestMessenger,
+        networkName: "BASE_MAINNET" // Pass the network name as a string if needed
+      },
+    };
+  } catch (error) {
+    console.error("Error in getServerSideProps:", error);
+    return {
+      props: {
+        error: "Failed to fetch data"
+      }
+    };
+  }
 }
   

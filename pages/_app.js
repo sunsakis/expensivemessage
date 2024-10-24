@@ -1,7 +1,7 @@
 import '@/styles/globals.css';
 import Head from 'next/head';
 import { ThirdwebProvider } from '@thirdweb-dev/react';
-import { Ethereum, Sepolia } from "@thirdweb-dev/chains";
+import { Base } from "@thirdweb-dev/chains";
 import { Titillium_Web } from 'next/font/google';
 import PlausibleProvider from 'next-plausible';
 
@@ -14,8 +14,8 @@ export default function App({ Component, pageProps }) {
   return (
   <main className={titties.className}>
     <ThirdwebProvider 
-        activeChain={Ethereum}
-        supportedChains={[Ethereum, Sepolia]}
+        activeChain={Base}
+        //supportedChains={[Ethereum, Sepolia]}
         clientId={process.env.NEXT_PUBLIC_THIRDWEB_ID}
       >
     {/* <PlausibleProvider domain="expensivemessage.com"> */}
