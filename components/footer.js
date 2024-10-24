@@ -7,7 +7,7 @@ import { Alchemy } from 'alchemy-sdk';
 import ABI from '../contract/ABI.js';
 import Link from 'next/link.js';
 import Image from 'next/image.js';
-
+ethers.utils.Logger.setLogLevel(ethers.utils.Logger.levels.DEBUG);
 
 export default function Footer( { msgPrices, text, settings } ) {
 
@@ -142,46 +142,61 @@ export default function Footer( { msgPrices, text, settings } ) {
   const fivePercentOfMsgPrice = msgPriceFloat * 0.05; // Calculate 5% of msgPrice
   const minBidValue = Math.max(fivePercentOfMsgPrice, 0.02); // Compare and get the higher value
   const minBid = (parseFloat(msgPriceFloat + minBidValue)).toFixed(2);
+
   
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission
     try {
-      // Validate bid is a string and not empty
-      if (typeof bid !== 'string' || bid.trim() === '') {
-        throw new Error('Bid must be a non-empty string');
-      }
-
-
-      const alchemy = new Alchemy(settings);
-      const provider = await alchemy.config.getProvider();
+      setLoading(true);
+      const provider = new ethers.providers.JsonRpcProvider("https://base-mainnet.g.alchemy.com/v2/tf5FyYe77CL61JNMkGP_uCktVih38A6J");
       const contract = new ethers.Contract(
         process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
         ABI,
         signer
       );
     
-      const parsedBid = ethers.utils.parseEther((bid).toString());
+   // Get the RGCVII token contract address
+   const rgcviiTokenAddress = "0x11dC980faf34A1D082Ae8A6a883db3A950a3c6E8"
+   const rgcviiTokenABI = ["function approve(address spender, uint256 amount) public returns (bool)",
+                           "function balanceOf(address account) public view returns (uint256)"];
+   const rgcviiToken = new ethers.Contract(rgcviiTokenAddress, rgcviiTokenABI, signer);
 
-      await contract.setMessage( message, imgHash, name, { value: parsedBid } ).then((tx) => {
-        return provider.waitForTransaction(tx.hash);
-      }).then(() => {
-        sendMessageToTelegram(message, bid);
-        if (router.pathname === '/') {
-          router.reload();
-        } else {
-          router.push('/');
-        }
-        handleClose();
-        setLoading(false);
-        
-      });
-    } catch (error) {
-      console.error(error); // Log the error for debugging
-      alert(error.message);
-      setLoading(false);
-    }
-  };
+   // Calculate the required token amount (msgPrice * 2)
+   const currentPrice = await contract.getPrice();
+   const requiredAmount = currentPrice.mul(2);
+
+   // Check if user has enough RGCVII tokens
+   const balance = await rgcviiToken.balanceOf(await signer.getAddress());
+   if (balance.lt(requiredAmount)) {
+     throw new Error(`Insufficient RGCVII tokens. You need at least ${ethers.utils.formatUnits(requiredAmount, 18)} RGCVII tokens.`);
+   }
+
+   // Approve the contract to spend the required amount of RGCVII tokens
+   const approveTx = await rgcviiToken.approve(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, requiredAmount);
+   await approveTx.wait();
+
+   // Call setMessage without sending any ETH
+   const tx = await contract.setMessage(message, imgHash, name);
+   await tx.wait();
+
+   sendMessageToTelegram(message, ethers.utils.formatUnits(requiredAmount, 18));
+   if (router.pathname === '/') {
+     router.reload();
+   } else {
+     router.push('/');
+   }
+   handleClose();
+ } catch (error) {
+   console.error("Detailed error:", error);
+   if (error.data) {
+     console.error("Error data:", error.data);
+   }
+   alert(`Error: ${error.message}`);
+ } finally {
+   setLoading(false);
+ }
+};
 
     return (
     <>

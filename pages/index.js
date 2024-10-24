@@ -106,10 +106,8 @@ export async function getServerSideProps() {
     };
 
     const alchemy = new Alchemy(settings);
-    const ethersProvider = new ethers.providers.JsonRpcProvider("https://mainnet.base.org");
+    const ethersProvider = new ethers.providers.JsonRpcProvider("https://base-mainnet.g.alchemy.com/v2/tf5FyYe77CL61JNMkGP_uCktVih38A6J");
     const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
-    
-    console.log("Contract instance:", contract);
 
     let newestMessage, newestCounter, newestPrice, newestImgHash, newestMessenger;
 
@@ -152,7 +150,7 @@ export async function getServerSideProps() {
         message: newestMessage,
         imgHash: newestImgHash,
         messenger: newestMessenger,
-        networkName: "BASE_MAINNET" // Pass the network name as a string if needed
+        networkName: "BASE_MAINNET", // Pass the network name as a string if needed
       },
     };
   } catch (error) {
