@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     let { msg, bid } = req.body;
     const usdPrice = ethPrice * bid;
     // msg = `ALERT!\n\nSomeone has just claimed an Expensive Message for ${bid} RGCVII ($${usdPrice.toFixed(2)}). Here's their message:\n\n` + msg;
-    msg = `ALERT! 🚨\n\nExpensive Message was posted for ${bid} RGCVII. Here's the message:\n\n` + msg;
+    msg = `ALERT! 🚨\n\nExpensive Message was posted for ${bid} RGCVII. Here's their message:\n\n` + msg;
 
     try {
       const telegramToken = process.env.TELEGRAM_BOT_TOKEN;
