@@ -160,7 +160,7 @@ export default function How({ newestPrice }) {
         </div>
         <br/>
       </main>
-      <Footer msgPrices={newestPrice} text={""}/>
+      {/* <Footer msgPrices={newestPrice} text={""}/> */}
     </div>
   )
 }

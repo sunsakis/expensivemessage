@@ -181,7 +181,7 @@ export default function What({ newestPrice }) {
         <p>Expensive Message: <i>free speech for profit.</i></p>
         </div>
       </main>
-      <Footer msgPrices={newestPrice} text={""} />
+      {/* <Footer msgPrices={newestPrice} text={""} /> */}
     </div>
   )
 }
