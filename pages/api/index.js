@@ -16,11 +16,12 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     let { msg, bid } = req.body;
     const usdPrice = ethPrice * bid;
-    msg = `ALERT!\n\nSomeone has just claimed an Expensive Message for ${bid} RGCVII ($${usdPrice.toFixed(2)}). Here's their message:\n\n` + msg;
+    // msg = `ALERT!\n\nSomeone has just claimed an Expensive Message for ${bid} RGCVII ($${usdPrice.toFixed(2)}). Here's their message:\n\n` + msg;
+    msg = `ALERT!\n\nSomeone has just claimed an Expensive Message for ${bid} RGCVII. Here's their message:\n\n` + msg;
 
     try {
       const telegramToken = process.env.TELEGRAM_BOT_TOKEN;
-      const channelID = "@MostXMessage";
+      const channelID = "@MostExpensiveMessage";
         const response = await fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage?chat_id=${channelID}&text=${encodeURIComponent(msg)}`, 
           {
             method: 'POST',

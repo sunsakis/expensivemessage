@@ -129,7 +129,7 @@ export async function getServerSideProps() {
       newestPrice = ethers.BigNumber.from(0);
     }
 
-    const formatPrice = ethers.utils.formatEther(newestPrice);
+    const formatPrice = parseFloat(ethers.utils.formatEther(newestPrice)).toString();
 
     try {
       newestImgHash = await contract.getImgHashes(newestCounter - 1);

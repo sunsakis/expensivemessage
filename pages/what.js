@@ -5,7 +5,7 @@ import { Network, Alchemy } from 'alchemy-sdk';
 import { ethers } from 'ethers';
 import ABI from '../contract/ABI.js';
 
-export default function What({ newestPrice, settings }) {
+export default function What({ newestPrice }) {
 
   return (
     <div 
@@ -181,7 +181,7 @@ export default function What({ newestPrice, settings }) {
         <p>Expensive Message: <i>free speech for profit.</i></p>
         </div>
       </main>
-      <Footer msgPrices={newestPrice} text={""} settings={settings}/>
+      <Footer msgPrices={newestPrice} text={""} />
     </div>
   )
 }
@@ -193,16 +193,14 @@ export async function getServerSideProps() {
       network: Network.BASE_MAINNET,
     };
   
-    const alchemy = new Alchemy(settings);
     const ethersProvider = new ethers.providers.JsonRpcProvider("https://mainnet.base.org");
     const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
     const newestPrice = await contract.getPrice();
-    const formatPrice = ethers.utils.formatEther(newestPrice);
+    const formatPrice = parseFloat(ethers.utils.formatEther(newestPrice)).toString();
   
     return {
       props: {
         newestPrice: formatPrice,
-        settings: settings,
       },
       //revalidate: 1,
     };

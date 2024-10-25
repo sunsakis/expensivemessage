@@ -6,7 +6,7 @@ import { Network, Alchemy } from 'alchemy-sdk';
 import { ethers } from 'ethers';
 import ABI from '../contract/ABI.js';
 
-export default function How({ newestPrice, settings }) {
+export default function How({ newestPrice }) {
 
   return (
     <div 
@@ -42,7 +42,7 @@ export default function How({ newestPrice, settings }) {
         Here's how to do it and earn while you're at it:
         </p>
         <br/>
-        <div className="mx-auto w-full max-w-[560px] md:max-w-[640px] lg:max-w-[800px] xl:max-w-[960px]">
+        {/* <div className="mx-auto w-full max-w-[560px] md:max-w-[640px] lg:max-w-[800px] xl:max-w-[960px]">
           <div className="relative" style={{ paddingBottom: '56.25%' }}>
             <iframe 
               className="absolute top-0 left-0 w-full h-full"
@@ -54,7 +54,7 @@ export default function How({ newestPrice, settings }) {
               allowFullScreen
             ></iframe>
           </div>
-        </div>
+        </div> */}
         <br/>
         <div className="grid grid-cols-1 gap-4 mb-8 mx-auto font-thin">
         <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
@@ -122,7 +122,7 @@ export default function How({ newestPrice, settings }) {
         </div>
         <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
             <div className="bg-white rounded-full h-4 w-4 flex-shrink-0 mr-4"></div>
-            <p>Follow our <Link href="https://t.me/MostXMessage" rel="nofollow" target="_blank" className="underline text-blue-300">Telegram</Link> to be notified when a more expensive message is posted.</p>
+            <p>Follow our <Link href="https://t.me/MostExpensiveMessage" rel="nofollow" target="_blank" className="underline text-blue-300">Telegram</Link> to be notified when a more expensive message is posted.</p>
         </div>
         </div>
         <br/>
@@ -156,11 +156,11 @@ export default function How({ newestPrice, settings }) {
             className="bg-black bg-opacity-50 p-8 rounded-xl border mx-10 transition duration-500 ease-in-out hover:bg-white hover:text-black hover:border-black">
                     <h2 className="text-3xl font-bold mb-2">What are you waiting for?</h2>
                     <br/>
-                    <p className="text-xl">Go turn your free speech into profit now!</p>
+                    <p className="text-xl">Go turn your free speech into profit now by posting your message!</p>
         </div>
         <br/>
       </main>
-      <Footer msgPrices={newestPrice} text={""} settings={settings}/>
+      <Footer msgPrices={newestPrice} text={""}/>
     </div>
   )
 }
@@ -176,12 +176,11 @@ export async function getServerSideProps() {
     const ethersProvider = new ethers.providers.JsonRpcProvider("https://mainnet.base.org");
     const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
     const newestPrice = await contract.getPrice();
-    const formatPrice = ethers.utils.formatEther(newestPrice);
+    const formatPrice = parseFloat(ethers.utils.formatEther(newestPrice)).toString();
   
     return {
       props: {
         newestPrice: formatPrice,
-        settings: settings,
       },
       //revalidate: 1,
     };

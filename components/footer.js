@@ -9,7 +9,7 @@ import Link from 'next/link.js';
 import Image from 'next/image.js';
 ethers.utils.Logger.setLogLevel(ethers.utils.Logger.levels.DEBUG);
 
-export default function Footer( { msgPrices, text, settings } ) {
+export default function Footer( { msgPrices, text} ) {
 
   const [showModal, setShowModal] = useState(false);
   const [closingAnimation, setClosingAnimation] = useState(false);
@@ -169,7 +169,7 @@ export default function Footer( { msgPrices, text, settings } ) {
    // Check if user has enough RGCVII tokens
    const balance = await rgcviiToken.balanceOf(await signer.getAddress());
    if (balance.lt(requiredAmount)) {
-     throw new Error(`Insufficient RGCVII tokens. You need at least ${ethers.utils.formatUnits(requiredAmount, 18)} RGCVII tokens.`);
+     throw new Error(`Insufficient RGCVII tokens. You need at least ${requiredAmount} RGCVII tokens to post your message.`);
    }
 
    // Approve the contract to spend the required amount of RGCVII tokens
@@ -180,7 +180,7 @@ export default function Footer( { msgPrices, text, settings } ) {
    const tx = await contract.setMessage(message, imgHash, name);
    await tx.wait();
 
-   sendMessageToTelegram(message, ethers.utils.formatUnits(requiredAmount, 18));
+   sendMessageToTelegram(message, requiredAmount);
    if (router.pathname === '/') {
      router.reload();
    } else {
@@ -256,7 +256,7 @@ export default function Footer( { msgPrices, text, settings } ) {
             </div>
         </div>
         <div className="flex justify-center items-center mx-auto mb-5 space-x-5 w-full">
-                    <Link href="https://t.me/MostXMessage" rel="nofollow" target="_blank" className="mr-1">
+                    <Link href="https://t.me/MostExpensiveMessage" rel="nofollow" target="_blank" className="mr-1">
                         <Image
                             src="/telegram.svg"
                             alt="Telegram logo"
@@ -439,7 +439,7 @@ export default function Footer( { msgPrices, text, settings } ) {
                       type="button" // Change to "button" to prevent form submission when loading
                       disabled // Disable the button to prevent multiple submissions
                     >
-                      Uploading...
+                      Patience...
                     </button>
                   // ) : (
                   //   <button
