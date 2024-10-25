@@ -90,7 +90,7 @@ export default function Home({ imgHash, price, message, settings, messenger }) {
             <div className="flex flex-grow justify-center items-center">
               <Message text={message} messenger={messenger} /> 
             </div>
-            {/* <Footer settings={settings} msgPrices={price} text={""} /> */}
+            <Footer settings={settings} msgPrices={price} text={""} />
           </div>
         </div>
       </main>
