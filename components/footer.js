@@ -165,11 +165,12 @@ export default function Footer( { msgPrices, text} ) {
    // Calculate the required token amount (msgPrice * 2)
    const currentPrice = await contract.getPrice();
    const requiredAmount = currentPrice.mul(2);
+   const formattedRequiredAmount = ethers.utils.formatUnits(requiredAmount, 18);
 
    // Check if user has enough RGCVII tokens
    const balance = await rgcviiToken.balanceOf(await signer.getAddress());
    if (balance.lt(requiredAmount)) {
-     throw new Error(`Insufficient RGCVII tokens. You need at least ${ethers.utils.formatUnits(requiredAmount, 18)} RGCVII tokens to post your message.`);
+    throw new Error(`Insufficient RGCVII tokens. You need at least ${formattedRequiredAmount} RGCVII tokens to post your message.`);
    }
 
    // Approve the contract to spend the required amount of RGCVII tokens
@@ -180,7 +181,7 @@ export default function Footer( { msgPrices, text} ) {
    const tx = await contract.setMessage(message, imgHash, name);
    await tx.wait();
 
-   sendMessageToTelegram(message, requiredAmount);
+   sendMessageToTelegram(message, formattedRequiredAmount);
    if (router.pathname === '/') {
      router.reload();
    } else {
