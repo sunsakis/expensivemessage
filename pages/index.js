@@ -115,6 +115,7 @@ export async function getServerSideProps() {
       const newMessageCall = await contract.readMessage();
       newestMessage = newMessageCall[0].toString();
       newestCounter = newMessageCall[1].toNumber();
+      console.log("newestCounter:", newestCounter);
     } catch (error) {
       console.error("Error calling readMessage:", error);
       newestMessage = "Error reading message";
@@ -131,14 +132,16 @@ export async function getServerSideProps() {
     const formatPrice = ethers.utils.formatEther(newestPrice);
 
     try {
-      newestImgHash = await contract.getImgHashes(newestCounter);
+      newestImgHash = await contract.getImgHashes(newestCounter - 1);
+      console.log("newestImgHash:", newestImgHash);
     } catch (error) {
       console.error("Error calling getImgHashes:", error);
       newestImgHash = "";
     }
 
     try {
-      newestMessenger = await contract.getMessengers(newestCounter);
+      newestMessenger = await contract.getMessengers(newestCounter - 1);
+      console.log("newestMessenger:", newestMessenger);
     } catch (error) {
       console.error("Error calling getMessengers:", error);
       newestMessenger = ethers.constants.AddressZero;
