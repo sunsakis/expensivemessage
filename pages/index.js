@@ -105,7 +105,6 @@ export async function getServerSideProps() {
       network: Network.BASE_MAINNET,
     };
 
-    const alchemy = new Alchemy(settings);
     const ethersProvider = new ethers.providers.JsonRpcProvider("https://base-mainnet.g.alchemy.com/v2/tf5FyYe77CL61JNMkGP_uCktVih38A6J");
     const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
 

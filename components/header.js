@@ -1,4 +1,3 @@
-import { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 // import { ConnectButton, ThirdwebProvider } from 'thirdweb/react';

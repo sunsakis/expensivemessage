@@ -226,7 +226,7 @@ export default function Footer( { msgPrices, text} ) {
             <div className="sm:m-5">
               {msgPrices && (
                 <p className="text-sm text-right tracking-tight mr-9 text-gray-300">
-                        {text} Last message cost
+                        {text} message cost
                     </p>
               )}
               {msgPrices && (
@@ -251,7 +251,7 @@ export default function Footer( { msgPrices, text} ) {
                 <div className="flex text-xs sm:text-sm text-gray-200 ml-1">
                     <Link href="/what"><p className="mx-2">What is this?</p></Link>
                     <Link href="/how"><p className="mx-2">How it works?</p></Link>
-                    <Link href="/terms"><p className="mx-2">Terms & conditions</p></Link>
+                    <Link href="/archive"><p className="mx-2">Hall of fame</p></Link>
                 </div>
                 
             </div>
