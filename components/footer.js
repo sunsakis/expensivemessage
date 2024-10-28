@@ -3,7 +3,6 @@ import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
 import { useStorageUpload, Web3Button, useSigner } from '@thirdweb-dev/react';
 import { Interface, FormatTypes } from 'ethers/lib/utils';
-import { Alchemy } from 'alchemy-sdk';
 import ABI from '../contract/ABI.js';
 import Link from 'next/link.js';
 import Image from 'next/image.js';
@@ -232,7 +231,11 @@ export default function Footer( { msgPrices, text} ) {
               {msgPrices && (
                     <p className="text-right mr-8">
                         <b className="text-2xl">
-                        {msgPrices} RGCVII
+                          {msgPrices + " "} 
+                          <Link href="https://app.uniswap.org/swap?outputCurrency=0x11dc980faf34a1d082ae8a6a883db3a950a3c6e8&chain=base"
+                            className="text-green-500 hover:text-green-400 transition duration-500 ease-in-out hover:underline">
+                              RGCVII
+                          </Link>
                         </b>
                     </p>
               )}

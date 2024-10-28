@@ -3,8 +3,6 @@ import { ethers } from 'ethers';
 import { Network, Alchemy } from 'alchemy-sdk';
 import { useState, useEffect } from 'react';
 import Footer from '../components/footer.js';
-import FooterTelegram from '@/components/footerTelegram.js';
-import FooterNew from '@/components/footerNew.js';
 import Header from '../components/header.js';
 import Message from '../components/message.js';
 import ABI from '../contract/ABI.js';
@@ -90,7 +88,7 @@ export default function Home({ imgHash, price, message, settings, messenger }) {
             <div className="flex flex-grow justify-center items-center">
               <Message text={message} messenger={messenger} /> 
             </div>
-            <Footer settings={settings} msgPrices={price} text={""} />
+            <Footer settings={settings} msgPrices={price} text={"This"} />
           </div>
         </div>
       </main>
