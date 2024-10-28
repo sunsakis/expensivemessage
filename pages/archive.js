@@ -22,6 +22,14 @@ export default function Archive({ names, imgHashes, newestPrice, newestCounter, 
   const [allImgHashes, setAllImgHashes] = useState(imgHashes);
   const [allNames, setAllNames] = useState(names);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(newestCounter - 2);
+  const [contract, setContract] = useState(null);
+
+  useEffect(() => {
+    const ethersProvider = new ethers.providers.JsonRpcProvider("https://base-mainnet.g.alchemy.com/v2/tf5FyYe77CL61JNMkGP_uCktVih38A6J");
+    const newContract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
+    setContract(newContract);
+  }, []);
 
   useEffect(() => {
     const loadMoreMessages = async () => {
@@ -111,30 +119,56 @@ const updateStyle = (backgroundImageUrl) => {
   });
 };
 
-const showNextMessage = () => {
-  setCounter(prevCounter => {
-    if (prevCounter <= 0) return prevCounter;
-    const newCounter = prevCounter - 1;
-    setMessage(allMessages[newCounter]);
-    setPrices(allPrices[newCounter]);
-    setImgHash(allImgHashes[newCounter]);
-    setName(allNames[newCounter]);
-    console.log("Showing next message, counter:", newCounter);
-    return newCounter;
-  });
+const showNextMessage = async () => {
+  const newIndex = currentIndex + 1;
+  if (newIndex <= newestCounter - 2) {
+    setIsLoading(true);
+    try {
+      const [message, price, imgHash, name] = await Promise.all([
+        contract.getMessages(newIndex),
+        contract.getPrices(newIndex),
+        contract.getImgHashes(newIndex),
+        contract.getMessengers(newIndex),
+      ]);
+
+      setMessage(message);
+      setPrices(parseFloat(ethers.utils.formatEther(price)).toString());
+      setImgHash(imgHash);
+      setName(name);
+      setCurrentIndex(newIndex);
+      setCounter(prevCounter => prevCounter - 1);
+    } catch (error) {
+      console.error("Error fetching next message:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 };
 
-const showPreviousMessage = () => {
-  setCounter(prevCounter => {
-    if (prevCounter >= allMessages.length - 1) return prevCounter;
-    const newCounter = prevCounter + 1;
-    setMessage(allMessages[newCounter]);
-    setPrices(allPrices[newCounter]);
-    setImgHash(allImgHashes[newCounter]);
-    setName(allNames[newCounter]);
-    console.log("Showing previous message, counter:", newCounter);
-    return newCounter;
-  });
+const showPreviousMessage = async () => {
+  const newIndex = currentIndex - 1;
+  if (newIndex >= 0) {
+    setIsLoading(true);
+    try {
+      const [message, price, imgHash, name] = await Promise.all([
+        contract.getMessages(newIndex),
+        contract.getPrices(newIndex),
+        contract.getImgHashes(newIndex),
+        contract.getMessengers(newIndex),
+      ]);
+
+      setMessage(message);
+      setPrices(parseFloat(ethers.utils.formatEther(price)).toString());
+      setImgHash(imgHash);
+      setName(name);
+      setCurrentIndex(newIndex);
+      setCounter(prevCounter => prevCounter + 1);
+    } catch (error) {
+      console.error("Error fetching previous message:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 };
 
   async function fetchMoreMessages(start, end) {
@@ -186,20 +220,34 @@ const showPreviousMessage = () => {
             <Footer msgPrices={msgPrices} price={newestPrice} text={"This"} />
           </div>
           <div className="w-full absolute top-28 items-center flex left-0 right-0 justify-between px-10 sm:px-20 md:px-32 lg:px-56 xl:px-96">
-          <div className="justify-start">
-            {counter > 0 && (
-              <button className="text-3xl" onClick={showNextMessage}>
-                <Image src="arrowLeft.svg" alt="Arrow to the left" width={25} height={25}/>
+            <div className="justify-start">
+              <button 
+                className="text-3xl" 
+                onClick={counter > 0 ? showNextMessage : undefined}
+                style={{ opacity: counter > 0 ? 1 : 0.25 }}
+              >
+                <Image 
+                  src="arrowLeft.svg" 
+                  alt="Arrow to the left" 
+                  width={25} 
+                  height={25}
+                />
               </button>
-            )}
-          </div>
-          <div className="justify-end">
-            {counter < allMessages.length - 1 && (
-              <button className="text-3xl" onClick={showPreviousMessage}>
-                <Image src="arrowRight.svg" alt="Arrow to the right" width={25} height={25}/>
+            </div>
+            <div className="justify-end">
+              <button 
+                className="text-3xl" 
+                onClick={counter < allMessages.length - 1 ? showPreviousMessage : undefined}
+                style={{ opacity: counter < allMessages.length - 1 ? 1 : 0.25 }}
+              >
+                <Image 
+                  src="arrowRight.svg" 
+                  alt="Arrow to the right" 
+                  width={25} 
+                  height={25}
+                />
               </button>
-            )}
-          </div>
+            </div>
         </div>
         </div>
       </main>
@@ -215,45 +263,23 @@ export async function getServerSideProps() {
   const newestPrice = await contract.getPrice();
   const formatPrice = ethers.utils.formatEther(newestPrice);
 
-  // Fetch the last 10 messages (or less if there aren't that many)
-  const messagesToFetch = Math.min(10, newestCounter - 1);
-  let messages = [];
-  let prices = [];
-  let imgHashes = [];
-  let names = [];
-
-  for (let i = newestCounter - 2; i >= newestCounter - 1 - messagesToFetch; i--) {
-    const [message, price, imgHash, name] = await Promise.all([
-      contract.getMessages(i),
-      contract.getPrices(i),
-      contract.getImgHashes(i),
-      contract.getMessengers(i),
-    ]);
-
-    messages.push(message);
-    prices.push(parseFloat(ethers.utils.formatEther(price)));
-    imgHashes.push(imgHash);
-    names.push(name);
-  }
-
-  // Sort messages by price in descending order
-  const sortedIndices = prices.map((price, index) => ({price, index}))
-                              .sort((a, b) => b.price - a.price)
-                              .map(item => item.index);
-
-  const sortedMessages = sortedIndices.map(i => messages[i]);
-  const sortedPrices = sortedIndices.map(i => prices[i].toString());
-  const sortedImgHashes = sortedIndices.map(i => imgHashes[i]);
-  const sortedNames = sortedIndices.map(i => names[i]);
+  // Fetch only the first message
+  const i = newestCounter - 2;
+  const [message, price, imgHash, name] = await Promise.all([
+    contract.getMessages(i),
+    contract.getPrices(i),
+    contract.getImgHashes(i),
+    contract.getMessengers(i),
+  ]);
 
   return {
     props: {
       newestPrice: formatPrice,
       newestCounter: newestCounter,
-      messages: sortedMessages,
-      prices: sortedPrices,
-      imgHashes: sortedImgHashes,
-      names: sortedNames,
+      messages: [message],
+      prices: [parseFloat(ethers.utils.formatEther(price)).toString()],
+      imgHashes: [imgHash],
+      names: [name],
     },
   };
 }
