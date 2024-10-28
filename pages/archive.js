@@ -187,7 +187,6 @@ const showPreviousMessage = () => {
           </div>
           <div className="w-full absolute top-28 items-center flex left-0 right-0 justify-between px-10 sm:px-20 md:px-32 lg:px-56 xl:px-96">
           <div className="justify-start">
-            {console.log("Left arrow condition:", counter > 0)}
             {counter > 0 && (
               <button className="text-3xl" onClick={showNextMessage}>
                 <Image src="arrowLeft.svg" alt="Arrow to the left" width={25} height={25}/>
@@ -195,7 +194,6 @@ const showPreviousMessage = () => {
             )}
           </div>
           <div className="justify-end">
-            {console.log("Right arrow condition:", counter < allMessages.length - 1)}
             {counter < allMessages.length - 1 && (
               <button className="text-3xl" onClick={showPreviousMessage}>
                 <Image src="arrowRight.svg" alt="Arrow to the right" width={25} height={25}/>
@@ -217,23 +215,45 @@ export async function getServerSideProps() {
   const newestPrice = await contract.getPrice();
   const formatPrice = ethers.utils.formatEther(newestPrice);
 
-  // Fetch only the first message
-  const i = newestCounter - 2;
-  const [message, price, imgHash, name] = await Promise.all([
-    contract.getMessages(i),
-    contract.getPrices(i),
-    contract.getImgHashes(i),
-    contract.getMessengers(i),
-  ]);
+  // Fetch the last 10 messages (or less if there aren't that many)
+  const messagesToFetch = Math.min(10, newestCounter - 1);
+  let messages = [];
+  let prices = [];
+  let imgHashes = [];
+  let names = [];
+
+  for (let i = newestCounter - 2; i >= newestCounter - 1 - messagesToFetch; i--) {
+    const [message, price, imgHash, name] = await Promise.all([
+      contract.getMessages(i),
+      contract.getPrices(i),
+      contract.getImgHashes(i),
+      contract.getMessengers(i),
+    ]);
+
+    messages.push(message);
+    prices.push(parseFloat(ethers.utils.formatEther(price)));
+    imgHashes.push(imgHash);
+    names.push(name);
+  }
+
+  // Sort messages by price in descending order
+  const sortedIndices = prices.map((price, index) => ({price, index}))
+                              .sort((a, b) => b.price - a.price)
+                              .map(item => item.index);
+
+  const sortedMessages = sortedIndices.map(i => messages[i]);
+  const sortedPrices = sortedIndices.map(i => prices[i].toString());
+  const sortedImgHashes = sortedIndices.map(i => imgHashes[i]);
+  const sortedNames = sortedIndices.map(i => names[i]);
 
   return {
     props: {
       newestPrice: formatPrice,
       newestCounter: newestCounter,
-      messages: [message],
-      prices: [parseFloat(ethers.utils.formatEther(price)).toString()],
-      imgHashes: [imgHash],
-      names: [name],
+      messages: sortedMessages,
+      prices: sortedPrices,
+      imgHashes: sortedImgHashes,
+      names: sortedNames,
     },
   };
 }

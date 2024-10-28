@@ -62,10 +62,10 @@ export default function Header() {
                         }
                     }}>
                         <Image 
-                            src="/hamster.webp" 
-                            alt="Hamster with cash." 
-                            width={100} 
-                            height={100} 
+                            src="/expensivemessagelogo.png" 
+                            alt="Expensive Message logo." 
+                            width={35} 
+                            height={35} 
                             className="mt-5"
                         />
                     </button>
