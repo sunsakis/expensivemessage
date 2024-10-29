@@ -11,14 +11,41 @@ export default function Home({ imgHash, price, message, settings, messenger }) {
   const [style, setStyle] = useState({});
   const [windowSize, setWindowSize] = useState({});
 
+  useEffect(() => {
+    const updateBackground = async () => {
+      const newImgURL = getImgURLFromHash(imgHash);
+      updateStyle(newImgURL);
+    };
+    const handleResize = () => {
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+    };
+  
+    updateBackground(); 
 
-    // Step 2: Modify getImgURLFromHash to handle undefined inputs
+    const newImgURL = getImgURLFromHash(imgHash);
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [imgHash, windowSize]);
+
+
   function getImgURLFromHash(imgHash) {
     if (imgHash === '' || imgHash === undefined) {
       return '/defaultMessage.png';
     }
-    // Existing logic to generate the image URL from the hash
     return imgHash.replace('ipfs://', 'https://ipfs.io/ipfs/');
+  }
+
+  async function resolveENS(provider, address) {
+    try {
+      const name = await provider.lookupAddress(address);
+      return name || address; // Return the ENS name if found, otherwise return the original address
+    } catch (error) {
+      console.error("Error resolving ENS:", error);
+      return address; // Return the original address if there's an error
+    }
   }
 
   const updateStyle = (backgroundImageUrl) => {
@@ -51,25 +78,6 @@ export default function Home({ imgHash, price, message, settings, messenger }) {
     });
   };
 
-  useEffect(() => {
-    const updateBackground = async () => {
-      const newImgURL = getImgURLFromHash(imgHash);
-      updateStyle(newImgURL);
-    };
-    const handleResize = () => {
-      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
-    };
-  
-    updateBackground(); 
-
-    const newImgURL = getImgURLFromHash(imgHash);
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [imgHash, windowSize]);
-
   return (
     <>
       <Head>
@@ -98,13 +106,13 @@ export default function Home({ imgHash, price, message, settings, messenger }) {
 
 export async function getServerSideProps() {
   try {
-    const settings = {
-      apiKey: process.env.ALCHEMY_API,
-      network: Network.BASE_MAINNET,
-    };
 
-    const ethersProvider = new ethers.providers.JsonRpcProvider("https://base-mainnet.g.alchemy.com/v2/tf5FyYe77CL61JNMkGP_uCktVih38A6J");
-    const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
+    // Provider for Base network
+    const baseProvider = new ethers.providers.JsonRpcProvider(`https://base-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API}`);
+    const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, baseProvider);
+
+    // Provider for Ethereum mainnet (for ENS resolution)
+    const mainnetProvider = new ethers.providers.JsonRpcProvider(`https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API}`);
 
     let newestMessage, newestCounter, newestPrice, newestImgHash, newestMessenger;
 
@@ -139,6 +147,17 @@ export async function getServerSideProps() {
     try {
       newestMessenger = await contract.getMessengers(newestCounter - 1);
       console.log("newestMessenger:", newestMessenger);
+      
+      // Attempt to resolve ENS name using the mainnet provider
+      try {
+        const ensName = await mainnetProvider.lookupAddress(newestMessenger);
+        if (ensName) {
+          newestMessenger = ensName;
+        }
+      } catch (ensError) {
+        console.error("Error resolving ENS:", ensError);
+        // If ENS resolution fails, we'll keep the original address
+      }
     } catch (error) {
       console.error("Error calling getMessengers:", error);
       newestMessenger = ethers.constants.AddressZero;
@@ -150,7 +169,7 @@ export async function getServerSideProps() {
         message: newestMessage,
         imgHash: newestImgHash,
         messenger: newestMessenger,
-        networkName: "BASE_MAINNET", // Pass the network name as a string if needed
+        networkName: "BASE_MAINNET",
       },
     };
   } catch (error) {
