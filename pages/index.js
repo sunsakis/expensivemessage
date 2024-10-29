@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { ethers } from 'ethers';
-import SendMessage from '../components/sendMessage.js';
+import { Network, Alchemy } from 'alchemy-sdk';
 import { useState, useEffect } from 'react';
 import Footer from '../components/footer.js';
 import Header from '../components/header.js';
@@ -36,6 +36,16 @@ export default function Home({ imgHash, price, message, settings, messenger }) {
       return '/defaultMessage.png';
     }
     return imgHash.replace('ipfs://', 'https://ipfs.io/ipfs/');
+  }
+
+  async function resolveENS(provider, address) {
+    try {
+      const name = await provider.lookupAddress(address);
+      return name || address; // Return the ENS name if found, otherwise return the original address
+    } catch (error) {
+      console.error("Error resolving ENS:", error);
+      return address; // Return the original address if there's an error
+    }
   }
 
   const updateStyle = (backgroundImageUrl) => {
@@ -80,7 +90,6 @@ export default function Home({ imgHash, price, message, settings, messenger }) {
         <meta property="og:site_name" content="Expensive Message" />
       </Head>
       <Header />
-      <SendMessage />
       <main>
         <div style={style} className="w-full">
           <div className="min-h-screen flex-col flex">
