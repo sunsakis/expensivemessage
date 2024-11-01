@@ -1,6 +1,6 @@
 
 export default [
-    "event MessageChanged(uint newPrice, address messenger, string message, uint msgCounter)",
+    "event MessageChanged(uint newPrice, address messenger, string message, string imgHash, uint msgCounter)",
     "event Withdraw(uint amount)",
     "event MessageOverwritten(uint price, address messenger, string message, uint msgCounter)",
     "function setMessage(string memory _message, string memory _imgHash, string memory _name) external payable",

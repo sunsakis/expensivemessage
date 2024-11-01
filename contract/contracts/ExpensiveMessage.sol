@@ -41,7 +41,7 @@ contract ExpensiveMessage {
         owner = msg.sender;
         messenger = msg.sender;
         msgCounter = 0;
-        messages[msgCounter] = Message(message, messenger, msgPrice, block.timestamp, "QmXMqY7rWNjkpo1PZBG6FUfgvC2pdMxZQSZV5xcNiZBoqs", "");
+        messages[msgCounter] = Message(message, messenger, msgPrice, block.timestamp, "ipfs://Qma3Kst1nmrWeqrTdSaynkYUZjGDUM7nvHmDnhEpUoRrr3/smallglitchham.gif", "");
         emit MessageChanged(msgPrice, msg.sender, message, "", msgCounter);
     }
 
