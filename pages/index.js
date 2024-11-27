@@ -35,7 +35,7 @@ export default function Home({ imgHash, price, message, settings, messenger }) {
     if (imgHash === '' || imgHash === undefined) {
       return '/defaultMessage.png';
     }
-    return imgHash.replace('ipfs://', 'https://ipfs.io/ipfs/');
+    return imgHash.replace('ipfs://', 'https://gateway.pinata.cloud/ipfs/');
   }
 
   async function resolveENS(provider, address) {
