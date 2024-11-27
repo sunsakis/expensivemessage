@@ -86,7 +86,7 @@ function getImgURLFromHash(imgHash) {
     return '/defaultMessage.png';
   }
   // Existing logic to generate the image URL from the hash
-  return imgHash.replace('ipfs://', 'https://ipfs.io/ipfs/');
+  return imgHash.replace('ipfs://', 'https://gateway.pinata.cloud/ipfs/');
 }
 
 const updateStyle = (backgroundImageUrl) => {
