@@ -254,7 +254,7 @@ export default function Footer( { msgPrices, text} ) {
                 <div className="flex text-xs sm:text-sm text-gray-200 ml-1">
                     <Link href="/what"><p className="mx-2">What is this?</p></Link>
                     <Link href="/how"><p className="mx-2">How it works?</p></Link>
-                    <Link href="/archive"><p className="mx-2">Hall of fame</p></Link>
+                    <Link href="/archive"><p className="mx-2">Hall of Fame</p></Link>
                 </div>
                 
             </div>
