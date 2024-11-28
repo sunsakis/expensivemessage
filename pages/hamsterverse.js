@@ -8,7 +8,7 @@ import { useSwipeable } from 'react-swipeable';
 import ABI from '../contract/ABI.js';
 import Image from 'next/image.js';
 
-export default function Archive({ names, imgHashes, newestPrice, newestCounter, messages, prices }) {
+export default function Hamsterverse({ names, imgHashes, newestPrice, newestCounter, messages, prices }) {
   const [style, setStyle] = useState({});
   const [message, setMessage] = useState(messages[0]);
   const [counter, setCounter] = useState(0);
@@ -16,20 +16,12 @@ export default function Archive({ names, imgHashes, newestPrice, newestCounter, 
   const [imgHash, setImgHash] = useState(imgHashes[0]);
   const [name, setName] = useState(names[0]);
   const [windowSize, setWindowSize] = useState({});
-
   const [allMessages, setAllMessages] = useState(messages);
   const [allPrices, setAllPrices] = useState(prices);
   const [allImgHashes, setAllImgHashes] = useState(imgHashes);
   const [allNames, setAllNames] = useState(names);
   const [isLoading, setIsLoading] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(newestCounter - 2);
-  const [contract, setContract] = useState(null);
-
-  useEffect(() => {
-    const ethersProvider = new ethers.providers.JsonRpcProvider("https://base-mainnet.g.alchemy.com/v2/tf5FyYe77CL61JNMkGP_uCktVih38A6J");
-    const newContract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
-    setContract(newContract);
-  }, []);
 
   useEffect(() => {
     const loadMoreMessages = async () => {
@@ -120,127 +112,94 @@ const updateStyle = (backgroundImageUrl) => {
 };
 
 const showNextMessage = async () => {
-  const newIndex = currentIndex + 1;
-  if (newIndex <= newestCounter - 2) {
-    setIsLoading(true);
-    try {
-      const [message, price, imgHash, messenger] = await Promise.all([
-        contract.getMessages(newIndex),
-        contract.getPrices(newIndex),
-        contract.getImgHashes(newIndex),
-        contract.getMessengers(newIndex),
-      ]);
-
-      // Try to resolve ENS name
-      let resolvedName = messenger;
+    const newIndex = currentIndex + 1;
+    if (newIndex <= newestCounter - 2) {
+      setIsLoading(true);
       try {
-        const mainnetProvider = new ethers.providers.JsonRpcProvider(`https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API}`);
-        const ensName = await mainnetProvider.lookupAddress(messenger);
-        if (ensName) {
-          resolvedName = ensName;
-        }
+        const response = await fetch('/api/fetch-message', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ index: newIndex }),
+        });
+  
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.json();
+  
+        setMessage(data.message);
+        setPrices(data.price);
+        setImgHash(data.imgHash);
+        setName(data.name);
+        setCurrentIndex(newIndex);
+        setCounter(prevCounter => prevCounter - 1);
       } catch (error) {
-        console.error("Error resolving ENS:", error);
+        console.error("Error fetching next message:", error);
+      } finally {
+        setIsLoading(false);
       }
-
-      setMessage(message);
-      setPrices(parseFloat(ethers.utils.formatEther(price)).toString());
-      setImgHash(imgHash);
-      setName(resolvedName);
-      setCurrentIndex(newIndex);
-      setCounter(prevCounter => prevCounter - 1);
-    } catch (error) {
-      console.error("Error fetching next message:", error);
-    } finally {
-      setIsLoading(false);
     }
-  }
-};
-
-const showPreviousMessage = async () => {
-  const newIndex = currentIndex - 1;
-  if (newIndex >= 0) {
-    setIsLoading(true);
-    try {
-      const [message, price, imgHash, messenger] = await Promise.all([
-        contract.getMessages(newIndex),
-        contract.getPrices(newIndex),
-        contract.getImgHashes(newIndex),
-        contract.getMessengers(newIndex),
-      ]);
-
-      // Try to resolve ENS name
-      let resolvedName = messenger;
+  };
+  
+  const showPreviousMessage = async () => {
+    const newIndex = currentIndex - 1;
+    if (newIndex >= 0) {
+      setIsLoading(true);
       try {
-        const mainnetProvider = new ethers.providers.JsonRpcProvider(`https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API}`);
-        const ensName = await mainnetProvider.lookupAddress(messenger);
-        if (ensName) {
-          resolvedName = ensName;
-        }
+        const response = await fetch('/api/fetch-message', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ index: newIndex }),
+        });
+  
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.json();
+  
+        setMessage(data.message);
+        setPrices(data.price);
+        setImgHash(data.imgHash);
+        setName(data.name);
+        setCurrentIndex(newIndex);
+        setCounter(prevCounter => prevCounter + 1);
       } catch (error) {
-        console.error("Error resolving ENS:", error);
+        console.error("Error fetching previous message:", error);
+      } finally {
+        setIsLoading(false);
       }
-
-      setMessage(message);
-      setPrices(parseFloat(ethers.utils.formatEther(price)).toString());
-      setImgHash(imgHash);
-      setName(resolvedName);
-      setCurrentIndex(newIndex);
-      setCounter(prevCounter => prevCounter + 1);
-    } catch (error) {
-      console.error("Error fetching previous message:", error);
-    } finally {
-      setIsLoading(false);
     }
-  }
-};
+  };
 
 async function fetchMoreMessages(start, end) {
-  console.log("Fetching messages from", start, "to", end);
-  const ethersProvider = new ethers.providers.JsonRpcProvider("https://base-mainnet.g.alchemy.com/v2/tf5FyYe77CL61JNMkGP_uCktVih38A6J");
-  const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
-  
-  // Add mainnet provider for ENS resolution
-  const mainnetProvider = new ethers.providers.JsonRpcProvider(`https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API}`);
-
-  let messages = [];
-  let prices = [];
-  let imgHashes = [];
-  let names = [];
-
-  for (let i = start; i < end && i >= 0; i--) {
-    const [message, price, imgHash, messenger] = await Promise.all([
-      contract.getMessages(i),
-      contract.getPrices(i),
-      contract.getImgHashes(i),
-      contract.getMessengers(i),
-    ]);
-
-    // Try to resolve ENS name
-    let resolvedName = messenger;
+    console.log("Fetching messages from", start, "to", end);
+    
     try {
-      const ensName = await mainnetProvider.lookupAddress(messenger);
-      if (ensName) {
-        resolvedName = ensName;
+      const response = await fetch('/api/fetch-messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ start, end }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
+  
+      const data = await response.json();
+      console.log("Fetched messages:", data.messages.length);
+      return data;
     } catch (error) {
-      console.error("Error resolving ENS:", error);
+      console.error("Error fetching messages:", error);
+      return { messages: [], prices: [], imgHashes: [], names: [] };
     }
-
-    messages.push(message);
-    prices.push(parseFloat(ethers.utils.formatEther(price)).toString());
-    imgHashes.push(imgHash);
-    names.push(resolvedName);
   }
-
-  console.log("Fetched messages:", messages.length);
-  return { messages, prices, imgHashes, names };  
-}
 
   return (
     <>
       <Head>
-        <title>Hall of Fame</title>
+        <title>Hamsterverse | Expensive Message</title>
         <meta name="description" content="An archive of all of the previously most expensive messages." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta property="og:title" content="Archives" />
@@ -296,7 +255,6 @@ async function fetchMoreMessages(start, end) {
 export async function getServerSideProps() {
   const baseProvider = new ethers.providers.JsonRpcProvider(`https://base-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API}`);
   const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, baseProvider);
-
   // Add mainnet provider for ENS resolution
   const mainnetProvider = new ethers.providers.JsonRpcProvider(`https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API}`);
 
@@ -305,7 +263,7 @@ export async function getServerSideProps() {
  const newestPrice = await contract.getPrice();
  const formatPrice = ethers.utils.formatEther(newestPrice);
 
- const i = newestCounter - 2;
+ const i = newestCounter - 1;
  const [message, price, imgHash, messenger] = await Promise.all([
    contract.getMessages(i),
    contract.getPrices(i),
