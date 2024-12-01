@@ -1,4 +1,4 @@
-import { createCanvas, loadImage } from 'canvas';
+import { createCanvas, loadImage } from '@napi-rs/canvas';
 import { ethers } from 'ethers';
 import ABI from '../../../../../contract/ABI.js';
 

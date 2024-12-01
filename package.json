@@ -10,12 +10,12 @@
   },
   "dependencies": {
     "@farcaster/core": "^0.15.6",
+    "@napi-rs/canvas": "^0.1.64",
     "@thirdweb-dev/chains": "^0.1.120",
     "@thirdweb-dev/react": "^3.14.20",
     "@vercel/og": "^0.6.4",
     "alchemy-sdk": "^2.9.2",
     "axios": "^1.7.2",
-    "canvas": "^2.11.2",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "eslint": "8.45.0",
