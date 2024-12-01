@@ -1,14 +1,14 @@
-import { createCanvas } from 'canvas';
+import { createCanvas, loadImage } from 'canvas';
 import { ethers } from 'ethers';
 import ABI from '../../../../../contract/ABI.js';
 
 export default async function handler(req, res) {
   const headers = {
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': 'https://www.expensivemessage.com',
     'Access-Control-Allow-Methods': 'GET, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Content-Type': 'image/png',
-    'Cache-Control': 'public, max-age=30'
+    'Cache-Control': 'public, max-age=10'
   };
 
   if (req.method === 'OPTIONS') {
@@ -26,9 +26,8 @@ export default async function handler(req, res) {
       baseProvider
     );
 
-    let newestMessage, newestCounter, newestPrice, newestMessenger;
+    let newestMessage, newestCounter, newestPrice, newestMessenger, newestImgHash;
 
-    // Fetch message and counter
     try {
       const newMessageCall = await contract.readMessage();
       newestMessage = newMessageCall[0].toString();
@@ -39,7 +38,6 @@ export default async function handler(req, res) {
       newestCounter = 0;
     }
 
-    // Fetch price
     try {
       newestPrice = await contract.getPrice();
     } catch (error) {
@@ -47,7 +45,6 @@ export default async function handler(req, res) {
       newestPrice = ethers.BigNumber.from(0);
     }
 
-    // Fetch messenger
     try {
       newestMessenger = await contract.getMessengers(newestCounter - 1);
     } catch (error) {
@@ -55,7 +52,12 @@ export default async function handler(req, res) {
       newestMessenger = ethers.constants.AddressZero;
     }
 
-    const formatPrice = ethers.utils.formatEther(newestPrice);
+    try {
+      newestImgHash = await contract.getImgHashes(newestCounter - 1);
+    } catch (error) {
+      console.error("Error calling getImgHashes:", error);
+      newestImgHash = "";
+    }
 
     // Create canvas
     const width = 1200;
@@ -63,8 +65,41 @@ export default async function handler(req, res) {
     const canvas = createCanvas(width, height);
     const ctx = canvas.getContext('2d');
 
-    // Set background
-    ctx.fillStyle = 'black';
+    // Load and draw background image
+    let backgroundImage;
+    try {
+      const imgUrl = newestImgHash ? 
+        newestImgHash.replace('ipfs://', 'https://gateway.pinata.cloud/ipfs/') : 
+        '/defaultMessage.png';
+      backgroundImage = await loadImage(imgUrl);
+    } catch (error) {
+      console.error("Error loading background image:", error);
+      backgroundImage = await loadImage('/defaultMessage.png');
+    }
+
+    // Draw background image
+    ctx.drawImage(backgroundImage, 0, 0, width, height);
+
+    // Create spotlight effect
+    const spotlightSize = Math.min(width, height) * 0.5;
+    const centerX = width / 2;
+    const centerY = height / 2;
+
+    // Add first gradient (dark overlay)
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+    ctx.fillRect(0, 0, width, height);
+
+    // Add radial gradient
+    const gradient = ctx.createRadialGradient(
+      centerX, centerY, 0,
+      centerX, centerY, spotlightSize
+    );
+
+    gradient.addColorStop(0, 'transparent');
+    gradient.addColorStop(0.5, 'transparent');
+    gradient.addColorStop(1, 'rgba(0, 0, 0, 0.9)');
+
+    ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, width, height);
 
     // Configure text
@@ -72,22 +107,45 @@ export default async function handler(req, res) {
     ctx.textAlign = 'center';
     
     // Draw message
-    ctx.font = '60px Arial';
+    ctx.font = '50px Arial Bold';
     const words = newestMessage.split(' ');
     let y = height/2 - 60;
+    const leftMargin = 150; // Adjust this value to control how far from the left edge
     words.forEach(word => {
-      ctx.fillText(word, width/2, y);
-      y += 70;
-    });
-
-    // Draw messenger address
-    ctx.font = '30px Arial';
-    const shortAddress = `Posted by: ${newestMessenger.slice(0, 6)}...${newestMessenger.slice(-4)}`;
-    ctx.fillText(shortAddress, width/2, height/2 + 80);
+        ctx.fillText(word, leftMargin, y);
+        y += 70;
+      });
 
     // Draw price
-    ctx.font = '24px Arial';
-    ctx.fillText(`Price: ${formatPrice} ETH`, width/2, height/2 + 140);
+    // ctx.font = '25px Arial';
+    // ctx.textAlign = 'left';
+    // const leftMargin2 = 100;
+    // const bottomMargin = 50; // Distance from bottom of canvas
+    // const cleanPrice = formatPrice.endsWith('.0') ? formatPrice.slice(0, -2) : formatPrice;
+    // ctx.fillText(`$${cleanPrice}`, leftMargin2 + 3, height - bottomMargin);
+
+    // Draw messenger address
+    ctx.font = '20px Arial';
+    const rightMargin = 0;
+
+    // Assuming you have access to ethers or web3 provider
+    let displayName = newestMessenger;
+    try {
+        const provider = new ethers.providers.JsonRpcProvider(`https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API}`);
+        const ensName = await provider.lookupAddress(newestMessenger);
+        if (ensName) {
+            displayName = ensName;
+        } else {
+            displayName = `${newestMessenger.slice(0, 6)}...${newestMessenger.slice(-4)}`;
+        }
+    } catch (error) {
+        displayName = `${newestMessenger.slice(0, 6)}...${newestMessenger.slice(-4)}`;
+    }
+
+const shortAddress = `by ${displayName}`;
+const xPosition = width - rightMargin;
+ctx.textAlign = 'right';
+ctx.fillText(shortAddress, xPosition, height/2);
 
     const buffer = canvas.toBuffer('image/png');
     res.writeHead(200, headers);
@@ -101,7 +159,19 @@ export default async function handler(req, res) {
     const canvas = createCanvas(width, height);
     const ctx = canvas.getContext('2d');
 
+    // Create error message with spotlight effect
     ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, width, height);
+
+    const gradient = ctx.createRadialGradient(
+      width/2, height/2, 0,
+      width/2, height/2, Math.min(width, height) * 0.3
+    );
+    gradient.addColorStop(0, 'rgba(0, 0, 0, 0.1)');
+    gradient.addColorStop(0.5, 'rgba(0, 0, 0, 0.2)');
+    gradient.addColorStop(1, 'rgba(0, 0, 0, 0.9)');
+    
+    ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, width, height);
 
     ctx.fillStyle = 'white';

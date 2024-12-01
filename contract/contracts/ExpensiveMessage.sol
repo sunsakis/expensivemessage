@@ -3,6 +3,7 @@ pragma solidity ^0.8.2;
 //automate withdraw
 //remove name
 //modify smart contract to handle approve and send tokens in one tx
+// integrate all ERC20 tokens(?)
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
