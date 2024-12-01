@@ -4,7 +4,7 @@ import ABI from '../../../../../contract/ABI.js';
 
 export default async function handler(req, res) {
   const headers = {
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': 'https://expensivemessage.com',
     'Access-Control-Allow-Methods': 'GET, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Content-Type': 'image/png',
@@ -150,14 +150,12 @@ ctx.textAlign = 'right';
 ctx.fillText(shortAddress, xPosition, height/2);
 
     const buffer = canvas.toBuffer('image/png');
-    res.writeHead(200, headers);
-    return res.end(buffer);
-
-  } catch (error) {
-    console.error('Error:', error);
+        return res.status(200).send(buffer);
+    } catch (error) {
+        console.error('Error:', error);
     
     const width = 1200;
-    const height = 630;
+    const height = 628;
     const canvas = createCanvas(width, height);
     const ctx = canvas.getContext('2d');
 
@@ -185,7 +183,6 @@ ctx.fillText(shortAddress, xPosition, height/2);
     ctx.fillText(error.message, width/2, height/2 + 20);
 
     const buffer = canvas.toBuffer('image/png');
-    res.writeHead(500, headers);
-    return res.end(buffer);
+    return res.status(200).send(buffer);
   }
 }
