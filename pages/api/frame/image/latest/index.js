@@ -75,12 +75,14 @@ export default async function handler(req, res) {
       const ensName = await ethProvider.lookupAddress(newestMessenger);
       const displayName = ensName || `${newestMessenger.slice(0, 6)}...${newestMessenger.slice(-4)}`;
       
-      ctx.font = '20px Arial';
-      ctx.textAlign = 'right';
-      ctx.fillText(`by ${displayName}`, width - 20, height/2);
+      ctx.font = '25px Arial';
+      ctx.textAlign = 'left';  // Changed to left align
+      const leftMargin = 150;  // Same margin as the message
+      const messageBottomY = height/2 - 60 + (newestMessage.split(' ').length * 70); // Calculate position below last message line
+      ctx.fillText(`by ${displayName}`, leftMargin, messageBottomY + 40); // Add some padding (40px) below message
     } catch (error) {
       console.error("ENS lookup failed:", error);
-      ctx.fillText(`by ${newestMessenger.slice(0, 6)}...${newestMessenger.slice(-4)}`, width - 20, height/2);
+      ctx.fillText(`by ${newestMessenger.slice(0, 6)}...${newestMessenger.slice(-4)}`, leftMargin, messageBottomY + 40);
     }
 
     const buffer = canvas.toBuffer('image/png');
