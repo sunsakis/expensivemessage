@@ -93,7 +93,7 @@ export default function Home({ imgHash, price, message, settings, messenger }) {
         {/* Frame metadata tags */}
         <meta property="fc:frame" content="vNext" />
         <meta property="fc:frame:image" content={`https://www.expensivemessage.com/api/frame/image?message=${encodeURIComponent(message)}&messenger=${encodeURIComponent(messenger)}&price=${encodeURIComponent(price)}`} />
-        <meta property="fc:frame:button:1" content="Claim This Space" />
+        <meta property="fc:frame:button:1" content="Clai This Space" />
         <meta property="fc:frame:button:1:action" content="post" />
         <meta property="fc:frame:post_url" content="https://www.expensivemessage.com/" />
       </Head>
