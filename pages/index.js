@@ -94,8 +94,8 @@ export default function Home({ imgHash, price, message, settings, messenger }) {
         <meta property="fc:frame" content="vNext" />
         <meta property="fc:frame:image" content={getImgURLFromHash(imgHash)} />
         <meta property="fc:frame:button:1" content="View Top $DEGEN" />
-        <meta property="fc:frame:button:1:action" content="post" />
-        <meta property="fc:frame:post_url" content="https://expensivemessage.com/api/frame/" />
+        <meta property="fc:frame:button:1:action" content="link" />
+        <meta property="fc:frame:post_url" content="https://expensivemessage.com/" />
       </Head>
       <Header />
       <main>
