@@ -1,121 +1,119 @@
-import { ImageResponse } from '@vercel/og';
+import { createCanvas } from 'canvas';
 import { ethers } from 'ethers';
 import ABI from '../../../../../contract/ABI.js';
 
-export const config = {
-  runtime: 'edge',
-  api: {
-    responseLimit: false,
-  },
-};
+export default async function handler(req, res) {
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Content-Type': 'image/png',
+    'Cache-Control': 'public, max-age=30'
+  };
 
-const ALLOWED_ORIGIN = 'https://www.expensivemessage.com';
-
-export default async function handler(req) {
-  const origin = req.headers.get('origin');
-  const isAllowedOrigin = origin === ALLOWED_ORIGIN;
-
-  // Handle CORS preflight
   if (req.method === 'OPTIONS') {
-    return new Response(null, {
-      status: 204,
-      headers: {
-        'Access-Control-Allow-Origin': isAllowedOrigin ? ALLOWED_ORIGIN : '',
-        'Access-Control-Allow-Methods': 'GET, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Max-Age': '86400'
-      }
-    });
+    res.writeHead(200, headers);
+    return res.end();
   }
 
   try {
-    // Provider for Base network
     const baseProvider = new ethers.providers.JsonRpcProvider(
       `https://base-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API}`
     );
     const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, 
-      ABI, 
+      process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
+      ABI,
       baseProvider
     );
 
-    // Provider for Ethereum mainnet (for ENS)
-    const mainnetProvider = new ethers.providers.JsonRpcProvider(
-      `https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API}`
-    );
+    let newestMessage, newestCounter, newestPrice, newestMessenger;
 
-    // Get latest message data
-    const newMessageCall = await contract.readMessage();
-    const message = newMessageCall[0].toString();
-    const counter = newMessageCall[1].toNumber();
-    
-    // Get price
-    const price = await contract.getPrice();
-    const formatPrice = parseFloat(ethers.utils.formatEther(price)).toString();
-
-    // Get messenger and resolve ENS
-    let messenger = await contract.getMessengers(counter - 1);
+    // Fetch message and counter
     try {
-      const ensName = await mainnetProvider.lookupAddress(messenger);
-      if (ensName) {
-        messenger = ensName;
-      }
-    } catch (ensError) {
-      console.error("Error resolving ENS:", ensError);
+      const newMessageCall = await contract.readMessage();
+      newestMessage = newMessageCall[0].toString();
+      newestCounter = newMessageCall[1].toNumber();
+    } catch (error) {
+      console.error("Error calling readMessage:", error);
+      newestMessage = "Error reading message";
+      newestCounter = 0;
     }
 
-    // Success response headers with caching
-    const headers = {
-      'Access-Control-Allow-Origin': isAllowedOrigin ? ALLOWED_ORIGIN : '',
-      'Access-Control-Allow-Methods': 'GET, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
-      'content-type': 'image/png',
-      'Cache-Control': 'public, immutable, no-transform, max-age=30'
-    };
+    // Fetch price
+    try {
+      newestPrice = await contract.getPrice();
+    } catch (error) {
+      console.error("Error calling getPrice:", error);
+      newestPrice = ethers.BigNumber.from(0);
+    }
 
-    return new ImageResponse(
-      (
-        <div
-          style={{
-            background: 'black',
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            color: 'white',
-            padding: '40px'
-          }}
-        >
-          <div style={{ fontSize: 60, textAlign: 'center', wordBreak: 'break-word' }}>
-            {message}
-          </div>
-          <div style={{ fontSize: 30, marginTop: 20 }}>
-            Posted by: {messenger}
-          </div>
-          <div style={{ fontSize: 24, marginTop: 40 }}>
-            Price: {formatPrice} ETH
-          </div>
-        </div>
-      ),
-      {
-        width: 1200,
-        height: 630,
-        headers,
-        status: 200,
-      }
-    );
-  } catch (e) {
-    console.error(e);
-    return new Response(`Failed to generate image`, {
-      status: 500,
-      headers: {
-        'Access-Control-Allow-Origin': isAllowedOrigin ? ALLOWED_ORIGIN : '',
-        'Access-Control-Allow-Methods': 'GET, OPTIONS',
-        'Content-Type': 'text/plain',
-        'Cache-Control': 'no-store, max-age=0'  // Don't cache errors
-      }
+    // Fetch messenger
+    try {
+      newestMessenger = await contract.getMessengers(newestCounter - 1);
+    } catch (error) {
+      console.error("Error calling getMessengers:", error);
+      newestMessenger = ethers.constants.AddressZero;
+    }
+
+    const formatPrice = ethers.utils.formatEther(newestPrice);
+
+    // Create canvas
+    const width = 1200;
+    const height = 630;
+    const canvas = createCanvas(width, height);
+    const ctx = canvas.getContext('2d');
+
+    // Set background
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, width, height);
+
+    // Configure text
+    ctx.fillStyle = 'white';
+    ctx.textAlign = 'center';
+    
+    // Draw message
+    ctx.font = '60px Arial';
+    const words = newestMessage.split(' ');
+    let y = height/2 - 60;
+    words.forEach(word => {
+      ctx.fillText(word, width/2, y);
+      y += 70;
     });
+
+    // Draw messenger address
+    ctx.font = '30px Arial';
+    const shortAddress = `Posted by: ${newestMessenger.slice(0, 6)}...${newestMessenger.slice(-4)}`;
+    ctx.fillText(shortAddress, width/2, height/2 + 80);
+
+    // Draw price
+    ctx.font = '24px Arial';
+    ctx.fillText(`Price: ${formatPrice} ETH`, width/2, height/2 + 140);
+
+    const buffer = canvas.toBuffer('image/png');
+    res.writeHead(200, headers);
+    return res.end(buffer);
+
+  } catch (error) {
+    console.error('Error:', error);
+    
+    const width = 1200;
+    const height = 630;
+    const canvas = createCanvas(width, height);
+    const ctx = canvas.getContext('2d');
+
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, width, height);
+
+    ctx.fillStyle = 'white';
+    ctx.textAlign = 'center';
+    ctx.font = '40px Arial';
+    ctx.fillText('Error generating image', width/2, height/2 - 20);
+    
+    ctx.font = '20px Arial';
+    ctx.fillText(error.message, width/2, height/2 + 20);
+
+    const buffer = canvas.toBuffer('image/png');
+    res.writeHead(500, headers);
+    return res.end(buffer);
   }
 }
