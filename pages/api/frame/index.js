@@ -82,7 +82,7 @@ export default async function handler(req, res) {
             action: 'post'
             }
         ],
-        postUrl: 'https://www.expensivemessage.com/api/frame'
+        postUrl: 'https://www.expensivemessage.com/'
         }
     };
 
