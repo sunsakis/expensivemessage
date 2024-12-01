@@ -2,6 +2,22 @@ import { ethers } from 'ethers';
 import ABI from '../../../contract/ABI.js';
 
 export default async function handler(req, res) {
+    if (req.method === 'POST') {
+        const frameResponse = {
+          frame: {
+            version: 'vNext',
+            image: 'https://www.expensivemessage.com/api/frame/image/latest',
+            buttons: [
+              {
+                label: 'Go to Website',
+                action: 'link',
+                target: 'https://www.expensivemessage.com'
+              }
+            ]
+          }
+        };
+        return res.status(200).json(frameResponse);
+      }
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -72,7 +88,7 @@ export default async function handler(req, res) {
     }
 
     const frameResponse = {
-        frames: {
+        frame: {
         version: 'vNext',
         // Use a static URL instead of query parameters
         image: 'https://www.expensivemessage.com/api/frame/image/latest',
@@ -82,7 +98,7 @@ export default async function handler(req, res) {
             action: 'post'
             }
         ],
-        postUrl: 'https://www.expensivemessage.com/'
+        postUrl: 'https://www.expensivemessage.com/api/frame'
         }
     };
 
