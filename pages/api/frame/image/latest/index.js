@@ -4,7 +4,7 @@ import ABI from '../../../../../contract/ABI.js';
 
 export default async function handler(req, res) {
   const headers = {
-    'Access-Control-Allow-Origin': 'https://expensivemessage.com',
+    'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Content-Type': 'image/png',
