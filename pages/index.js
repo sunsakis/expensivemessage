@@ -84,7 +84,7 @@ export default function Home({ imgHash, price, message, settings, messenger }) {
         <title>Expensive Message</title>
         <meta name="description" content="Free speech for profit." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        
+
         {/* OpenGraph tags */}
         <meta property="og:title" content="Expensive Message" />
         <meta property="og:description" content="Expensive Message - free speech for profit." />
@@ -94,9 +94,9 @@ export default function Home({ imgHash, price, message, settings, messenger }) {
         {/* Frame metadata tags */}
         <meta property="fc:frame" content="vNext" />
         <meta property="fc:frame:image" content={getImgURLFromHash(imgHash)} />
-        <meta property="fc:frame:button:1" content="View Message" />
+        <meta property="fc:frame:button:1" content="Claim This Space" />
         <meta property="fc:frame:button:1:action" content="post" />
-        <meta property="fc:frame:post_url" content="https://www.expensivemessage.com/api/frame" />
+        <meta property="fc:frame:post_url" content="https://www.expensivemessage.com/" />
       </Head>
       <Header />
       <main>

@@ -85,10 +85,32 @@ export default function Footer( { msgPrices, text} ) {
   //   }
   // }
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     
       try {
         const file = e.target.files[0];
+
+        // Check file type
+        const validTypes = ['image/gif', 'image/jpeg', 'image/jpg', 'image/png'];
+        if (!validTypes.includes(file.type)) {
+          alert('Please upload only .gif, .png or .jpg files');
+          return;
+        }
+
+        // Check aspect ratio
+        const img = await createImageBitmap(file);
+        if (img.width !== img.height) {
+          alert('Please upload an image with 1:1 aspect ratio');
+          return;
+        }
+
+        // Check file size (10MB = 10 * 1024 * 1024 bytes)
+        const MAX_FILE_SIZE = 5 * 1024 * 1024;
+        if (file.size > MAX_FILE_SIZE) {
+          alert('File size must be less than 5MB');
+          return;
+        }
+
         uploadToIPFS(file);
       }
       catch (error) {
@@ -106,7 +128,7 @@ export default function Footer( { msgPrices, text} ) {
       }
     );
       if (uri.length !== 0) {
-      setImgHash(uri[0].toString());
+        setImgHash(uri[0].toString());
       }
       else {
         setImgHash('');
@@ -300,14 +322,14 @@ export default function Footer( { msgPrices, text} ) {
                             height={15}
                         />
                     </Link> */}
-                    {/* <Link href="https://warpcast.com/mostxmessage" rel="nofollow" target="_blank" className="ml-1">
+                    <Link href="https://warpcast.com/xmessage" rel="nofollow" target="_blank" className="ml-1">
                         <Image
                             src="/farcaster.svg"
                             alt="Farcaster logo"
                             width={15}
                             height={15}
                         />
-                    </Link> */}
+                    </Link>
                     {/* <Link href="https://www.tiktok.com/@mxm.social" rel="nofollow" target="_blank" className="ml-1">
                         <Image
                             src="/tiktok.svg"
