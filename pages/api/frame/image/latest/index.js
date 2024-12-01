@@ -1,6 +1,6 @@
 import { ImageResponse } from '@vercel/og';
 import { ethers } from 'ethers';
-import ABI from '../../../../contract/ABI.js';
+import ABI from '../../../contract/ABI.js';
 
 export const config = {
   runtime: 'edge',
