@@ -67,6 +67,8 @@ export default async function handler(req, res) {
       y += 70;
     });
 
+    const formatPrice = ethers.utils.formatEther(newestPrice);
+
     // Draw price
     ctx.font = '24px Arial';
     ctx.textAlign = 'right';  // Changed to right align
@@ -96,15 +98,17 @@ export default async function handler(req, res) {
     const buffer = canvas.toBuffer('image/png');
     return res.status(200).send(buffer);
 
-  } catch (error) {
+} catch (error) {
     console.error('Error generating image:', error);
     
     // Generate error image
-    const canvas = createCanvas(1200, 628);
+    const width = 1200;
+    const height = 628;
+    const canvas = createCanvas(width, height);
     const ctx = canvas.getContext('2d');
     
     ctx.fillStyle = 'black';
-    ctx.fillRect(0, 0, 1200, 628);
+    ctx.fillRect(0, 0, width, height);
     
     ctx.fillStyle = 'white';
     ctx.textAlign = 'center';
@@ -115,5 +119,5 @@ export default async function handler(req, res) {
     
     const buffer = canvas.toBuffer('image/png');
     return res.status(200).send(buffer);
-  }
+}
 }
