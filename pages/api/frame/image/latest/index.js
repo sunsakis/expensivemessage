@@ -67,6 +67,14 @@ export default async function handler(req, res) {
       y += 70;
     });
 
+    // Draw price
+    ctx.font = '24px Arial';
+    ctx.textAlign = 'right';  // Changed to right align
+    const rightMargin = 50;  // Distance from right edge
+    const bottomMargin = 50; // Distance from bottom of canvas
+    const cleanPrice = formatPrice.endsWith('.0') ? formatPrice.slice(0, -2) : formatPrice;
+    ctx.fillText(`${cleanPrice} DEGEN`, width - rightMargin, height - bottomMargin);  // Position from right edge
+
     // Draw messenger address (with ENS support)
     try {
       const ethProvider = new ethers.providers.JsonRpcProvider(
