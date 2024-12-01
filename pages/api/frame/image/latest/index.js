@@ -61,7 +61,7 @@ export default async function handler(req, res) {
 
     // Create canvas
     const width = 1200;
-    const height = 630;
+    const height = 628;
     const canvas = createCanvas(width, height);
     const ctx = canvas.getContext('2d');
 
