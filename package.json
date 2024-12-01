@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@farcaster/core": "^0.15.6",
     "@thirdweb-dev/chains": "^0.1.120",
     "@thirdweb-dev/react": "^3.14.20",
     "alchemy-sdk": "^2.9.2",

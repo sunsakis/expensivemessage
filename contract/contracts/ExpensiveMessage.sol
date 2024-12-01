@@ -1,10 +1,13 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.2;
+//automate withdraw
+//remove name
+//modify smart contract to handle approve and send tokens in one tx
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract ExpensiveMessage {
-    IERC20 public rgcviiToken;
+    IERC20 public token;
     uint public msgPrice;
     string public message;
     address public messenger;
@@ -31,11 +34,9 @@ contract ExpensiveMessage {
     }
 
     event MessageChanged(uint newPrice, address messenger, string message, string imgHash, uint msgCounter);
-    event Withdraw(uint amount);
-    event MessageOverwritten(uint price, address messenger, string message, string imgHash, uint msgCounter);
 
-    constructor(address _rgcviiTokenAddress) {
-        rgcviiToken = IERC20(_rgcviiTokenAddress);
+    constructor(address tokenAddress) {
+        token = IERC20(tokenAddress);
         message = "Hamsters Seek Truth In The Noise Of Discord";
         msgPrice = 1 * 10**18;
         owner = msg.sender;
@@ -69,8 +70,8 @@ contract ExpensiveMessage {
         return messages[_msgCounter].name;
     }
 
-   function readMessage() public view returns (string memory, uint) {
-        return (message, msgCounter);
+   function readMessage() public view returns (string memory, address, uint) {
+        return (message, messenger, msgCounter);
     }
 
     function getPrice() public view returns (uint) {
@@ -78,7 +79,7 @@ contract ExpensiveMessage {
     }
 
  function setMessage(string memory _message, string memory _imgHash, string memory _name) external {
-        require(rgcviiToken.balanceOf(msg.sender) >= msgPrice * 2, "Your message deserves to be more expensive.");
+        require(token.balanceOf(msg.sender) >= msgPrice * 2, "Your message deserves to be more expensive.");
         require(bytes(_message).length > 0, "Message cannot be empty.");
 
         uint previousPrice = msgPrice;
@@ -86,7 +87,7 @@ contract ExpensiveMessage {
 
         uint newPrice = msgPrice * 2;
         
-        require(rgcviiToken.transferFrom(msg.sender, address(this), newPrice), "Token transfer failed");
+        require(token.transferFrom(msg.sender, address(this), newPrice), "Token transfer failed");
 
         messages[msgCounter++] = Message(_message, msg.sender, newPrice, block.timestamp, _imgHash, _name);
         message = _message;
@@ -94,13 +95,8 @@ contract ExpensiveMessage {
         messenger = msg.sender;
 
         uint transferAmount = previousPrice + (newPrice - previousPrice) / 2;
-        require(rgcviiToken.transfer(previousMessenger, transferAmount), "Failed to send tokens to previous messenger");
+        require(token.transfer(previousMessenger, transferAmount), "Failed to send tokens to previous messenger");
 
         emit MessageChanged(msgPrice, msg.sender, message, _imgHash, msgCounter);
-    }
-
-    function withdrawTokens(uint amount) external onlyOwner {
-        require(rgcviiToken.transfer(owner, amount), "Token withdrawal failed");
-        emit Withdraw(amount);
     }
 }

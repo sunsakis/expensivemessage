@@ -200,10 +200,10 @@ async function fetchMoreMessages(start, end) {
     <>
       <Head>
         <title>Hamsterverse | Expensive Message</title>
-        <meta name="description" content="An archive of all of the previously most expensive messages." />
+        <meta name="description" content="An archive of Hamsterverse's most Expensive Messages." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta property="og:title" content="Archives" />
-        <meta property="og:description" content="An archive of all of the previously most expensive messages." />
+        <meta property="og:description" content="An archive of Hamsterverse's most Expensive Messages." />
         <meta property="og:url" content="https://www.expensivemessage.com" /> 
         <meta property="og:site_name" content="Expensive Message" />
       </Head>
