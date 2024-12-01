@@ -4,7 +4,7 @@ import ABI from '../../../../../contract/ABI.js';
 
 export default async function handler(req, res) {
   const headers = {
-    'Access-Control-Allow-Origin': 'https://www.expensivemessage.com',
+    'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Content-Type': 'image/png',
@@ -105,6 +105,8 @@ export default async function handler(req, res) {
     // Configure text
     ctx.fillStyle = 'white';
     ctx.textAlign = 'center';
+
+    const formatPrice = ethers.utils.formatEther(newestPrice);
     
     // Draw message
     ctx.font = '50px Arial Bold';
@@ -118,7 +120,7 @@ export default async function handler(req, res) {
 
     // Draw price
     // ctx.font = '25px Arial';
-    // ctx.textAlign = 'left';
+    // ctx.textAlign = 'center';
     // const leftMargin2 = 100;
     // const bottomMargin = 50; // Distance from bottom of canvas
     // const cleanPrice = formatPrice.endsWith('.0') ? formatPrice.slice(0, -2) : formatPrice;
