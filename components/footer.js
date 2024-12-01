@@ -282,14 +282,14 @@ export default function Footer( { msgPrices, text} ) {
             </div>
         </div>
         <div className="flex justify-center items-center mx-auto mb-5 space-x-5 w-full">
-                    <Link href="https://t.me/MostExpensiveMessage" rel="nofollow" target="_blank" className="mr-1">
+                    {/* <Link href="https://t.me/MostExpensiveMessage" rel="nofollow" target="_blank" className="mr-1">
                         <Image
                             src="/telegram.svg"
                             alt="Telegram logo"
                             width={15}
                             height={15}
                         />
-                    </Link>
+                    </Link> */}
                     {/* <Link href="https://www.threads.net/@mxm.social" rel="nofollow" target="_blank" className="ml-1">
                         <Image
                             src="/threads.svg"

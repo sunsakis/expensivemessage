@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import ABI from '../contract/ABI.js';
+import ABI from '../../../contract/ABI.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
