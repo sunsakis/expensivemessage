@@ -74,8 +74,8 @@ export default async function handler(req, res) {
     const frameResponse = {
         frames: {
         version: 'vNext',
-        // Change this line to use the image API
-        image: `https://www.expensivemessage.com/api/frame/image?message=${encodeURIComponent(newestMessage)}&messenger=${encodeURIComponent(newestMessenger)}&price=${encodeURIComponent(formatPrice)}`,
+        // Use a static URL instead of query parameters
+        image: 'https://www.expensivemessage.com/api/frame/image/latest',
         buttons: [
             {
             label: 'Claim This Space',

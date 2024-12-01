@@ -1,4 +1,6 @@
 import { ImageResponse } from '@vercel/og';
+import { ethers } from 'ethers';
+import ABI from '../../../../contract/ABI.js';
 
 export const config = {
   runtime: 'edge',
@@ -13,7 +15,7 @@ export default async function handler(req) {
   const origin = req.headers.get('origin');
   const isAllowedOrigin = origin === ALLOWED_ORIGIN;
 
-  // Handle CORS preflight requests
+  // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response(null, {
       status: 204,
@@ -27,12 +29,42 @@ export default async function handler(req) {
   }
 
   try {
-    const { searchParams } = new URL(req.url);
-    const message = searchParams.get('message') || 'No message';
-    const messenger = searchParams.get('messenger') || 'Unknown';
-    const price = searchParams.get('price') || '0';
+    // Provider for Base network
+    const baseProvider = new ethers.providers.JsonRpcProvider(
+      `https://base-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API}`
+    );
+    const contract = new ethers.Contract(
+      process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, 
+      ABI, 
+      baseProvider
+    );
 
-    // Set cache headers for successful response
+    // Provider for Ethereum mainnet (for ENS)
+    const mainnetProvider = new ethers.providers.JsonRpcProvider(
+      `https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API}`
+    );
+
+    // Get latest message data
+    const newMessageCall = await contract.readMessage();
+    const message = newMessageCall[0].toString();
+    const counter = newMessageCall[1].toNumber();
+    
+    // Get price
+    const price = await contract.getPrice();
+    const formatPrice = parseFloat(ethers.utils.formatEther(price)).toString();
+
+    // Get messenger and resolve ENS
+    let messenger = await contract.getMessengers(counter - 1);
+    try {
+      const ensName = await mainnetProvider.lookupAddress(messenger);
+      if (ensName) {
+        messenger = ensName;
+      }
+    } catch (ensError) {
+      console.error("Error resolving ENS:", ensError);
+    }
+
+    // Success response headers with caching
     const headers = {
       'Access-Control-Allow-Origin': isAllowedOrigin ? ALLOWED_ORIGIN : '',
       'Access-Control-Allow-Methods': 'GET, OPTIONS',
@@ -63,7 +95,7 @@ export default async function handler(req) {
             Posted by: {messenger}
           </div>
           <div style={{ fontSize: 24, marginTop: 40 }}>
-            Price: {price} ETH
+            Price: {formatPrice} ETH
           </div>
         </div>
       ),
