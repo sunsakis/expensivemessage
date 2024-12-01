@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import { ethers } from 'ethers';
-import { Network, Alchemy } from 'alchemy-sdk';
 import { useState, useEffect } from 'react';
 import Footer from '../components/footer.js';
 import Header from '../components/header.js';
