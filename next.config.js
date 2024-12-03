@@ -7,6 +7,7 @@ const nextConfig = {
     appDir: false,
     allowMiddlewareResponseBody: true,
   },
+  transpilePackages: ['@farcaster/frame-sdk'],
   images: {
     domains: ['gateway.pinata.cloud'],
   },

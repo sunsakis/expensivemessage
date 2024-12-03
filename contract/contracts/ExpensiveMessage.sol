@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
-//automate withdraw
-//remove name
+//TO DO
 //modify smart contract to handle approve and send tokens in one tx
-// integrate all ERC20 tokens(?)
+// integrate all ERC20 tokens
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
@@ -34,17 +33,17 @@ contract ExpensiveMessage {
         _;
     }
 
-    event MessageChanged(uint newPrice, address messenger, string message, string imgHash, uint msgCounter);
+    event MessageChanged(uint newPrice, address messenger, string message, string imgHash, uint msgCounter, string name, uint timestamp);
 
     constructor(address tokenAddress) {
         token = IERC20(tokenAddress);
-        message = "Hamsters Seek Truth In The Noise Of Discord";
+        message = "Who Will Become The Ultimate DEGEN?";
         msgPrice = 1 * 10**18;
         owner = msg.sender;
         messenger = msg.sender;
         msgCounter = 0;
         messages[msgCounter] = Message(message, messenger, msgPrice, block.timestamp, "ipfs://Qma3Kst1nmrWeqrTdSaynkYUZjGDUM7nvHmDnhEpUoRrr3/smallglitchham.gif", "");
-        emit MessageChanged(msgPrice, msg.sender, message, "", msgCounter);
+        emit MessageChanged(msgPrice, msg.sender, message, imgHash, msgCounter, name, timestamp);
     }
 
     function getMessages(uint _msgCounter) public view returns (string memory) {
@@ -71,8 +70,8 @@ contract ExpensiveMessage {
         return messages[_msgCounter].name;
     }
 
-   function readMessage() public view returns (string memory, address, uint) {
-        return (message, messenger, msgCounter);
+   function readMessage() public view returns (string memory, address, uint, string memory, uint, string memory, uint) {
+        return (message, messenger, msgCounter, imgHash, price, name, timestamp);
     }
 
     function getPrice() public view returns (uint) {
@@ -100,4 +99,11 @@ contract ExpensiveMessage {
 
         emit MessageChanged(msgPrice, msg.sender, message, _imgHash, msgCounter);
     }
+}
+
+function withdraw() external onlyOwner returns (bool success) {
+    uint256 balance = token.balanceOf(address(this));
+    require(balance > 0, "No tokens to withdraw");
+    require(token.transfer(owner, balance), "Transfer failed");
+    return true;
 }

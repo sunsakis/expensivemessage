@@ -37,16 +37,6 @@ export default function Home({ imgHash, price, message, settings, messenger }) {
     return imgHash.replace('ipfs://', 'https://gateway.pinata.cloud/ipfs/');
   }
 
-  async function resolveENS(provider, address) {
-    try {
-      const name = await provider.lookupAddress(address);
-      return name || address; // Return the ENS name if found, otherwise return the original address
-    } catch (error) {
-      console.error("Error resolving ENS:", error);
-      return address; // Return the original address if there's an error
-    }
-  }
-
   const updateStyle = (backgroundImageUrl) => {
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
