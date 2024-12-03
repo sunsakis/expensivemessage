@@ -11,6 +11,10 @@ contract ExpensiveMessage {
     uint public msgPrice;
     string public message;
     address public messenger;
+    string public name;
+    uint public timestamp;
+    string public imgHash;
+    uint public msgCounter;
 
     struct Message {
         string message;
@@ -111,11 +115,11 @@ contract ExpensiveMessage {
         
         return magnitude;
     }
-}
 
-function withdraw() external onlyOwner returns (bool success) {
-    uint256 balance = token.balanceOf(address(this));
-    require(balance > 0, "No tokens to withdraw");
-    require(token.transfer(owner, balance), "Transfer failed");
-    return true;
+    function withdraw() external onlyOwner returns (bool success) {
+        uint256 balance = token.balanceOf(address(this));
+        require(balance > 0, "No tokens to withdraw");
+        require(token.transfer(owner, balance), "Transfer failed");
+        return true;
+    }
 }
