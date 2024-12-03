@@ -14,7 +14,6 @@ contract ExpensiveMessage {
     string public name;
     uint public timestamp;
     string public imgHash;
-    uint public msgCounter;
 
     struct Message {
         string message;
@@ -75,7 +74,7 @@ contract ExpensiveMessage {
     }
 
    function readMessage() public view returns (string memory, address, uint, string memory, uint, string memory, uint) {
-        return (message, messenger, msgCounter, imgHash, price, name, timestamp);
+        return (message, messenger, msgCounter, imgHash, msgPrice, name, timestamp);
     }
 
     function getPrice() public view returns (uint) {
@@ -101,7 +100,7 @@ contract ExpensiveMessage {
         uint transferAmount = previousPrice + (newPrice - previousPrice) / 2;
         require(token.transfer(previousMessenger, transferAmount), "Failed to send tokens to previous messenger");
 
-        emit MessageChanged(msgPrice, msg.sender, message, _imgHash, msgCounter);
+        emit MessageChanged(msgPrice, msg.sender, message, _imgHash, msgCounter, name, timestamp);
     }
 
     function getNextIncrement() public view returns (uint) {
