@@ -78,14 +78,14 @@ contract ExpensiveMessage {
         return msgPrice;
     }
 
- function setMessage(string memory _message, string memory _imgHash, string memory _name) external {
-        require(token.balanceOf(msg.sender) >= msgPrice * 2, "Your message deserves to be more expensive.");
+    function setMessage(string memory _message, string memory _imgHash, string memory _name) external {
+        require(token.balanceOf(msg.sender) >= msgPrice + getNextIncrement(), "Your balance is too low for the next message.");
         require(bytes(_message).length > 0, "Message cannot be empty.");
 
         uint previousPrice = msgPrice;
         address previousMessenger = messenger;
 
-        uint newPrice = msgPrice * 2;
+        uint newPrice = msgPrice + getNextIncrement();
         
         require(token.transferFrom(msg.sender, address(this), newPrice), "Token transfer failed");
 
@@ -98,6 +98,18 @@ contract ExpensiveMessage {
         require(token.transfer(previousMessenger, transferAmount), "Failed to send tokens to previous messenger");
 
         emit MessageChanged(msgPrice, msg.sender, message, _imgHash, msgCounter);
+    }
+
+    function getNextIncrement() public view returns (uint) {
+        uint currentPrice = msgPrice;
+        uint magnitude = 1;
+        
+        // Find the current order of magnitude
+        while (currentPrice >= magnitude * 10) {
+            magnitude *= 10;
+        }
+        
+        return magnitude;
     }
 }
 
