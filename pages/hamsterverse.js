@@ -5,42 +5,16 @@ import Footer from '../components/footer.js';
 import Header from '../components/header.js';
 import Message from '../components/message.js';
 import { useSwipeable } from 'react-swipeable';
-import ABI from '../contract/ABI.js';
+import oldABI from '../contract/oldABI.js';
 import Image from 'next/image.js';
+import Link from 'next/link'
 
-export default function Hamsterverse({ names, imgHashes, newestPrice, newestCounter, messages, prices }) {
+export default function Hamsterverse({ names, imgHashes, messages, prices }) {
   const [style, setStyle] = useState({});
-  const [message, setMessage] = useState(messages[0]);
-  const [counter, setCounter] = useState(0);
-  const [msgPrices, setPrices] = useState(prices[0]);
-  const [imgHash, setImgHash] = useState(imgHashes[0]);
-  const [name, setName] = useState(names[0]);
+  const [message] = useState(messages[0]);
+  const [imgHash] = useState(imgHashes[0]);
+  const [name] = useState(names[0]);
   const [windowSize, setWindowSize] = useState({});
-  const [allMessages, setAllMessages] = useState(messages);
-  const [allPrices, setAllPrices] = useState(prices);
-  const [allImgHashes, setAllImgHashes] = useState(imgHashes);
-  const [allNames, setAllNames] = useState(names);
-  const [isLoading, setIsLoading] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(newestCounter - 2);
-
-  useEffect(() => {
-    const loadMoreMessages = async () => {
-      if (allMessages.length >= newestCounter - 1) return;
-      
-      setIsLoading(true);
-      console.log("Loading more messages. Current length:", allMessages.length, "Newest counter:", newestCounter);
-      const newMessages = await fetchMoreMessages(allMessages.length, newestCounter);
-      
-      setAllMessages(prev => [...prev, ...newMessages.messages]);
-      setAllPrices(prev => [...prev, ...newMessages.prices]);
-      setAllImgHashes(prev => [...prev, ...newMessages.imgHashes]);
-      setAllNames(prev => [...prev, ...newMessages.names]);
-      setIsLoading(false);
-      console.log("Finished loading messages. New length:", allMessages.length + newMessages.messages.length);
-    };
-  
-    loadMoreMessages();
-  }, [allMessages.length, newestCounter]); // Add dependencies here
 
   useEffect(() => {
     const updateBackground = async () => {
@@ -52,36 +26,21 @@ export default function Hamsterverse({ names, imgHashes, newestPrice, newestCoun
     };
   
     updateBackground(); 
-  
-    const newImgURL = getImgURLFromHash(imgHash);
     window.addEventListener('resize', handleResize);
   
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, [imgHash, windowSize]);
+  }, [imgHash]);
 
-  useEffect(() => {
-    console.log("State updated - Counter:", counter, "AllMessages length:", allMessages.length);
-  }, [counter, allMessages.length]);
-  
-  const handlers = useSwipeable({
-      onSwipedLeft: () => showPreviousMessage(),
-      onSwipedRight: () => showNextMessage(),
-      delta: { right: 100, left: 100 },
-    });
-
-
-  // Step 2: Modify getImgURLFromHash to handle undefined inputs
-function getImgURLFromHash(imgHash) {
-  if (imgHash === '' || imgHash === undefined) {
-    return '/defaultMessage.png';
+  function getImgURLFromHash(imgHash) {
+    if (imgHash === '' || imgHash === undefined) {
+      return '/defaultMessage.png';
+    }
+    return imgHash.replace('ipfs://', 'https://gateway.pinata.cloud/ipfs/');
   }
-  // Existing logic to generate the image URL from the hash
-  return imgHash.replace('ipfs://', 'https://gateway.pinata.cloud/ipfs/');
-}
 
-const updateStyle = (backgroundImageUrl) => {
+  const updateStyle = (backgroundImageUrl) => {
   const viewportWidth = window.innerWidth;
   const viewportHeight = window.innerHeight;
 
@@ -199,7 +158,7 @@ async function fetchMoreMessages(start, end) {
   return (
     <>
       <Head>
-        <title>Hamsterverse | Expensive Message</title>
+        <title>Hamsterverse Expensive Message Archive</title>
         <meta name="description" content="An archive of Hamsterverse's most Expensive Messages." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta property="og:title" content="Archives" />
@@ -208,15 +167,35 @@ async function fetchMoreMessages(start, end) {
         <meta property="og:site_name" content="Expensive Message" />
       </Head>
       <main>
-        <div style={style} {...handlers} className="w-full relative">
+        {/* <div style={style} {...handlers} className="w-full relative"> */}
+        <div style={style} className="w-full relative">
           <div className="min-h-screen flex-col flex"> {/* Adjusted for flexbox layout */}
             <Header />
-            <div className="flex flex-grow justify-center items-center">
+            <div className="flex flex-grow justify-center items-center mb-28 bg-black bg-opacity-10">
                   <Message text={message} messenger={name} />
             </div>
-            <Footer msgPrices={msgPrices} price={newestPrice} text={"This"} />
+            <div className="relative bottom-3 left-0 right-0">
+            <div className="sm:m-5">
+                <p className="text-sm text-right tracking-tight mr-9 text-gray-300">
+                        This message cost
+                    </p>
+                    <p className="text-right mr-8">
+                        <b className="text-2xl">
+                          {4096 + " "}
+                          <Link 
+                            href="https://app.uniswap.org/explore/tokens/base/0x11dc980faf34a1d082ae8a6a883db3a950a3c6e8"
+                            className="text-green-500 hover:text-green-400 transition duration-500 ease-in-out hover:underline"
+                            rel="nofollow" 
+                            target="_blank"
+                            >
+                            RGCVII
+                          </Link>
+                        </b>
+                    </p>
+              </div>
+              </div>
           </div>
-          <div className="w-full absolute top-28 items-center flex left-0 right-0 justify-between px-10 sm:px-20 md:px-32 lg:px-56 xl:px-96">
+          {/* <div className="w-full absolute top-28 items-center flex left-0 right-0 justify-between px-10 sm:px-20 md:px-32 lg:px-56 xl:px-96">
             <div className="justify-start">
               <button 
                 className="text-3xl" 
@@ -245,7 +224,7 @@ async function fetchMoreMessages(start, end) {
                 />
               </button>
             </div>
-        </div>
+        </div> */}
         </div>
       </main>
     </>
@@ -254,7 +233,7 @@ async function fetchMoreMessages(start, end) {
 
 export async function getServerSideProps() {
   const baseProvider = new ethers.providers.JsonRpcProvider(`https://base-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API}`);
-  const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, baseProvider);
+  const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, oldABI, baseProvider);
   // Add mainnet provider for ENS resolution
   const mainnetProvider = new ethers.providers.JsonRpcProvider(`https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API}`);
 
@@ -263,13 +242,13 @@ export async function getServerSideProps() {
  const newestPrice = await contract.getPrice();
  const formatPrice = ethers.utils.formatEther(newestPrice);
 
- const i = newestCounter - 1;
- const [message, price, imgHash, messenger] = await Promise.all([
-   contract.getMessages(i),
-   contract.getPrices(i),
-   contract.getImgHashes(i),
-   contract.getMessengers(i),
- ]);
+const i = newestCounter - 1;
+const [message, price, imgHash, messenger] = await Promise.all([
+  contract.getMessages(i),
+  contract.getPrices(i),
+  contract.getImgHashes(i),
+  contract.getMessengers(i),
+]);
 
  // Try to resolve ENS name
  let resolvedName = messenger;

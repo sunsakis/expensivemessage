@@ -66,8 +66,12 @@ export default function What({ newestPrice }) {
             <p>When someone posts a message after you, you earn 5% to 50% of profit, depending on the new price.</p>
           </div>
           <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800">
-            <h3 className="text-3xl font-bold mb-2">Enjoy The Spotlight</h3>
+            <h3 className="text-3xl font-bold mb-2">The Spotlight</h3>
             <p>If no one outbids you, you are the owner of the world's most Expensive Message.</p>
+          </div>
+          <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800">
+            <h3 className="text-3xl font-bold mb-2">Eternal Glory</h3>
+            <p>Stay in this spot for 7 days and you will be indoctrinated into the Hall of Fame.</p>
           </div>
         </div>
         <br/>
@@ -79,7 +83,7 @@ export default function What({ newestPrice }) {
           <br/>
         </div>
         <div className="gap-4 mb-8 mx-auto font-thin max-w-xl grid grid-flow-row">
-            <div className="text-center bg-opacity-50 mx-auto rounded-xl sm:space-x-2 space-y-3 sm:space-y-0 flex flex-col sm:flex-row" style={{ display: 'flex', flexWrap: 'nowrap', overflowX: 'hidden', maxWidth: '100%' }}>
+            <div className="text-center bg-opacity-50 mx-auto rounded-xl space-y-3 sm:space-y-0 flex flex-col sm:flex-row" style={{ display: 'flex', flexWrap: 'nowrap', overflowX: 'hidden', maxWidth: '100%' }}>
                 <div className="bg-fuchsia-700 p-5 rounded-lg">
                   <p className="text-white font-medium hover:text-purple-200">Influence</p>
                 </div>
@@ -116,10 +120,10 @@ export default function What({ newestPrice }) {
               <p>Own prime digital real estate</p>
           </div>
           <div className="justify-center bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
-              <p>Blockchain-backed permanence</p>
+              <p>Blockchain permanence</p>
           </div>
           <div className="justify-center bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
-              <p>Get into the Hall of Fame</p>
+              <p>Hall of Fame 😎</p>
           </div>
         </div>
         <br/>

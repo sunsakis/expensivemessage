@@ -91,8 +91,8 @@ export default function Home({ imgHash, price, message, settings, messenger }) {
       <main>
         <div style={style} className="w-full">
           <div className="min-h-screen flex-col flex">
-            <div className="flex flex-grow justify-center items-center">
-              <Message text={message} messenger={messenger} /> 
+            <div className="flex flex-grow justify-center items-center bg-black bg-opacity-10">
+              <Message text={message} messenger={messenger} />
             </div>
             <Footer settings={settings} msgPrices={price} text={"This"} />
           </div>
