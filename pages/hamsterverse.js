@@ -171,7 +171,7 @@ async function fetchMoreMessages(start, end) {
         <div style={style} className="w-full relative">
           <div className="min-h-screen flex-col flex"> {/* Adjusted for flexbox layout */}
             <Header />
-            <div className="flex flex-grow justify-center items-center mb-28 bg-black bg-opacity-10">
+            <div className="flex flex-grow justify-center items-center mb-28 bg-black bg-opacity-20">
                   <Message text={message} messenger={name} />
             </div>
             <div className="relative bottom-3 left-0 right-0">
