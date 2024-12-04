@@ -107,7 +107,7 @@ export async function getServerSideProps() {
 
     // Provider for Base network
     const baseProvider = new ethers.providers.JsonRpcProvider(`https://base-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API}`);
-    const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, baseProvider);
+    const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS_FRONTPAGE, ABI, baseProvider);
 
     // Provider for Ethereum mainnet (for ENS resolution)
     const mainnetProvider = new ethers.providers.JsonRpcProvider(`https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API}`);
@@ -116,49 +116,29 @@ export async function getServerSideProps() {
 
     try {
       const newMessageCall = await contract.readMessage();
-      newestMessage = newMessageCall[0].toString();
-      newestCounter = newMessageCall[1].toNumber();
-      console.log("newestCounter:", newestCounter);
+      newestMessage = newMessageCall[0];
+      newestMessenger = newMessageCall[1];
+      newestImgHash = newMessageCall[3];
+      newestPrice = newMessageCall[4];
+      //newestName = newMessageCall[5];
+      //timestamp = newMessageCall[6];
+      
     } catch (error) {
       console.error("Error calling readMessage:", error);
       newestMessage = "Error reading message";
-      newestCounter = 0;
-    }
-
-    try {
-      newestPrice = await contract.getPrice();
-    } catch (error) {
-      console.error("Error calling getPrice:", error);
-      newestPrice = ethers.BigNumber.from(0);
     }
 
     const formatPrice = parseFloat(ethers.utils.formatEther(newestPrice)).toString();
 
+    // Attempt to resolve ENS name using the mainnet provider
     try {
-      newestImgHash = await contract.getImgHashes(newestCounter - 1);
-      console.log("newestImgHash:", newestImgHash);
-    } catch (error) {
-      console.error("Error calling getImgHashes:", error);
-      newestImgHash = "";
-    }
-
-    try {
-      newestMessenger = await contract.getMessengers(newestCounter - 1);
-      console.log("newestMessenger:", newestMessenger);
-      
-      // Attempt to resolve ENS name using the mainnet provider
-      try {
-        const ensName = await mainnetProvider.lookupAddress(newestMessenger);
-        if (ensName) {
-          newestMessenger = ensName;
-        }
-      } catch (ensError) {
-        console.error("Error resolving ENS:", ensError);
-        // If ENS resolution fails, we'll keep the original address
+      const ensName = await mainnetProvider.lookupAddress(newestMessenger);
+      if (ensName) {
+        newestMessenger = ensName;
       }
-    } catch (error) {
-      console.error("Error calling getMessengers:", error);
-      newestMessenger = ethers.constants.AddressZero;
+    } catch (ensError) {
+      console.error("Error resolving ENS:", ensError);
+      // If ENS resolution fails, we'll keep the original address
     }
 
     return {

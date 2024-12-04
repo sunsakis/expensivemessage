@@ -25,7 +25,7 @@ export default function What({ newestPrice }) {
             className="text-white px-4 sm:px-6 lg:px-8" // Adjust padding based on screen size
     >
     <Head>
-        <title>What Is This?</title>
+        <title>What Is Expensive Message?</title>
         <meta name="description" content="Free speech for profit." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -34,13 +34,19 @@ export default function What({ newestPrice }) {
     <Header />
     <main className="max-w-xl sm:max-w-2xl md:max-w-4xl mx-auto my-8">
         <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-left">
-            Expensive Message: A Revolutionary SocialFi Experiment
+            Expensive Message: A Revolutionary Social Experiment
         </h1>
         <br/>
-        <i className="block text-left">Discover the platform that lets you profit from free speech.</i>
+        <i className="block text-left">A platform to profit from free speech.</i>
         <br/>
         <p className="text-2xl font-thin mb-8 mt-4">
-          Uploads messages on-chain. Monetize your voice. Make a global splash.
+          Upload messages on-chain. 
+          <br/>
+          Monetize your voice. 
+          <br/>
+          Make a splash.
+          <br/>
+          Profit.
         </p>
         <br/>
 
@@ -52,16 +58,16 @@ export default function What({ newestPrice }) {
         </div>
         <div className="grid grid-cols-1 gap-6 mb-8 mx-auto px-10">
           <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800">
-            <h3 className="text-3xl font-bold mb-2">Bid Instantly</h3>
-            <p>Put your message in the spotlight by outbidding the current price by 2x.</p>
+            <h3 className="text-3xl font-bold mb-2">Message Cost</h3>
+            <p>Price starts out small with petty increases (2¢ → 3¢ → 4¢...) until we hit 10¢. Then we jump by tens until 100¢, by hundreds until 1000¢, and so keep scaling up.</p>
           </div>
           <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800">
-            <h3 className="text-3xl font-bold mb-2">Get Outbid</h3>
-            <p>Wait until someone outbids you. You get 50% of the profit, the other 50% goes to Raid Guild treasury.</p>
+            <h3 className="text-3xl font-bold mb-2">Outbidding</h3>
+            <p>When someone posts a message after you, you earn 5% to 50% of profit, depending on the new price.</p>
           </div>
           <div className="bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800">
-            <h3 className="text-3xl font-bold mb-2">Or Enjoy The Spotlight</h3>
-            <p>The most expensive message is always displayed on the front page.</p>
+            <h3 className="text-3xl font-bold mb-2">Enjoy The Spotlight</h3>
+            <p>If no one outbids you, you are the owner of the world's most Expensive Message.</p>
           </div>
         </div>
         <br/>
@@ -87,94 +93,61 @@ export default function What({ newestPrice }) {
                   <p className="text-white font-medium hover:text-purple-200">Memes</p>
                 </div>
                 <div className="bg-cyan-700 p-5 rounded-lg">
-                  <p className="text-white font-medium hover:text-purple-200">Promises</p>
+                  <p className="text-white font-medium hover:text-purple-200">Fame</p>
+                </div>
+                <div className="bg-green-600 p-5 rounded-lg">
+                  <p className="text-white font-medium hover:text-purple-200">Profit</p>
                 </div>
             </div>   
         </div>
         <br/>
-
-        <div className="font-bold my-8 text-xl">
-          <h3 className="text-center">
-            Why Send Expensive Message?
-          </h3>
-        </div>
         <br/>
         <div className="grid grid-cols-2 gap-5 mb-8 mx-auto font-thin px-5">
           <div className="justify-center bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
-              <p>Monetize your message while influencing the world</p>
+              <p>Become famous for 15 min</p>
           </div>
           <div className="justify-center bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
-              <p>Earn 50% profit on price increase</p>
+              <p>Earn profit on price increase</p>
           </div>
           <div className="justify-center bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
-              <p>Gain exposure through our promotion</p>
+              <p>Have your message seen</p>
           </div>
           <div className="justify-center bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
               <p>Own prime digital real estate</p>
           </div>
           <div className="justify-center bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
-              <p>Secure blockchain-backed permanence</p>
+              <p>Blockchain-backed permanence</p>
           </div>
           <div className="justify-center bg-black bg-opacity-50 p-8 rounded-xl border border-gray-800 flex items-center">
-              <p>Become a part of Expensive Message archive</p>
+              <p>Get into the Hall of Fame</p>
           </div>
         </div>
         <br/>
 
-        <div className="my-8 text-xl font-bold text-center">
-          <h3>
-            Innovative Ways for Leverage:
-          </h3>
-          <br/>
-        </div>
-        <div className="gap-4 mb-8 mx-auto font-thin w-3/4 grid grid-cols-2 text-center">
-          <div className="bg-indigo-700 p-5 rounded-lg flex-grow">
-              <p className="text-white font-medium hover:text-purple-200">Announce investments</p>
-          </div>
-          <div className="bg-sky-600 p-5 rounded-lg flex-grow">
-              <p className="text-white font-medium hover:text-purple-200">Celebrate partnerships</p>
-          </div>
-          <div className="bg-sky-700 p-5 rounded-lg flex-grow">
-              <p className="text-white font-medium hover:text-purple-200">Champion human rights</p>
-          </div>
-          <div className="bg-cyan-600 p-5 rounded-lg flex-grow">
-              <p className="text-white font-medium hover:text-purple-200">Promote free speech</p>
-          </div>
-          <div className="bg-cyan-700 p-5 rounded-lg flex-grow">
-              <p className="text-white font-medium hover:text-purple-200">Help political prisoners</p>
-          </div>
-          <div className="bg-teal-500 p-5 rounded-lg flex-grow">
-              <p className="text-white font-medium hover:text-purple-200">Launch projects</p>
-          </div>
-          <div className="bg-teal-600 p-5 rounded-lg flex-grow">
-              <p className="text-white font-medium hover:text-purple-200">Showcase art</p>
-          </div>
-          <div className="bg-emerald-400 p-5 rounded-lg flex-grow">
-              <p className="text-white font-medium hover:text-purple-200">Expose corruption</p>
-          </div>
-          <div className="bg-emerald-500 p-5 rounded-lg flex-grow">
-              <p className="text-white font-medium hover:text-purple-200">Fight oppression</p>
-          </div>
-          <div className="bg-green-400 p-5 rounded-lg flex-grow">
-              <p className="text-white font-medium hover:text-purple-200">Declare your love</p>
-          </div>
-        </div>
-        <br/>
       
         <div 
-            className="bg-white w-full text-black text-center p-8 rounded-xl border border-green-950 transition duration-500 ease-in-out">
-                    <h2 className="text-3xl font-bold py-5">Ready to Make Your Mark?<br/> <span className="font-thin text-2xl">Be part of internet history.</span> <br/> <span className="font-light text-2xl">Own an Expensive Message.</span></h2>
+            className="bg-white w-full text-black text-center p-8 rounded-xl border border-green-950 transition duration-500 ease-in-out"
+          >
+          <h2 className="text-3xl font-bold py-5">
+            Ready to Make Your Mark?
+            <br/> 
+            <span className="font-thin text-2xl">
+              Be part of internet history.
+            </span> 
+            <br/> 
+            <span className="font-light text-2xl">
+              Own Expensive Message.
+            </span>
+          </h2>
         <br/>
         <br/>
         <p className="text-xl font-thin">How high will the price soar?</p>
         <br/>
         <p className="text-xl font-thin">What will the ultimate message say?</p>
         <br/>
-        <p className="text-xl font-thin">Who will claim this digital landmark?</p>
-        <br/>
-        <p className="text-xl font-bold">The answers are up to you.</p>
+        <p className="text-xl font-bold">The answer is up to you.</p>
         <p className="text-xl font-bold bg-gradient-to-r from-purple-800 to-blue-300 bg-clip-text text-transparent">
-            Claim it. Share it. Change the world.
+            Claim it. Share it. 
         </p>
         </div>
         <div className="my-8 text-sm text-center font-light">
@@ -194,7 +167,7 @@ export async function getServerSideProps() {
     };
   
     const ethersProvider = new ethers.providers.JsonRpcProvider("https://mainnet.base.org");
-    const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS, ABI, ethersProvider);
+    const contract = new ethers.Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS_FRONTPAGE, ABI, ethersProvider);
     const newestPrice = await contract.getPrice();
     const formatPrice = parseFloat(ethers.utils.formatEther(newestPrice)).toString();
   

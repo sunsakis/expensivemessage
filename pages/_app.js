@@ -1,6 +1,6 @@
 import '@/styles/globals.css';
 import Head from 'next/head';
-import { ThirdwebProvider } from '@thirdweb-dev/react';
+import { ThirdwebProvider, rainbowWallet, metamaskWallet, coinbaseWallet, walletConnect } from '@thirdweb-dev/react';
 import { Base } from "@thirdweb-dev/chains";
 import { Titillium_Web } from 'next/font/google';
 import PlausibleProvider from 'next-plausible';
@@ -15,7 +15,7 @@ export default function App({ Component, pageProps }) {
   <main className={titties.className}>
     <ThirdwebProvider 
         activeChain={Base}
-        //supportedChains={[Ethereum, Sepolia]}
+        supportedWallets={[rainbowWallet(), metamaskWallet(), coinbaseWallet(), walletConnect()]}
         clientId={process.env.NEXT_PUBLIC_THIRDWEB_ID}
       >
     {/* <PlausibleProvider domain="expensivemessage.com"> */}
