@@ -10,7 +10,7 @@ export default function Pocket() {
         const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
         const signer = provider.getSigner();
         const contract = new ethers.Contract(
-          process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
+          process.env.NEXT_PUBLIC_CONTRACT_ADDRESS_FRONTPAGE,
           ABI,
           signer
         );

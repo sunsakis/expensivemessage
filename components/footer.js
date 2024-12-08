@@ -243,23 +243,25 @@ export default function Footer( { msgPrices, text} ) {
         `}
       </style>
       <div className="relative bottom-3 left-0 right-0">
-            <div className="sm:m-5">
+            <div className="sm:m-5 text-right">
               {msgPrices && (
-                <p className="text-sm text-right tracking-tight mr-9 text-gray-300">
+                <p className="text-xs mt-16 mr-8 tracking-tighter text-gray-300">
                         {text} message cost
                     </p>
               )}
               {msgPrices && (
-                    <p className="text-right mr-8">
-                        <b className="text-2xl">
-                          {msgPrices + " "} 
+                    <p className="mr-8">
+                        <b className="text-5xl">
+                          {msgPrices + ""} 
                           <Link 
                             href="https://app.uniswap.org/explore/tokens/base/0x4ed4e862860bed51a9570b96d89af5e1b0efefed"
                             className="text-green-500 hover:text-green-400 transition duration-500 ease-in-out hover:underline"
                             rel="nofollow" 
                             target="_blank"
                             >
-                              DEGEN
+                              <span className="text-2xl">
+                                DEGEN
+                              </span>
                           </Link>
                         </b>
                     </p>

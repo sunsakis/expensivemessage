@@ -57,7 +57,7 @@ export default function Home({ imgHash, price, message, settings, messenger }) {
     setStyle({
       backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), radial-gradient(circle at center, transparent ${firstGradient}, black ${secondGradient}), url(${backgroundImageUrl})`,
       backgroundPosition: 'center',
-      backgroundSize: window.innerWidth < 450 ? 'cover' : 'contain',
+      backgroundSize: window.innerWidth < 450 ? 'contain' : 'contain',
       backgroundRepeat: 'no-repeat',
       height: '100vh',
       width: '100vw',
