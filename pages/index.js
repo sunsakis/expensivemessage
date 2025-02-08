@@ -198,7 +198,7 @@ export default function Hamsterverse({ names = [], imgHashes = [], messages = []
               </button>
             </div>
 
-            <div className="flex-1 flex justify-center items-center bg-black bg-opacity-20">
+            <div className="flex-1 flex justify-center items-center bg-black bg-opacity-20 -mt-48">
               <Message text={message} messenger={name} />
             </div>
 
