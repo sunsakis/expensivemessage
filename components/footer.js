@@ -272,7 +272,7 @@ export default function Footer( { msgPrices, text} ) {
                         onClick={() => setShowModal(true)}
                       >
                         <p className="text-2xl sm:px-10 p-3 mt-2 mx-6 font-semibold hover:bg-green-800 border-green-700 border rounded-xl transition duration-500 ease-in-out hover:border-green-500">
-                            Post Your {nextPrice} DEGEN
+                            Post Your {nextPrice} Message
                         </p>
                     </button>
                 </div>
@@ -280,7 +280,7 @@ export default function Footer( { msgPrices, text} ) {
             <div className="absolute bottom-1 flex justify-center mx-auto w-full sm:w-auto m-2 sm:m-5">
                 <div className="flex text-xs sm:text-sm text-gray-200 ml-1">
                     <Link href="/wtf"><p className="mx-2">WTF?</p></Link>
-                    <Link href="/hamsterverse"><p className="mx-2">Hall of Frame</p></Link>
+                    <Link href="/hamsterverse"><p className="mx-2">Hall of Fame</p></Link>
                     <Link href="https://warpcast.com/xmessage" rel="nofollow" target="_blank" className="ml-1">
                         <Image
                             src="/farcaster.svg"

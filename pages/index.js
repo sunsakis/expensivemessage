@@ -6,11 +6,16 @@ import Header from '../components/header.js';
 import Message from '../components/message.js';
 import { useSwipeable } from 'react-swipeable';
 import oldABI from '../contract/oldABI.js';
-import Image from 'next/image.js';
+import Image from 'next/image';
 import Link from 'next/link'
 
 export default function Hamsterverse({ names = [], imgHashes = [], messages = [], prices = [], newestCounter = 0 }) {
-  const [style, setStyle] = useState({});
+  const [style, setStyle] = useState({
+    backgroundImage: '',
+    backgroundPosition: 'center',
+    backgroundSize: 'contain',
+    backgroundRepeat: 'no-repeat'
+  });
   const [message, setMessage] = useState(messages[0]);
   const [imgHash, setImgHash] = useState(imgHashes[0]);
   const [name, setName] = useState(names[0]);
@@ -28,6 +33,7 @@ export default function Hamsterverse({ names = [], imgHashes = [], messages = []
     };
     const handleResize = () => {
       setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+      updateBackground();
     };
   
     updateBackground(); 
@@ -46,8 +52,8 @@ export default function Hamsterverse({ names = [], imgHashes = [], messages = []
   }
 
   const updateStyle = (backgroundImageUrl) => {
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
+    const viewportWidth = window?.innerWidth || 1024;
+    const viewportHeight = window?.innerHeight || 768;
     const minSpotlightSize = 200;
     let spotlightSize = Math.max(Math.min(viewportWidth, viewportHeight) * 0.3, minSpotlightSize);
     const firstGradient = `${spotlightSize * 0.5}px`;
@@ -56,20 +62,14 @@ export default function Hamsterverse({ names = [], imgHashes = [], messages = []
     setStyle({
       backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), radial-gradient(circle at center, transparent ${firstGradient}, black ${secondGradient}), url(${backgroundImageUrl})`,
       backgroundPosition: 'center',
-      backgroundSize: window.innerWidth < 450 ? 'cover' : 'contain',
-      backgroundRepeat: 'no-repeat',
-      height: '100vh',
-      width: '100vw',
-      position: 'absolute',
-      top: 0,
-      left: 0,
+      backgroundSize: (viewportWidth < 450) ? 'cover' : 'contain',
+      backgroundRepeat: 'no-repeat'
     });
   };
 
   const showNextMessage = async () => {
     const newIndex = currentIndex + 1;
     if (newIndex >= newestCounter - 1) {
-      // Fetch newest message
       setIsLoading(true);
       try {
         const response = await fetch('/api/fetch-message', {
@@ -77,12 +77,12 @@ export default function Hamsterverse({ names = [], imgHashes = [], messages = []
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ index: newestCounter - 1 }), // Newest message index
+          body: JSON.stringify({ index: newestCounter - 1 }),
         });
-  
+
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
-  
+
         setMessage(data.message);
         setPrices(data.price);
         setImgHash(data.imgHash);
@@ -95,7 +95,6 @@ export default function Hamsterverse({ names = [], imgHashes = [], messages = []
         setIsLoading(false);
       }
     } else {
-      // Rest of the code remains the same
       setIsLoading(true);
       try {
         const response = await fetch('/api/fetch-message', {
@@ -105,10 +104,10 @@ export default function Hamsterverse({ names = [], imgHashes = [], messages = []
           },
           body: JSON.stringify({ index: newIndex }),
         });
-  
+
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
-  
+
         setMessage(data.message);
         setPrices(data.price);
         setImgHash(data.imgHash);
@@ -122,7 +121,7 @@ export default function Hamsterverse({ names = [], imgHashes = [], messages = []
       }
     }
   };
-  
+
   const showPreviousMessage = async () => {
     const newIndex = currentIndex - 1;
     if (newIndex >= 0) {
@@ -135,10 +134,10 @@ export default function Hamsterverse({ names = [], imgHashes = [], messages = []
           },
           body: JSON.stringify({ index: newIndex }),
         });
-  
+
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
-  
+
         setMessage(data.message);
         setPrices(data.price);
         setImgHash(data.imgHash);
@@ -164,51 +163,51 @@ export default function Hamsterverse({ names = [], imgHashes = [], messages = []
         <meta property="og:url" content="https://www.expensivemessage.com" /> 
         <meta property="og:site_name" content="Expensive Message" />
       </Head>
-      <main>
-        <div style={style} className="w-full relative">
-          <div className="min-h-screen flex-col flex relative">
+      
+      <main className="h-screen flex flex-col overflow-hidden">
+        <div className="flex-1 overflow-auto">
+          <div className="min-h-full flex flex-col" style={style}>
             <Header />
-            <div className="w-full absolute top-28 items-center flex left-0 right-0 justify-between px-10 sm:px-20 md:px-32 lg:px-56 xl:px-96 z-10">
-              <div className="justify-start">
-                <button 
-                  className="text-3xl" 
-                  onClick={currentIndex > 0 ? showPreviousMessage : undefined}
-                  style={{ opacity: currentIndex > 0 ? 1 : 0.25 }}
-                  disabled={isLoading}
-                >
-                  <Image 
-                    src="arrowLeft.svg" 
-                    alt="Arrow to the left" 
-                    width={25} 
-                    height={25}
-                  />
-                </button>
-              </div>
-              <div className="justify-end">
-                <button 
-                  className="text-3xl" 
-                  onClick={currentIndex < newestCounter - 1 ? showNextMessage : undefined}
-                  style={{ opacity: currentIndex < newestCounter - 1 ? 1 : 0.25 }}
-                  disabled={isLoading}
-                >
-                  <Image 
-                    src="arrowRight.svg" 
-                    alt="Arrow to the right" 
-                    width={25} 
-                    height={25}
-                  />
-                </button>
-              </div>
+            
+            <div className="w-full relative mt-28 flex items-center justify-between px-10 sm:px-20 md:px-32 lg:px-56 xl:px-96 z-10">
+              <button 
+                className="text-3xl" 
+                onClick={currentIndex > 0 ? showPreviousMessage : undefined}
+                style={{ opacity: currentIndex > 0 ? 1 : 0.25 }}
+                disabled={isLoading}
+              >
+                <Image 
+                  src="arrowLeft.svg" 
+                  alt="Arrow to the left" 
+                  width={25} 
+                  height={25}
+                />
+              </button>
+              <button 
+                className="text-3xl" 
+                onClick={currentIndex < newestCounter - 1 ? showNextMessage : undefined}
+                style={{ opacity: currentIndex < newestCounter - 1 ? 1 : 0.25 }}
+                disabled={isLoading}
+              >
+                <Image 
+                  src="arrowRight.svg" 
+                  alt="Arrow to the right" 
+                  width={25} 
+                  height={25}
+                />
+              </button>
             </div>
-            <div className="flex flex-grow justify-center items-center mb-28 bg-black bg-opacity-20">
+
+            <div className="flex-1 flex justify-center items-center bg-black bg-opacity-20">
               <Message text={message} messenger={name} />
             </div>
-            <div className=" bottom-3 left-0 right-0 z-20">
+
+            <div className="mt-auto">
               <div className="sm:m-5">
                 <p className="text-sm text-right tracking-tight mr-9 text-gray-300">
                   This message cost
                 </p>
-                <p className="text-right mr-8">
+                <p className="pb-2 text-right mr-8">
                   <b className="text-2xl">
                     {price + " "}
                     <Link 
@@ -224,39 +223,8 @@ export default function Hamsterverse({ names = [], imgHashes = [], messages = []
               </div>
             </div>
           </div>
-          <div className="w-full absolute top-28 items-center flex left-0 right-0 justify-between px-10 sm:px-20 md:px-32 lg:px-56 xl:px-96">
-            <div className="justify-start">
-              <button 
-                className="text-3xl" 
-                onClick={counter > 0 ? showNextMessage : undefined}
-                style={{ opacity: counter > 0 ? 1 : 0.25 }}
-                disabled={isLoading}
-              >
-                <Image 
-                  src="arrowLeft.svg" 
-                  alt="Arrow to the left" 
-                  width={25} 
-                  height={25}
-                />
-              </button>
-            </div>
-            <div className="justify-end">
-              <button 
-                className="text-3xl" 
-                onClick={counter < allMessages.length - 1 ? showPreviousMessage : undefined}
-                style={{ opacity: counter < allMessages.length - 1 ? 1 : 0.25 }}
-                disabled={isLoading}
-              >
-                <Image 
-                  src="arrowRight.svg" 
-                  alt="Arrow to the right" 
-                  width={25} 
-                  height={25}
-                />
-              </button>
-            </div>
-          </div>
         </div>
+        <Footer />
       </main>
     </>
   );
